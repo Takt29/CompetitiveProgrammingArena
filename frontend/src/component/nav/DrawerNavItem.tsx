@@ -1,11 +1,7 @@
 import { Flex, Icon, Link, useColorModeValue, Text } from "@chakra-ui/react";
 import { ReactNode, useMemo } from "react";
 import { IconType } from "react-icons";
-import {
-  matchPath,
-  useLocation,
-  Link as ReactRouterLink,
-} from "react-router-dom";
+import { matchPath, useLocation } from "react-router-dom";
 
 type Props = {
   to: string;
