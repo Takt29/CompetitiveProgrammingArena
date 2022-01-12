@@ -15,6 +15,7 @@ module.exports = {
     'Takt29',
     // libraries
     'clsx',
+    'chakra',
     'pmmmwh',
   ]
 }
