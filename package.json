@@ -1,0 +1,23 @@
+{
+  "name": "competitive-programming-arena",
+  "version": "0.1.0",
+  "description": "website for competitive programming virtual contest",
+  "scripts": {
+    "dev": "firebase emulators:start",
+    "login": "firebase login",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Takt29/CompetitiveProgrammingArena.git"
+  },
+  "author": "Takt29",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Takt29/CompetitiveProgrammingArena/issues"
+  },
+  "homepage": "https://github.com/Takt29/CompetitiveProgrammingArena#readme",
+  "devDependencies": {
+    "firebase-tools": "^10.0.1"
+  }
+}
