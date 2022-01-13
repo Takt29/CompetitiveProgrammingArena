@@ -1,5 +1,15 @@
-import { Container, Heading, Text } from "@chakra-ui/react";
+import {
+  Container,
+  Heading,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+} from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
+import { ContestInfoTab } from "../component/contest/tab/ContestInfoTab";
 import { ContestDescription } from "../consumer/contest/ContestDescription";
 import { ContestName } from "../consumer/contest/ContestName";
 import { ContestProvider } from "../hook/context/ContestContext";
@@ -17,9 +27,22 @@ export const ContestPage = () => {
         <Heading as={"h3"} size="lg" marginBottom={4}>
           <ContestName />
         </Heading>
-        <Text>
-          <ContestDescription />
-        </Text>
+        <Tabs>
+          <TabList overflowX={"auto"}>
+            <Tab>Top</Tab>
+            <Tab>Tasks</Tab>
+            <Tab>Results</Tab>
+            <Tab>Standings</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <ContestInfoTab />
+            </TabPanel>
+            <TabPanel></TabPanel>
+            <TabPanel></TabPanel>
+            <TabPanel></TabPanel>
+          </TabPanels>
+        </Tabs>
       </Container>
     </ContestProvider>
   );
