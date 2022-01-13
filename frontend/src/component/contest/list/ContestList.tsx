@@ -16,7 +16,7 @@ export const ContestList = (props: Props) => {
 
   return (
     <Box overflowX={"auto"}>
-      <Table variant={"simple"}>
+      <Table variant={"simple"} size={"sm"} minWidth={"lg"}>
         <Thead>
           <Tr>
             <Th>コンテスト名</Th>
