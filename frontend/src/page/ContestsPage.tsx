@@ -1,7 +1,7 @@
 import { Container, Divider, Heading } from "@chakra-ui/react";
 import { ContestList } from "../component/contest/list/ContestList";
 
-export const HomePage = () => {
+export const ContestsPage = () => {
   return (
     <Container maxWidth={"container.lg"} marginTop={4} marginBottom={4}>
       <Heading as={"h4"} size="md">
