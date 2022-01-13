@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { ContestInfoTab } from "../component/contest/tab/ContestInfoTab";
+import { ContestTasksTab } from "../component/contest/tab/ContestTasksTab";
 import { ContestName } from "../consumer/contest/ContestName";
 import { ContestProvider } from "../hook/context/ContestContext";
 import { useFetchContest } from "../hook/firebase/contest";
@@ -36,7 +37,9 @@ export const ContestPage = () => {
             <TabPanel>
               <ContestInfoTab />
             </TabPanel>
-            <TabPanel></TabPanel>
+            <TabPanel>
+              <ContestTasksTab />
+            </TabPanel>
             <TabPanel></TabPanel>
             <TabPanel></TabPanel>
           </TabPanels>
