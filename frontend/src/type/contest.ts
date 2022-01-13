@@ -1,10 +1,6 @@
 import { Timestamp } from "firebase/firestore";
-
-// 一時的な置き場
-type User = {
-  id: string;
-  name: string;
-};
+import { AuditFields } from "./auditField";
+import { User } from "./user";
 
 export type Contest = {
   id: string;
@@ -12,5 +8,5 @@ export type Contest = {
   description: string;
   startAt: Timestamp;
   endAt: Timestamp;
-  createdBy: User;
-};
+  owner: User;
+} & AuditFields;

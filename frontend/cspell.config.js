@@ -19,5 +19,9 @@ module.exports = {
     'pmmmwh',
     'firestore',
     'linkify',
+    // service
+    'aoj',
+    'atcoder',
+    'codeforces',
   ]
 }
