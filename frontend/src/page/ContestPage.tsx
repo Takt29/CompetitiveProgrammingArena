@@ -6,11 +6,9 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { ContestInfoTab } from "../component/contest/tab/ContestInfoTab";
-import { ContestDescription } from "../consumer/contest/ContestDescription";
 import { ContestName } from "../consumer/contest/ContestName";
 import { ContestProvider } from "../hook/context/ContestContext";
 import { useFetchContest } from "../hook/firebase/contest";

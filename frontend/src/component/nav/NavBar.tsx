@@ -15,6 +15,7 @@ import {
   IconButton,
   useBoolean,
 } from "@chakra-ui/react";
+import { Link as ReactRouterLink } from "react-router-dom";
 import { FaCog, FaSignOutAlt, FaBars } from "react-icons/fa";
 import { DrawerNav } from "./DrawerNav";
 
@@ -33,7 +34,9 @@ export const NavBar = () => {
                 aria-label="Open Drawer"
                 onClick={setIsOpen.on}
               />
-              <Box>Competitive Programming Arena</Box>
+              <Box as={ReactRouterLink} to="/">
+                Competitive Programming Arena
+              </Box>
             </Stack>
           </Flex>
           <Menu>
