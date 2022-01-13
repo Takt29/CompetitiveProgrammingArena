@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { Contest } from "../../type/Contest";
+import { Contest } from "../../type/contest";
 
 const ContestContext = createContext<Contest | null>(null);
 

@@ -1,4 +1,5 @@
-import { Table, Th, Tr, Td, Thead, Tbody, Box } from "@chakra-ui/react";
+import { Table, Th, Tr, Td, Thead, Tbody, Box, Link } from "@chakra-ui/react";
+import { Link as ReactRouterLink } from "react-router-dom";
 import { ContestDuration } from "../../../consumer/contest/ContestDuration";
 import { ContestName } from "../../../consumer/contest/ContestName";
 import { ContestOwner } from "../../../consumer/contest/ContestOwner";
@@ -6,20 +7,13 @@ import { ContestStartAt } from "../../../consumer/contest/ContestStartAt";
 import { ContestProvider } from "../../../hook/context/ContestContext";
 import { Contest } from "../../../type/contest";
 
-const SampleContests: Contest[] = [
-  {
-    id: "contest_ab2f3",
-    name: "バチャ001",
-    createdBy: {
-      id: "user_a1fewa",
-      name: "admin1",
-    },
-    startAt: new Date(),
-    endAt: new Date(new Date().getTime() + 1.75 * 3600 * 1000),
-  },
-];
+type Props = {
+  contests: Contest[];
+};
 
-export const ContestList = () => {
+export const ContestList = (props: Props) => {
+  const { contests } = props;
+
   return (
     <Box overflowX={"auto"}>
       <Table variant={"simple"}>
@@ -32,11 +26,13 @@ export const ContestList = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {SampleContests.map((contest) => (
+          {contests.map((contest) => (
             <ContestProvider key={contest.id} value={contest}>
               <Tr>
                 <Td>
-                  <ContestName />
+                  <Link as={ReactRouterLink} to={`/contests/${contest.id}`}>
+                    <ContestName />
+                  </Link>
                 </Td>
                 <Td>
                   <ContestOwner />

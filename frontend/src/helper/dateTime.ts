@@ -1,12 +1,20 @@
 import dayjs, { UnitType } from "dayjs";
 import duration from "dayjs/plugin/duration";
+import { Timestamp } from "firebase/firestore";
 
 dayjs.extend(duration);
 
-type InputDate = string | number | Date | dayjs.Dayjs;
+type InputDate = string | number | Date | dayjs.Dayjs | Timestamp;
+
+const toDayJs = (inputDate: InputDate) => {
+  if (inputDate instanceof Timestamp) {
+    return dayjs(inputDate.toDate());
+  }
+  return dayjs(inputDate);
+};
 
 export const formatDateTime = (dateTime: InputDate, formatStr: string) => {
-  return dayjs(dateTime).format(formatStr);
+  return toDayJs(dateTime).format(formatStr);
 };
 
 export const getDuration = (
@@ -14,7 +22,7 @@ export const getDuration = (
   end: InputDate,
   unit: UnitType
 ) => {
-  return dayjs(end).diff(begin, unit);
+  return toDayJs(end).diff(toDayJs(begin), unit);
 };
 
 export const formatDuration = (
@@ -22,6 +30,6 @@ export const formatDuration = (
   end: InputDate,
   formatStr: string
 ) => {
-  const duration = dayjs.duration(dayjs(end).diff(dayjs(begin)));
+  const duration = dayjs.duration(toDayJs(end).diff(toDayJs(begin)));
   return duration.format(formatStr);
 };

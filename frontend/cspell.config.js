@@ -17,5 +17,7 @@ module.exports = {
     'clsx',
     'chakra',
     'pmmmwh',
+    'firestore',
+    'linkify',
   ]
 }
