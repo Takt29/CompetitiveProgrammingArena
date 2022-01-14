@@ -20,7 +20,7 @@ export const DummyTasks: Task[] = [
   },
   {
     id: "task_21",
-    contest: DummyContests[1].id,
+    contest: DummyContests[2].id,
     index: 1,
     name: "Party Dress",
     externalTaskId: "aoj::0392",
