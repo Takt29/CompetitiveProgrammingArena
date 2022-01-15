@@ -1,4 +1,5 @@
 import {
+  Box,
   Container,
   Heading,
   Tab,
@@ -27,13 +28,16 @@ export const ContestPage = () => {
         <Heading as={"h3"} size="lg" marginBottom={4}>
           <ContestName />
         </Heading>
+
         <Tabs>
-          <TabList overflowX={"auto"}>
-            <Tab>Top</Tab>
-            <Tab>Tasks</Tab>
-            <Tab>Results</Tab>
-            <Tab>Standings</Tab>
-          </TabList>
+          <Box overflowX={"auto"}>
+            <TabList>
+              <Tab _focus={{ outline: "none" }}>Top</Tab>
+              <Tab _focus={{ outline: "none" }}>Tasks</Tab>
+              <Tab _focus={{ outline: "none" }}>Results</Tab>
+              <Tab _focus={{ outline: "none" }}>Standings</Tab>
+            </TabList>
+          </Box>
           <TabPanels>
             <TabPanel>
               <ContestInfoTab />
