@@ -18,9 +18,18 @@ import {
 import { Link as ReactRouterLink } from "react-router-dom";
 import { FaCog, FaSignOutAlt, FaBars } from "react-icons/fa";
 import { DrawerNav } from "./DrawerNav";
+import { useAuth } from "../../hook/firebase/auth";
+import { useCallback } from "react";
+import { signOut } from "firebase/auth";
+import { auth } from "../../helper/firebase";
 
 export const NavBar = () => {
   const [isOpen, setIsOpen] = useBoolean();
+  const [user] = useAuth();
+
+  const logout = useCallback(() => {
+    signOut(auth);
+  }, []);
 
   return (
     <>
@@ -39,28 +48,29 @@ export const NavBar = () => {
               </Box>
             </Stack>
           </Flex>
-          <Menu>
-            <MenuButton
-              as={Button}
-              rounded="full"
-              variant={"link"}
-              cursor={"pointer"}
-              minW={0}
-            >
-              <Avatar
-                size={"sm"}
-                src={"https://avatars.dicebear.com/api/male/username.svg"}
-              />
-            </MenuButton>
-            <MenuList alignItems={"center"}>
-              <Center>
-                <p>Username</p>
-              </Center>
-              <MenuDivider />
-              <MenuItem icon={<Icon as={FaCog} />}>Account Settings</MenuItem>
-              <MenuItem icon={<Icon as={FaSignOutAlt} />}>Logout</MenuItem>
-            </MenuList>
-          </Menu>
+          {user && (
+            <Menu>
+              <MenuButton
+                as={Button}
+                rounded="full"
+                variant={"link"}
+                cursor={"pointer"}
+                minW={0}
+              >
+                <Avatar size={"sm"} src={user.photoURL ?? ""} />
+              </MenuButton>
+              <MenuList alignItems={"center"}>
+                <Center>
+                  <p>{user.displayName}</p>
+                </Center>
+                <MenuDivider />
+                <MenuItem icon={<Icon as={FaCog} />}>Account Settings</MenuItem>
+                <MenuItem icon={<Icon as={FaSignOutAlt} />} onClick={logout}>
+                  Logout
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          )}
         </Flex>
       </Box>
       <DrawerNav isOpen={isOpen} onClose={setIsOpen.off} />
