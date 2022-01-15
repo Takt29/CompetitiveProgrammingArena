@@ -1,8 +1,8 @@
 import { Timestamp } from "firebase/firestore";
-import { AuditFields } from "../../type/auditField";
-import { Contest } from "../../type/contest";
-import { Task } from "../../type/task";
-import { User } from "../../type/user";
+import { AuditFields } from "./auditField";
+import { Contest } from "./contest";
+import { Task } from "./task";
+import { User } from "./user";
 
 export type StandingsScore = {
   // 合計スコア
