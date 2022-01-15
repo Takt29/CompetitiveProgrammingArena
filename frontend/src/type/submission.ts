@@ -1,12 +1,16 @@
 import { Timestamp } from "firebase/firestore";
 import { AuditFields } from "./auditField";
+import { Contest } from "./contest";
+import { Task } from "./task";
+import { User } from "./user";
 
 export type Submission = {
   id: string;
-  contestId: string; // TODO: 消すか考える
-  taskId: string;
+  contestId: Contest["id"];
+  taskId: Task["id"];
   status: string; // TODO: enum
   score: number;
   submittedAt: Timestamp;
-  externalSubmissionId: string;
+  submittedBy: User["id"];
+  externalSubmissionId: string; // [site]:[contest]:[id]
 } & AuditFields;
