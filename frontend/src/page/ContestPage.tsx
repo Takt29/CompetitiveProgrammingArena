@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { ContestInfoTab } from "../component/contest/tab/ContestInfoTab";
+import { ContestStandingsTab } from "../component/contest/tab/ContestStandingsTab";
 import { ContestSubmissionsTab } from "../component/contest/tab/ContestSubmissionsTab";
 import { ContestTasksTab } from "../component/contest/tab/ContestTasksTab";
 import { ContestName } from "../consumer/contest/ContestName";
@@ -48,7 +49,9 @@ export const ContestPage = () => {
             <TabPanel>
               <ContestSubmissionsTab />
             </TabPanel>
-            <TabPanel></TabPanel>
+            <TabPanel>
+              <ContestStandingsTab />
+            </TabPanel>
           </TabPanels>
         </Tabs>
       </Container>
