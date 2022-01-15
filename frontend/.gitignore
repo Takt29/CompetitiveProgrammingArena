@@ -4,3 +4,8 @@
 # webpack
 /build
 /dist
+
+# env
+.env
+.env.staging
+.env.production

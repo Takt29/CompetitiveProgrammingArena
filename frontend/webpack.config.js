@@ -1,6 +1,8 @@
 // webpack.config.js
+const fs = require('fs')
 const path = require("path");
 const webpack = require("webpack");
+const dotenv = require('dotenv')
 const Fiber = require("fibers");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ReactRefreshTypescript = require("react-refresh-typescript");
@@ -10,6 +12,13 @@ const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin"
 const Mode = process.env.NODE_ENV || "development";
 const isProduction = Mode === "production";
 const isDevServer = process.env.WEBPACK_SERVE;
+
+const loadEnvFile = (mode) => {
+  const envConfig = dotenv.parse(fs.readFileSync(path.join(__dirname,`.env.${mode}`)))
+  const envs = Object.entries(envConfig).map(([key, value]) => [`process.env.${key}`, JSON.stringify(value)])
+  return Object.fromEntries(envs)
+}
+
 
 module.exports = {
   mode: Mode,
@@ -88,7 +97,9 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
+      ...loadEnvFile(Mode),
       "process.env.NODE_ENV": JSON.stringify(Mode),
+      "process.env": {}
     }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "public", "index.html"),
