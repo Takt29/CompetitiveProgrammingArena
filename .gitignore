@@ -3,4 +3,5 @@
 
 # firebase
 /.firebaserc
+/firebase-data
 *.log

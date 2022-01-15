@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "website for competitive programming virtual contest",
   "scripts": {
-    "dev": "firebase emulators:start",
+    "dev": "firebase emulators:start --import=./firebase-data --export-on-exit",
     "login": "firebase login",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
