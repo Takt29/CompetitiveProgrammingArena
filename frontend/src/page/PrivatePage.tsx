@@ -2,21 +2,26 @@ import { Container } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 import { LogInModal } from "../component/auth/modal/LogInModal";
 import { RegistrationCodeModal } from "../component/auth/modal/RegistrationCodeModal";
+import { SetUpUserModal } from "../component/auth/modal/SetUpAccountModal";
 import { useAuth, useClaims } from "../hook/firebase/auth";
+import { useFetchCurrentUser } from "../hook/firebase/user";
 
 export const PrivatePage = () => {
-  const [user, loading, error] = useAuth();
+  const [authUser, authLoading, authError] = useAuth();
   const [claims, claimsLoading, claimsError, updateClaims] = useClaims();
+  const [user, userLoading, userError] = useFetchCurrentUser();
 
-  if (loading || claimsLoading) {
+  if (authLoading || claimsLoading || userLoading) {
     return <Container>{"Initializing User..."}</Container>;
   }
 
-  if (error || claimsError) {
-    return <Container>{`Error: ${error || claimsError}`}</Container>;
+  if (authError || claimsError || userError) {
+    return (
+      <Container>{`Error: ${authError || claimsError || userError}`}</Container>
+    );
   }
 
-  if (!user) {
+  if (!authUser) {
     return (
       <Container>
         <LogInModal
@@ -38,6 +43,19 @@ export const PrivatePage = () => {
             /* do noting */
           }}
           onRegisterSuccess={updateClaims}
+        />
+      </Container>
+    );
+  }
+
+  if (!user) {
+    return (
+      <Container>
+        <SetUpUserModal
+          isOpen
+          onClose={() => {
+            /* do noting */
+          }}
         />
       </Container>
     );

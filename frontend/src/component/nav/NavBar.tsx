@@ -22,10 +22,14 @@ import { useAuth } from "../../hook/firebase/auth";
 import { useCallback } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "../../helper/firebase";
+import { UserProvider, useUser } from "../../hook/context/UserContext";
+import { useFetchCurrentUser } from "../../hook/firebase/user";
+import { UserName } from "../../consumer/user/UserName";
 
 export const NavBar = () => {
   const [isOpen, setIsOpen] = useBoolean();
-  const [user] = useAuth();
+  const [authUser] = useAuth();
+  const [user] = useFetchCurrentUser();
 
   const logout = useCallback(() => {
     signOut(auth);
@@ -48,7 +52,7 @@ export const NavBar = () => {
               </Box>
             </Stack>
           </Flex>
-          {user && (
+          {authUser && user && (
             <Menu>
               <MenuButton
                 as={Button}
@@ -57,11 +61,13 @@ export const NavBar = () => {
                 cursor={"pointer"}
                 minW={0}
               >
-                <Avatar size={"sm"} src={user.photoURL ?? ""} />
+                <Avatar size={"sm"} src={authUser.photoURL ?? ""} />
               </MenuButton>
               <MenuList alignItems={"center"}>
                 <Center>
-                  <p>{user.displayName}</p>
+                  <UserProvider value={user}>
+                    <UserName />
+                  </UserProvider>
                 </Center>
                 <MenuDivider />
                 <MenuItem icon={<Icon as={FaCog} />}>Account Settings</MenuItem>
