@@ -3,15 +3,27 @@ import {
   FormHelperText,
   FormLabel,
   Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  Select,
   Textarea,
 } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
+import { StandingsSystemType } from "../../../constant/StandingsSystem";
+import { StandingsSystemName } from "../../../constant/StandingsSystemName";
 
 export type ContestFormFieldsData = {
   name: string;
   description?: string;
   startAt: string;
   endAt: string;
+  rule: {
+    system: StandingsSystemType;
+    penaltyMins: number;
+  };
 };
 
 const DateTimePattern =
@@ -52,6 +64,28 @@ export const ContestFormFields = () => {
           })}
         />
         <FormHelperText>YYYY/MM/DD hh:mm</FormHelperText>
+      </FormControl>
+      <FormControl isInvalid={!!errors.rule?.system}>
+        <FormLabel htmlFor="rule_system">Standings System</FormLabel>
+        <Select {...register("rule.system", { required: true })}>
+          {Object.entries(StandingsSystemName).map(([id, name]) => (
+            <option key={id} value={id}>
+              {name}
+            </option>
+          ))}
+        </Select>
+      </FormControl>
+      <FormControl isInvalid={!!errors.rule?.penaltyMins}>
+        <FormLabel htmlFor="rule_penalty">Penalty(minutes)</FormLabel>
+        <NumberInput min={0} max={99} precision={0}>
+          <NumberInputField
+            {...register("rule.penaltyMins", { required: true })}
+          />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
       </FormControl>
     </>
   );

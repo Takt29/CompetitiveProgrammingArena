@@ -16,6 +16,7 @@ import {
 } from "../component/contest/form/ContestFormFields";
 import { formatDateTime } from "../helper/dateTime";
 import { ContestTaskFormFields } from "../component/contest/form/ContestTaskFormFields";
+import { StandingsSystem } from "../constant/StandingsSystem";
 
 type CreateContestFormData = ContestFormFieldsData;
 
@@ -27,17 +28,22 @@ export const CreateContestPage = () => {
         new Date(new Date().getTime() + 1000 * 60 * 60 * 2),
         "YYYY/MM/DD HH:mm"
       ),
+      rule: {
+        system: StandingsSystem.AtCoder,
+        penaltyMins: 5,
+      },
     },
   });
 
   const [{ loading }, onSubmit] = useAsyncFn(
     async (data: CreateContestFormData) => {
-      const { name, description, startAt, endAt } = data;
+      const { name, description, startAt, endAt, rule } = data;
       await createContest({
         name,
         description: description ?? "",
         startAt: new Date(startAt),
         endAt: new Date(endAt),
+        rule,
       });
     },
     []

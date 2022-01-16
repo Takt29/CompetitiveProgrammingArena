@@ -1,6 +1,6 @@
 import { Timestamp } from "firebase/firestore";
+import { StandingsSystemType } from "../constant/StandingsSystem";
 import { AuditFields } from "./auditField";
-import { User } from "./user";
 
 export type Contest = {
   id: string;
@@ -8,5 +8,8 @@ export type Contest = {
   description: string;
   startAt: Timestamp;
   endAt: Timestamp;
-  owner: User;
+  rule: {
+    system: StandingsSystemType;
+    penaltyMins: number;
+  };
 } & AuditFields;

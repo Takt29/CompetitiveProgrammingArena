@@ -26,5 +26,6 @@ module.exports = {
     'problemset',
     'onlinejudge',
     'aizu',
+    'icpc',
   ]
 }

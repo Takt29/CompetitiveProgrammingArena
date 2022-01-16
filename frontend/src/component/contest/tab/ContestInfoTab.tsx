@@ -11,6 +11,8 @@ import {
 import { ContestDescription } from "../../../consumer/contest/ContestDescription";
 import { ContestEndAt } from "../../../consumer/contest/ContestEndAt";
 import { ContestOwner } from "../../../consumer/contest/ContestOwner";
+import { ContestRulePenalty } from "../../../consumer/contest/ContestRulePenalty";
+import { ContestRuleSystem } from "../../../consumer/contest/ContestRuleSystem";
 import { ContestStartAt } from "../../../consumer/contest/ContestStartAt";
 
 export const ContestInfoTab = () => {
@@ -45,6 +47,18 @@ export const ContestInfoTab = () => {
               <Td>EndAt</Td>
               <Td>
                 <ContestEndAt />
+              </Td>
+            </Tr>
+            <Tr>
+              <Td>Standings System</Td>
+              <Td>
+                <ContestRuleSystem />
+              </Td>
+            </Tr>
+            <Tr>
+              <Td>Penalty</Td>
+              <Td>
+                <ContestRulePenalty />
               </Td>
             </Tr>
           </Tbody>
