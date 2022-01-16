@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "firebase emulators:start --import=./firebase-data --export-on-exit --project x-local-emu",
     "login": "firebase login",
+    "deploy": "firebase deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

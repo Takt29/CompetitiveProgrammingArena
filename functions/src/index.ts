@@ -1,2 +1,4 @@
-export const task = require("./task");
-export const auth = require("./auth");
+import * as task from "./task";
+import * as auth from "./auth";
+
+export { task, auth };
