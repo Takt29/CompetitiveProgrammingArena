@@ -50,7 +50,6 @@ export const ContestTaskFormFields = () => {
         externalTaskId && (await fetchTaskInformation(externalTaskId));
 
       if (taskInfo) {
-        console.log(taskInfo);
         append({
           id: uuid(),
           name: taskInfo.title ?? "",

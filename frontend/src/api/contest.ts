@@ -20,7 +20,6 @@ export const createContest = async (params: CreateContestParams) => {
     throw new Error("Not authenticated.");
   }
 
-  console.log("ok");
   return await addDoc(collection(db, "contests"), {
     name,
     description,

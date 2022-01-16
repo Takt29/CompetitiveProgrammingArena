@@ -53,7 +53,6 @@ const fetchCodeforcesTask = async (contestId: string, taskId: string) => {
   if (result.data?.status === "OK") {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const problems: any[] = result.data?.result?.problems;
-    console.log(result.data);
     const problem = problems.find(({ index }) => taskId === index);
     if (problem) {
       const { name, points } = problem;

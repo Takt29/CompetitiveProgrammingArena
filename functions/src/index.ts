@@ -8,8 +8,6 @@ export const fetchAtCoderTask = functions.https.onCall(
       const isVerified = context?.auth?.token?.verified;
       // const isAdmin = context?.auth?.token?.admin;
 
-      console.log(JSON.stringify(context?.auth));
-
       if (!uid || !isVerified) {
         throw new functions.https.HttpsError(
           "failed-precondition",
