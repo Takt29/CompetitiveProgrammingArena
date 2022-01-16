@@ -25,12 +25,13 @@ export const useFetchCurrentUser = () => {
 
   const user: User | undefined = useMemo(() => {
     const data = userDocSnapshot?.data();
-    return userDocSnapshot && data
-      ? {
-          id: userDocSnapshot.id,
-          ...data,
-        }
-      : undefined;
+    return (
+      userDocSnapshot &&
+      data && {
+        id: userDocSnapshot.id,
+        ...data,
+      }
+    );
   }, [userDocSnapshot]);
 
   return [user, loading, error] as const;

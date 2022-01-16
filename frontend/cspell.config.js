@@ -17,8 +17,10 @@ module.exports = {
     'clsx',
     'chakra',
     'pmmmwh',
-    'firestore',
     'linkify',
+    // firebase
+    'firestore',
+    'millis',
     // service
     'aoj',
     'atcoder',

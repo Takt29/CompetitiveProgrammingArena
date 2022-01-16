@@ -23,7 +23,7 @@ import { useFetchContest } from "../hook/firebase/contest";
 
 export const ContestPage = () => {
   const { contestId } = useParams();
-  const contest = useFetchContest(contestId ?? "");
+  const [contest] = useFetchContest(contestId ?? "");
 
   if (!contest) return null;
 
