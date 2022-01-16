@@ -15,7 +15,7 @@ import {
 import { useAsyncFn } from "react-use";
 import { useForm } from "react-hook-form";
 import { verifyAccount } from "../../../api/auth";
-import { useAuth, useLogout } from "../../../hook/firebase/auth";
+import { useLogout } from "../../../hook/firebase/auth";
 
 type Props = Omit<ModalProps, "children"> & {
   onRegisterSuccess?: () => void;
@@ -25,7 +25,6 @@ type RegistrationCodeFormData = { registrationCode: string };
 export const RegistrationCodeModal = (props: Props) => {
   const { onRegisterSuccess, ...modalProps } = props;
 
-  const [user] = useAuth();
   const toast = useToast();
   const logout = useLogout();
 
@@ -52,7 +51,7 @@ export const RegistrationCodeModal = (props: Props) => {
         console.log(e);
       }
     },
-    [toast, user, onRegisterSuccess]
+    [toast, onRegisterSuccess]
   );
 
   return (

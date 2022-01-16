@@ -15,6 +15,7 @@ type Claims = {
 
 export const useClaims = () => {
   const [user, loading, error] = useAuthState(auth);
+
   const [claims, setClaims] = useState<Claims | undefined>(undefined);
 
   const getClaims = useCallback(async () => {
@@ -29,7 +30,7 @@ export const useClaims = () => {
   }, []);
 
   const { loading: loadingClaim, error: errorClaim } = useAsync(async () => {
-    const claims = await getClaims();
+    const claims = user ? await getClaims() : undefined;
     setClaims(claims);
   }, [user, getClaims]);
 

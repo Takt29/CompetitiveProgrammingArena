@@ -32,7 +32,7 @@ export const LogInModal = (props: Props) => {
       });
       console.log(e);
     }
-  }, []);
+  }, [toast]);
 
   return (
     <Modal {...props}>

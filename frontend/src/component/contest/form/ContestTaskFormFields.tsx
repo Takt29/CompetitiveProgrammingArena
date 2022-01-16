@@ -67,7 +67,7 @@ export const ContestTaskFormFields = () => {
         status: "error",
       });
     }
-  }, [append]);
+  }, [append, toast]);
 
   const onUpdate = useCallback(
     <T extends keyof FormTaskData>(

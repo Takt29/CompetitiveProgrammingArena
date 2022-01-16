@@ -26,6 +26,9 @@ module.exports = {
         "react/prop-types": "off",
         "react/react-in-jsx-scope": "off",
         "@typescript-eslint/no-inferrable-types": "off",
+        "react-hooks/exhaustive-deps": ["error", {
+          "additionalHooks": "(useAsync|useAsyncFn)"
+        }]
       },
       settings: {
         react: {
