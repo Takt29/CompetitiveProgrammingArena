@@ -8,10 +8,11 @@ import {
   ModalProps,
   useToast,
   Stack,
+  ModalFooter,
 } from "@chakra-ui/react";
 import { useAsyncFn } from "react-use";
 import { FormProvider, useForm } from "react-hook-form";
-import { useAuth } from "../../../hook/firebase/auth";
+import { useAuth, useLogout } from "../../../hook/firebase/auth";
 import {
   UserFormFields,
   UserFormFieldsData,
@@ -24,6 +25,7 @@ type SetUpUserFormData = UserFormFieldsData;
 export const SetUpUserModal = (props: Props) => {
   const [user] = useAuth();
   const toast = useToast();
+  const logout = useLogout();
 
   const formMethods = useForm<SetUpUserFormData>();
 
@@ -71,6 +73,11 @@ export const SetUpUserModal = (props: Props) => {
             </form>
           </FormProvider>
         </ModalBody>
+        <ModalFooter>
+          <Button size={"sm"} variant={"link"} onClick={logout}>
+            Logout
+          </Button>
+        </ModalFooter>
       </ModalContent>
     </Modal>
   );

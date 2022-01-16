@@ -38,7 +38,7 @@ export const LogInModal = (props: Props) => {
     <Modal {...props}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Log in</ModalHeader>
+        <ModalHeader>Login</ModalHeader>
         <ModalBody>
           <Button
             colorScheme={"twitter"}
@@ -49,7 +49,7 @@ export const LogInModal = (props: Props) => {
             onClick={loginWithTwitter}
             isLoading={loading}
           >
-            Log in with Twitter
+            Login with Twitter
           </Button>
         </ModalBody>
       </ModalContent>

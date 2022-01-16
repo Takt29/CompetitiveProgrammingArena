@@ -10,11 +10,12 @@ import {
   FormControl,
   Input,
   FormLabel,
+  ModalFooter,
 } from "@chakra-ui/react";
 import { useAsyncFn } from "react-use";
 import { useForm } from "react-hook-form";
 import { verifyAccount } from "../../../api/auth";
-import { useAuth } from "../../../hook/firebase/auth";
+import { useAuth, useLogout } from "../../../hook/firebase/auth";
 
 type Props = Omit<ModalProps, "children"> & {
   onRegisterSuccess?: () => void;
@@ -26,6 +27,7 @@ export const RegistrationCodeModal = (props: Props) => {
 
   const [user] = useAuth();
   const toast = useToast();
+  const logout = useLogout();
 
   const {
     register,
@@ -80,6 +82,11 @@ export const RegistrationCodeModal = (props: Props) => {
             </Button>
           </form>
         </ModalBody>
+        <ModalFooter>
+          <Button size={"sm"} variant={"link"} onClick={logout}>
+            Logout
+          </Button>
+        </ModalFooter>
       </ModalContent>
     </Modal>
   );

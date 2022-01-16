@@ -1,3 +1,4 @@
+import { signOut } from "firebase/auth";
 import { useCallback, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useAsync } from "react-use";
@@ -43,4 +44,10 @@ export const useClaims = () => {
     error || errorClaim,
     update,
   ] as const;
+};
+
+export const useLogout = () => {
+  return useCallback(() => {
+    signOut(auth);
+  }, []);
 };

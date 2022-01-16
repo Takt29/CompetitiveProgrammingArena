@@ -15,7 +15,7 @@ export const PrivatePage = () => {
     return <Container>{"Initializing User..."}</Container>;
   }
 
-  if (authError || claimsError || userError) {
+  if (authError || claimsError || (claims && claims.verified && userError)) {
     return (
       <Container>{`Error: ${authError || claimsError || userError}`}</Container>
     );

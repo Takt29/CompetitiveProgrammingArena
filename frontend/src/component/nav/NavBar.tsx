@@ -18,11 +18,8 @@ import {
 import { Link as ReactRouterLink } from "react-router-dom";
 import { FaCog, FaSignOutAlt, FaBars } from "react-icons/fa";
 import { DrawerNav } from "./DrawerNav";
-import { useAuth } from "../../hook/firebase/auth";
-import { useCallback } from "react";
-import { signOut } from "firebase/auth";
-import { auth } from "../../helper/firebase";
-import { UserProvider, useUser } from "../../hook/context/UserContext";
+import { useAuth, useLogout } from "../../hook/firebase/auth";
+import { UserProvider } from "../../hook/context/UserContext";
 import { useFetchCurrentUser } from "../../hook/firebase/user";
 import { UserName } from "../../consumer/user/UserName";
 
@@ -30,10 +27,7 @@ export const NavBar = () => {
   const [isOpen, setIsOpen] = useBoolean();
   const [authUser] = useAuth();
   const [user] = useFetchCurrentUser();
-
-  const logout = useCallback(() => {
-    signOut(auth);
-  }, []);
+  const logout = useLogout();
 
   return (
     <>
