@@ -45,5 +45,10 @@ service cloud.firestore {
       allow create, update: if isUserAuthenticated(userId) && isValidAudit();
       allow delete: if isAdminUser();
     }
+    match /registrationCodes/{userId} {
+      allow read: if isAdminUser();
+      allow create, update: if isAdminUser() && isValidAudit();
+      allow delete: if isAdminUser();
+    }
   }
 }

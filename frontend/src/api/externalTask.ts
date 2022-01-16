@@ -11,7 +11,7 @@ export type TaskInformation = {
 const fetchAtCoderTask = httpsCallable<
   { externalTaskId: string },
   { title: string; score?: number }
->(functions, "fetchAtCoderTask");
+>(functions, "task-fetchAtCoderTask");
 
 const fetchAOJTask = async (taskId: string) => {
   let apiUrl = "";
