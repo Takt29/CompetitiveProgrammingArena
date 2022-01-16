@@ -14,10 +14,8 @@ import {
   ContestFormFields,
   ContestFormFieldsData,
 } from "../component/contest/form/ContestFormFields";
-import { useCollection } from "react-firebase-hooks/firestore";
-import { collection } from "firebase/firestore";
-import { db } from "../helper/firebase";
 import { formatDateTime } from "../helper/dateTime";
+import { ContestTaskFormFields } from "../component/contest/form/ContestTaskFormFields";
 
 type CreateContestFormData = ContestFormFieldsData;
 
@@ -44,10 +42,6 @@ export const CreateContestPage = () => {
     },
     []
   );
-
-  const data = useCollection(collection(db, "contests"));
-  console.log(data);
-  console.log(data[0]?.docs.map((doc) => doc.data()));
 
   return (
     <Container maxWidth={"container.lg"} marginTop={4} marginBottom={4}>
@@ -88,6 +82,7 @@ export const CreateContestPage = () => {
                   </Heading>
                   <Divider marginTop={1} />
                 </Box>
+                <ContestTaskFormFields />
               </Stack>
             </Box>
             <Box textAlign={"right"}>

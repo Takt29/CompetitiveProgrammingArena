@@ -23,5 +23,8 @@ module.exports = {
     'aoj',
     'atcoder',
     'codeforces',
+    'problemset',
+    'onlinejudge',
+    'aizu',
   ]
 }

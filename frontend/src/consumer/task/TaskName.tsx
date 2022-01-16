@@ -1,5 +1,6 @@
 import { Link } from "@chakra-ui/react";
 import { useMemo } from "react";
+import { externalTaskId2Url } from "../../helper/url";
 import { useTask } from "../../hook/context/TaskContext";
 
 type Props = {
@@ -11,17 +12,7 @@ export const TaskName = (props: Props) => {
   const { name, externalTaskId } = useTask();
 
   const href = useMemo(() => {
-    const [site, contestId, problemId] = externalTaskId.split(":");
-    switch (site) {
-      case "atcoder":
-        return `https://atcoder.jp/contests/${contestId}/tasks/${problemId}`;
-      case "aoj":
-        return `https://onlinejudge.u-aizu.ac.jp/problems/${problemId}`;
-      case "codeforces":
-        return `https://codeforces.com/problemset/problem/${contestId}/${problemId}`;
-      default:
-        return "#";
-    }
+    return externalTaskId2Url(externalTaskId) ?? "#";
   }, [externalTaskId]);
 
   if (link) {
