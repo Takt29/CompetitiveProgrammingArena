@@ -1,8 +1,15 @@
 import * as functions from "firebase-functions";
 import axios from "axios";
 
-export const fetchAtCoderTask = functions.https.onCall(
-  async (data, context) => {
+export const fetchAtCoderTask = functions
+  .region("asia-northeast1")
+  .runWith({
+    timeoutSeconds: 10,
+    minInstances: 0,
+    maxInstances: 10,
+    memory: "256MB",
+  })
+  .https.onCall(async (data, context) => {
     try {
       const uid = context?.auth?.uid;
       const isVerified = context?.auth?.token?.verified;
@@ -67,5 +74,4 @@ export const fetchAtCoderTask = functions.https.onCall(
 
       throw new functions.https.HttpsError("aborted", "internal server error");
     }
-  }
-);
+  });
