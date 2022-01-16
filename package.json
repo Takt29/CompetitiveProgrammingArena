@@ -6,6 +6,9 @@
     "dev": "firebase emulators:start --import=./firebase-data --export-on-exit --project x-local-emu",
     "login": "firebase login",
     "deploy": "firebase deploy",
+    "deploy:functions": "npm run deploy -- --only functions",
+    "deploy:hosting": "npm run deploy -- --only hosting",
+    "deploy:firestore": "npm run deploy -- --only firestore",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
