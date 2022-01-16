@@ -8,6 +8,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ReactRefreshTypescript = require("react-refresh-typescript");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const Mode = process.env.NODE_ENV || "development";
 const isProduction = Mode === "production";
@@ -119,5 +120,6 @@ module.exports = {
       ],
     }),
     isDevServer && new ReactRefreshWebpackPlugin(),
+    !isDevServer && new CleanWebpackPlugin(),
   ].filter(Boolean),
 };
