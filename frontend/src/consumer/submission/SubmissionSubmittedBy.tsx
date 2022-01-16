@@ -5,7 +5,7 @@ import { UserName } from "../user/UserName";
 
 export const SubmissionSubmittedBy = () => {
   const { submittedBy } = useSubmission();
-  const user = useFetchUser(submittedBy);
+  const [user] = useFetchUser(submittedBy);
 
   if (!user) return null;
 

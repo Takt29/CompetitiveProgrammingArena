@@ -5,7 +5,7 @@ import { UserName } from "../user/UserName";
 
 export const StandingsItemUserName = () => {
   const { userId } = useStandingsItem();
-  const user = useFetchUser(userId);
+  const [user] = useFetchUser(userId);
 
   if (!user) return null;
 

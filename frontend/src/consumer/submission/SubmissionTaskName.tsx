@@ -11,7 +11,7 @@ export const SubmissionTaskName = (props: Props) => {
   const { link } = props;
 
   const { taskId } = useSubmission();
-  const task = useFetchTask(taskId);
+  const [task] = useFetchTask(taskId);
 
   if (!task) return null;
 
