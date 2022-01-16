@@ -1,24 +1,20 @@
-import { DummyUsers } from "../../dummy/user";
 import { useAuth } from "./auth";
-import { useDocument } from "react-firebase-hooks/firestore";
+import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import { db } from "../../helper/firebase";
-import { doc, DocumentReference } from "firebase/firestore";
+import {
+  collection,
+  CollectionReference,
+  doc,
+  DocumentReference,
+  query,
+  QueryConstraint,
+} from "firebase/firestore";
 import { useMemo } from "react";
 import { FireStoreUser, User } from "../../type/user";
 
-export const useFetchUser = (userId: string) => {
-  return DummyUsers.find(({ id }) => id === userId);
-};
-
-export const useFetchUsers = () => {
-  return DummyUsers;
-};
-
-export const useFetchCurrentUser = () => {
-  const [auth] = useAuth();
-
-  const userDoc = auth
-    ? (doc(db, "users", auth.uid) as DocumentReference<FireStoreUser>)
+export const useFetchUser = (userId: string | undefined) => {
+  const userDoc = userId
+    ? (doc(db, "users", userId) as DocumentReference<FireStoreUser>)
     : null;
 
   const [userDocSnapshot, loading, error] = useDocument(userDoc);
@@ -35,4 +31,32 @@ export const useFetchCurrentUser = () => {
   }, [userDocSnapshot]);
 
   return [user, loading, error] as const;
+};
+
+export const useFetchUsers = (queries?: QueryConstraint[]) => {
+  const userCollection = collection(
+    db,
+    "users"
+  ) as CollectionReference<FireStoreUser>;
+
+  const [usersSnapshot, loading, error] = useCollection(
+    query(userCollection, ...(queries ?? []))
+  );
+
+  const users: User[] | undefined = useMemo(() => {
+    return usersSnapshot?.docs?.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+      };
+    });
+  }, [usersSnapshot?.docs]);
+
+  return [users, loading, error] as const;
+};
+
+export const useFetchCurrentUser = () => {
+  const [auth] = useAuth();
+  return useFetchUser(auth?.uid);
 };
