@@ -6,6 +6,7 @@ import {
   Heading,
   Stack,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import { useAsyncFn } from "react-use";
 import { FormProvider, useForm } from "react-hook-form";
@@ -20,10 +21,14 @@ import {
   ContestTaskFormFieldsData,
 } from "../component/contest/form/ContestTaskFormFields";
 import { StandingsSystem } from "../constant/StandingsSystem";
+import { useNavigate } from "react-router-dom";
 
 type CreateContestFormData = ContestFormFieldsData & ContestTaskFormFieldsData;
 
 export const CreateContestPage = () => {
+  const navigate = useNavigate();
+  const toast = useToast();
+
   const formMethods = useForm<CreateContestFormData>({
     defaultValues: {
       startAt: formatDateTime(new Date(), "YYYY/MM/DD HH:mm"),
@@ -40,24 +45,39 @@ export const CreateContestPage = () => {
 
   const [{ loading }, onSubmit] = useAsyncFn(
     async (data: CreateContestFormData) => {
-      const { name, description, startAt, endAt, rule, tasks } = data;
-      await createContest(
-        {
-          name,
-          description: description ?? "",
-          startAt: new Date(startAt),
-          endAt: new Date(endAt),
-          rule,
-        },
-        (tasks || []).map(({ name, externalTaskId, score, originalScore }) => ({
-          name,
-          externalTaskId,
-          score: score ? parseInt(score, 10) : 100,
-          originalScore: originalScore ? parseInt(originalScore, 10) : 0,
-        }))
-      );
+      try {
+        const { name, description, startAt, endAt, rule, tasks } = data;
+        const { contestId } = await createContest(
+          {
+            name,
+            description: description ?? "",
+            startAt: new Date(startAt),
+            endAt: new Date(endAt),
+            rule,
+          },
+          (tasks || []).map(
+            ({ name, externalTaskId, score, originalScore }) => ({
+              name,
+              externalTaskId,
+              score: score ? parseInt(score, 10) : 100,
+              originalScore: originalScore ? parseInt(originalScore, 10) : 0,
+            })
+          )
+        );
+        toast({
+          title: "Contest has been created!",
+          status: "success",
+        });
+        navigate(`/contests/${contestId}`);
+      } catch (e) {
+        console.log(e);
+        toast({
+          title: "Failed to create contest",
+          status: "error",
+        });
+      }
     },
-    []
+    [navigate, toast]
   );
 
   return (

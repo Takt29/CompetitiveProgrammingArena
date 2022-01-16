@@ -63,9 +63,10 @@ export const createContest = async (
       updatedAt: serverTimestamp(),
       createdBy: uid,
     });
+    return taskRef.id;
   });
 
-  console.log(batch);
-
   await batch.commit();
+
+  return { contestId: contestRef.id };
 };
