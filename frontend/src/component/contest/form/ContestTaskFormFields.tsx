@@ -1,5 +1,7 @@
 import {
   Button,
+  FormControl,
+  FormLabel,
   Input,
   InputGroup,
   InputRightElement,
@@ -9,6 +11,7 @@ import {
   Th,
   Thead,
   Tr,
+  useToast,
 } from "@chakra-ui/react";
 import { useCallback, useRef } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
@@ -36,25 +39,34 @@ export const ContestTaskFormFields = () => {
     name: "tasks",
   });
 
+  const toast = useToast();
+
   const taskUrlRef = useRef<HTMLInputElement>(null);
   const [{ loading }, onAdd] = useAsyncFn(async () => {
-    const url = taskUrlRef.current?.value;
-    const externalTaskId = url && url2ExternalTaskId(url);
-    const taskInfo =
-      externalTaskId && (await fetchTaskInformation(externalTaskId));
+    try {
+      const url = taskUrlRef.current?.value;
+      const externalTaskId = url && url2ExternalTaskId(url);
+      const taskInfo =
+        externalTaskId && (await fetchTaskInformation(externalTaskId));
 
-    console.log(taskInfo);
-
-    if (taskInfo) {
-      console.log(taskInfo);
-      append({
-        id: uuid(),
-        name: taskInfo.title ?? "",
-        externalTaskId,
-        score: "100",
-        originalScore: (taskInfo.score ?? 0).toString(),
+      if (taskInfo) {
+        console.log(taskInfo);
+        append({
+          id: uuid(),
+          name: taskInfo.title ?? "",
+          externalTaskId,
+          score: "100",
+          originalScore: (taskInfo.score ?? 0).toString(),
+        });
+        taskUrlRef.current.value = "";
+      } else {
+        throw new Error("Not found.");
+      }
+    } catch (e) {
+      toast({
+        title: "Failed to add task.",
+        status: "error",
       });
-      taskUrlRef.current.value = "";
     }
   }, [append]);
 
@@ -112,30 +124,34 @@ export const ContestTaskFormFields = () => {
           ))}
         </Tbody>
       </Table>
-      <InputGroup size={"md"}>
-        <Input
-          paddingRight={16}
-          ref={taskUrlRef}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              if (!loading) onAdd();
-              e.preventDefault();
-            }
-          }}
-        />
-        <InputRightElement width={16}>
-          <Button
-            height={8}
-            size={"sm"}
-            type="button"
-            onClick={onAdd}
-            disabled={loading}
-            isLoading={loading}
-          >
-            Add
-          </Button>
-        </InputRightElement>
-      </InputGroup>
+      <FormControl>
+        <FormLabel htmlFor="task-url">Task URL</FormLabel>
+        <InputGroup size={"md"}>
+          <Input
+            name="task-url"
+            paddingRight={16}
+            ref={taskUrlRef}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                if (!loading) onAdd();
+                e.preventDefault();
+              }
+            }}
+          />
+          <InputRightElement width={16}>
+            <Button
+              height={8}
+              size={"sm"}
+              type="button"
+              onClick={onAdd}
+              disabled={loading}
+              isLoading={loading}
+            >
+              Add
+            </Button>
+          </InputRightElement>
+        </InputGroup>
+      </FormControl>
     </>
   );
 };
