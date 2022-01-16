@@ -1,12 +1,14 @@
 import { AuditFields } from "./auditField";
 
-type ContestRef = string;
-
-export type Task = {
-  id: string;
-  contest: ContestRef;
+export type FireStoreTask = {
+  contestId: string;
   index: number;
   name: string;
   externalTaskId: string; // [site]:[contestId]:[problemId]
   score: number;
+  originalScore: number;
 } & AuditFields;
+
+export type Task = FireStoreTask & {
+  id: string;
+};

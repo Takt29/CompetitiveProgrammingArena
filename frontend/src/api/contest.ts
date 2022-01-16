@@ -1,8 +1,8 @@
 import {
-  addDoc,
   collection,
+  doc,
   serverTimestamp,
-  Timestamp,
+  writeBatch,
 } from "firebase/firestore";
 import { auth, db } from "../helper/firebase";
 import { Contest } from "../type/contest";
@@ -15,22 +15,57 @@ type CreateContestParams = {
   rule: Contest["rule"];
 };
 
-export const createContest = async (params: CreateContestParams) => {
-  const { name, description, startAt, endAt, rule } = params;
+type CreateTaskParams = {
+  name: string;
+  externalTaskId: string;
+  score: number;
+  originalScore: number;
+};
 
+export const createContest = async (
+  contest: CreateContestParams,
+  tasks?: CreateTaskParams[]
+) => {
   if (!auth.currentUser) {
     throw new Error("Not authenticated.");
   }
+  const uid = auth.currentUser.uid;
 
-  return await addDoc(collection(db, "contests"), {
-    name,
-    description,
-    startAt: Timestamp.fromDate(startAt),
-    endAt: Timestamp.fromDate(endAt),
-    rule,
+  console.log(uid, contest, tasks);
+
+  console.log("ok1");
+
+  const batch = writeBatch(db);
+
+  console.log("ok2");
+
+  const contestRef = doc(collection(db, "contests"));
+
+  console.log("ok3");
+
+  batch.set(contestRef, {
+    ...contest,
     // TODO: 別生成する
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
-    createdBy: auth.currentUser.uid,
+    createdBy: uid,
   });
+
+  (tasks ?? []).forEach((task, index) => {
+    console.log(task, index);
+    const taskRef = doc(collection(db, "tasks"));
+    batch.set(taskRef, {
+      ...task,
+      index: index + 1,
+      contestId: contestRef.id,
+      // TODO: 別生成する
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+      createdBy: uid,
+    });
+  });
+
+  console.log(batch);
+
+  await batch.commit();
 };

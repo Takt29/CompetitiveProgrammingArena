@@ -40,6 +40,12 @@ service cloud.firestore {
       allow update: if isAdminUser() && isValidAudit();
       allow delete: if isAdminUser();
     }
+    match /tasks/{taskId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidAudit();
+      allow update: if isAdminUser() && isValidAudit();
+      allow delete: if isAdminUser();
+    }
     match /users/{userId} {
       allow read: if isAuthenticated();
       allow create, update: if isUserAuthenticated(userId) && isValidAudit();
