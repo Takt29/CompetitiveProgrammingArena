@@ -9,6 +9,7 @@
     "deploy:functions": "npm run deploy -- --only functions",
     "deploy:hosting": "npm run deploy -- --only hosting",
     "deploy:firestore": "npm run deploy -- --only firestore",
+    "deploy:storage": "npm run deploy -- --only storage",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
