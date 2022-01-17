@@ -9,13 +9,16 @@ import { useFetchCurrentUser } from "../hook/firebase/user";
 export const PrivatePage = () => {
   const [authUser, authLoading, authError] = useAuth();
   const [claims, claimsLoading, claimsError, updateClaims] = useClaims();
-  const [user, userLoading, userError] = useFetchCurrentUser();
+
+  const verified = !!(claims && claims.verified)
+
+  const [user, userLoading, userError] = useFetchCurrentUser({ disable: !verified });
 
   if (authLoading || claimsLoading || userLoading) {
     return <Container>{"Initializing User..."}</Container>;
   }
 
-  if (authError || claimsError || (claims && claims.verified && userError)) {
+  if (authError || claimsError || (verified && userError)) {
     return (
       <Container>{`Error: ${authError || claimsError || userError}`}</Container>
     );
@@ -34,7 +37,7 @@ export const PrivatePage = () => {
     );
   }
 
-  if (!claims || !claims.verified) {
+  if (!verified) {
     return (
       <Container>
         <RegistrationCodeModal

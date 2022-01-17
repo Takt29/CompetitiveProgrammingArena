@@ -56,7 +56,7 @@ export const useFetchUsers = (queries?: QueryConstraint[]) => {
   return [users, loading, error] as const;
 };
 
-export const useFetchCurrentUser = () => {
+export const useFetchCurrentUser = (options?: { disable: boolean }) => {
   const [auth] = useAuth();
-  return useFetchUser(auth?.uid);
+  return useFetchUser(options?.disable ? undefined : auth?.uid);
 };
