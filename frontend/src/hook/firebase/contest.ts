@@ -11,16 +11,16 @@ import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import { db } from "../../helper/firebase";
 import { Contest, FireStoreContest } from "../../type/contest";
 
-export const useFetchContest = (contestId: string) => {
-  const contestDoc = doc(
-    db,
-    "contests",
-    contestId
-  ) as DocumentReference<FireStoreContest>;
+export const useFetchContest = (contestId: string | undefined) => {
+  const contestDoc = contestId
+    ? (doc(db, "contests", contestId) as DocumentReference<FireStoreContest>)
+    : null;
 
   const [contestSnapshot, loading, error] = useDocument(contestDoc);
 
   const contest: Contest | undefined = useMemo(() => {
+    if (!contestDoc) return undefined;
+
     const data = contestSnapshot?.data();
     return (
       contestSnapshot &&
@@ -29,7 +29,7 @@ export const useFetchContest = (contestId: string) => {
         ...data,
       }
     );
-  }, [contestDoc.id, contestSnapshot]);
+  }, [contestDoc, contestSnapshot]);
 
   return [contest, loading, error] as const;
 };
@@ -55,4 +55,37 @@ export const useFetchContests = (queries?: QueryConstraint[]) => {
   }, [contestsSnapshot?.docs]);
 
   return [contests, loading, error] as const;
+};
+
+export const useFetchContestant = (
+  contestId: string | undefined,
+  userId: string | undefined
+) => {
+  const contestantDoc =
+    contestId && userId
+      ? (doc(
+          db,
+          "contests",
+          contestId,
+          "contestant",
+          userId
+        ) as DocumentReference<FireStoreContest>)
+      : null;
+
+  const [contestSnapshot, loading, error] = useDocument(contestantDoc);
+
+  const contestant: Contest | undefined = useMemo(() => {
+    if (!contestantDoc) return undefined;
+
+    const data = contestSnapshot?.data();
+    return (
+      contestSnapshot &&
+      data && {
+        id: contestantDoc.id,
+        ...data,
+      }
+    );
+  }, [contestantDoc, contestSnapshot]);
+
+  return [contestant, loading, error] as const;
 };

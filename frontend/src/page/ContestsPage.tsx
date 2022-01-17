@@ -13,14 +13,11 @@ import { ContestList } from "../component/contest/list/ContestList";
 import { useFetchContests } from "../hook/firebase/contest";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { limit, orderBy, where } from "firebase/firestore";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import { useNow } from "../hook/utility/useNow";
 
 export const ContestsPage = () => {
-  const [now, setNow] = useState<Date>(new Date());
-
-  useInterval(() => {
-    setNow(new Date());
-  }, 5 * 60 * 1000);
+  const now = useNow(5 * 60 * 1000);
 
   // TODO: 暫定対応なので、正しい結果を取れるようにする
   const [notEndedContest] = useFetchContests([

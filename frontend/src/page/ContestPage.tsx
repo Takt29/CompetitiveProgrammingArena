@@ -10,6 +10,7 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
+import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { ContestInfoTab } from "../component/contest/tab/ContestInfoTab";
 import { ContestStandingsTab } from "../component/contest/tab/ContestStandingsTab";
@@ -19,11 +20,26 @@ import { ContestEndAt } from "../consumer/contest/ContestEndAt";
 import { ContestName } from "../consumer/contest/ContestName";
 import { ContestStartAt } from "../consumer/contest/ContestStartAt";
 import { ContestProvider } from "../hook/context/ContestContext";
-import { useFetchContest } from "../hook/firebase/contest";
+import { useAuth } from "../hook/firebase/auth";
+import { useFetchContest, useFetchContestant } from "../hook/firebase/contest";
+import { useNow } from "../hook/utility/useNow";
 
 export const ContestPage = () => {
   const { contestId } = useParams();
-  const [contest] = useFetchContest(contestId ?? "");
+  const [auth] = useAuth();
+  const [contest] = useFetchContest(contestId);
+  const [contestant] = useFetchContestant(contestId, auth?.uid);
+
+  const now = useNow(1000);
+
+  const visible = useMemo(
+    () =>
+      (!!contestant &&
+        contest &&
+        contest.startAt.toMillis() <= now.getTime()) ||
+      (contest && contest.endAt.toMillis() <= now.getTime()),
+    [contest, contestant, now]
+  );
 
   if (!contest) return null;
 
@@ -47,13 +63,19 @@ export const ContestPage = () => {
           </Stack>
         </Box>
 
-        <Tabs>
+        <Tabs isLazy>
           <Box overflowX={"auto"}>
             <TabList>
               <Tab _focus={{ outline: "none" }}>Top</Tab>
-              <Tab _focus={{ outline: "none" }}>Tasks</Tab>
-              <Tab _focus={{ outline: "none" }}>Results</Tab>
-              <Tab _focus={{ outline: "none" }}>Standings</Tab>
+              <Tab _focus={{ outline: "none" }} isDisabled={!visible}>
+                Tasks
+              </Tab>
+              <Tab _focus={{ outline: "none" }} isDisabled={!visible}>
+                Results
+              </Tab>
+              <Tab _focus={{ outline: "none" }} isDisabled={!visible}>
+                Standings
+              </Tab>
             </TabList>
           </Box>
           <TabPanels>

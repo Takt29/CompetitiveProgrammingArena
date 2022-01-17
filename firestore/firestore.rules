@@ -39,6 +39,13 @@ service cloud.firestore {
       allow create: if isAuthenticated() && isValidAudit();
       allow update: if isAdminUser() && isValidAudit();
       allow delete: if isAdminUser();
+
+      match /contestants/{userId} {
+        allow read: if isAuthenticated();
+        allow create: if isUserAuthenticated(userId) && isValidAudit();
+        allow update: if isAdminUser() && isValidAudit();
+        allow delete: if isAdminUser();
+      }
     }
     match /tasks/{taskId} {
       allow read: if isAuthenticated();
