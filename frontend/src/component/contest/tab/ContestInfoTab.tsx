@@ -11,6 +11,7 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
+import { useMemo } from "react";
 import { useAsyncFn } from "react-use";
 import { ContestDescription } from "../../../consumer/contest/ContestDescription";
 import { ContestEndAt } from "../../../consumer/contest/ContestEndAt";
@@ -18,9 +19,18 @@ import { ContestOwner } from "../../../consumer/contest/ContestOwner";
 import { ContestRulePenalty } from "../../../consumer/contest/ContestRulePenalty";
 import { ContestRuleSystem } from "../../../consumer/contest/ContestRuleSystem";
 import { ContestStartAt } from "../../../consumer/contest/ContestStartAt";
+import { useContest } from "../../../hook/context/ContestContext";
+import { useNow } from "../../../hook/utility/useNow";
 
 export const ContestInfoTab = () => {
   const [{ loading }, register] = useAsyncFn(async () => {}, []);
+  const contest = useContest();
+
+  const now = useNow(1000);
+  const registerable = useMemo(
+    () => now.getTime() < contest.endAt.toMillis(),
+    [now]
+  );
 
   return (
     <Box>
@@ -31,18 +41,20 @@ export const ContestInfoTab = () => {
           </Text>
         </Box>
 
-        <Box>
-          <Center>
-            <Button
-              colorScheme={"teal"}
-              disabled={loading}
-              isLoading={loading}
-              onClick={register}
-            >
-              Register
-            </Button>
-          </Center>
-        </Box>
+        {registerable && (
+          <Box>
+            <Center>
+              <Button
+                colorScheme={"teal"}
+                disabled={loading}
+                isLoading={loading}
+                onClick={register}
+              >
+                Register
+              </Button>
+            </Center>
+          </Box>
+        )}
 
         <Box>
           <Heading as={"h3"} size={"md"}>
