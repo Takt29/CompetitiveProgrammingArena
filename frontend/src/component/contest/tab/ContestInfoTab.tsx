@@ -23,13 +23,15 @@ import { useContest } from "../../../hook/context/ContestContext";
 import { useNow } from "../../../hook/utility/useNow";
 
 export const ContestInfoTab = () => {
-  const [{ loading }, register] = useAsyncFn(async () => {}, []);
+  const [{ loading }, register] = useAsyncFn(async () => {
+    // TODO
+  }, []);
   const contest = useContest();
 
   const now = useNow(1000);
   const registerable = useMemo(
     () => now.getTime() < contest.endAt.toMillis(),
-    [now]
+    [contest.endAt, now]
   );
 
   return (
