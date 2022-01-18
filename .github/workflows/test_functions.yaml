@@ -1,23 +1,23 @@
-name: Test Frontend
+name: Test Functions
 on:
   push:
     paths:
-      - "frontend/**"
-      - ".github/workflows/test_frontend.yaml"
+      - "functions/**"
+      - ".github/workflows/test_functions.yaml"
   pull_request:
     branches:
       - main
     paths:
-      - "frontend/**"
-      - ".github/workflows/test_frontend.yml"
+      - "functions/**"
+      - ".github/workflows/test_functions.yaml"
 
 defaults:
   run:
-    working-directory: frontend
+    working-directory: functions
 
 jobs:
-  test_frontend:
-    name: Test Frontend
+  test_functions:
+    name: Test Functions
     runs-on: ubuntu-20.04
     steps:
       - name: checkout
@@ -25,12 +25,10 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v2
         with:
-          node-version: "14"
+          node-version: "16"
       - name: install
         run: npm install
       - name: type check
-        run: npm run tsc
+        run: npx tsc --noEmit
       - name: eslint
         run: npm run lint
-      - name: spell check
-        run: npm run cspell
