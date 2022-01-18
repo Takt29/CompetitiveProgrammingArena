@@ -1,0 +1,27 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "frontend/**"
+      - ".github/workflows/deploy_frontend.yml"
+
+
+jobs:
+  deploy_frontend:
+    name: Deploy Frontend
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - name: Install Dependencies
+        run: npm install
+        working-directory: frontend
+      - name: Deploy
+        run: npm run deploy:hosting -- --token=${{ secrets.FIREBASE_TOKEN }}
