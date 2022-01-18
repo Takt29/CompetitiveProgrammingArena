@@ -10,7 +10,7 @@
     "lint": "eslint --ext ts,tsx --ignore-path .gitignore --ignore-path .eslintignore .",
     "prettier": "prettier --ignore-path .gitignore --ignore-path .prettierignore --loglevel warn '**/*.{tsx,ts,jsx,js}'",
     "format": "npm run prettier -- --write && npm run lint -- --fix",
-    "tsc": "tsc",
+    "tsc": "tsc --noEmit",
     "cspell": "cspell lint --no-progress '**'"
   },
   "author": "Takt29",

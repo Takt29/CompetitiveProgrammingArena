@@ -1,0 +1,36 @@
+name: Test Frontend
+on:
+  push:
+    paths:
+      - "frontend/**"
+      - ".github/workflows/test_frontend.yaml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "frontend/**"
+      - ".github/workflows/test_frontend.yml"
+
+defaults:
+  run:
+    working-directory: frontend
+
+jobs:
+  test_frontend:
+    name: Test Frontend
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - name: install
+        run: npm install
+      - name: type check
+        run: npm run tsc
+      - name: eslint
+        run: npm run lint
+      - name: spell check
+        run: npm run cspell

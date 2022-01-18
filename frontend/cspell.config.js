@@ -18,6 +18,7 @@ module.exports = {
     'chakra',
     'pmmmwh',
     'linkify',
+    'linkifyjs',
     // firebase
     'firestore',
     'millis',
