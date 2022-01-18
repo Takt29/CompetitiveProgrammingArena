@@ -7,7 +7,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { useCallback } from "react";
-import { FaTrophy, FaUsers } from "react-icons/fa";
+import { FaCogs, FaTrophy, FaUsers } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { ColorModeSwitch } from "./ColorModeSwitch";
 import { DrawerNavItem } from "./DrawerNavItem";
@@ -57,6 +57,12 @@ export const DrawerNav = (props: Props) => {
               to={"/teams"}
               title={"Teams"}
               icon={FaUsers}
+              onClick={onClickNavItem}
+            />
+            <DrawerNavItem
+              to={"/admin"}
+              title={"Admin"}
+              icon={FaCogs}
               onClick={onClickNavItem}
             />
           </Flex>

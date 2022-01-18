@@ -44,9 +44,11 @@ export const verifyAccount = functions
       }
 
       await db.runTransaction(async (tx) => {
-        const doc = await tx.get(
-          db.collection("registrationCodes").doc(registrationCode)
-        );
+        const codeRef = db
+          .collection("registrationCodes")
+          .doc(registrationCode);
+
+        const doc = await tx.get(codeRef);
 
         const data = await doc.data();
 
@@ -54,15 +56,19 @@ export const verifyAccount = functions
           throw InvalidCodeError();
         }
 
+        const usedBy = data.usedBy as string;
         const expiredAt = data.expiredAt as admin.firestore.Timestamp;
 
-        if (expiredAt.toMillis() < new Date().getTime()) {
+        if (usedBy || expiredAt.toMillis() < new Date().getTime()) {
           throw InvalidCodeError();
         }
 
         await admin.auth().setCustomUserClaims(uid, { verified: true });
 
-        tx.delete(doc.ref);
+        tx.update(codeRef, {
+          usedBy: uid,
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
       });
     } catch (e) {
       console.log(e);

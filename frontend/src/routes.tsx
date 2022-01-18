@@ -1,4 +1,5 @@
 import { RouteObject } from "react-router-dom";
+import { AdminPage } from "./page/AdminPage";
 import { ContestPage } from "./page/ContestPage";
 import { ContestsPage } from "./page/ContestsPage";
 import { CreateContestPage } from "./page/CreateContestPage";
@@ -22,7 +23,10 @@ export const routes: RouteObject[] = [
         path: "contests/:contestId",
         element: <ContestPage />,
       },
-
+      {
+        path: "admin",
+        element: <AdminPage />,
+      },
       {
         path: "*",
         element: <NotFoundPage />,
