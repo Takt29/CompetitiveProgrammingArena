@@ -20,8 +20,15 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "14"
-      - name: Install Dependencies
+      - name: Install Dependencies (root)
         run: npm install
+      - name: Install Dependencies (frontend)
+        run: npm install
+        working-directory: frontend
+      - name: create env file
+        run: echo $FRONTEND_ENV_BASE64 | base64 -d > .env.production
+        env:
+          FRONTEND_ENV_BASE64: ${{ secrets.FRONTEND_ENV_BASE64 }}
         working-directory: frontend
       - name: Deploy
         run: npm run deploy:hosting -- --token=${{ secrets.FIREBASE_TOKEN }}
