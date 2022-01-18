@@ -9,20 +9,24 @@ const ReactRefreshTypescript = require("react-refresh-typescript");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const Mode = process.env.NODE_ENV || "development";
 const isProduction = Mode === "production";
 const isDevServer = process.env.WEBPACK_SERVE;
+const enableAnalyze = process.env.ANALYZE
 
 const loadEnvFile = (mode) => {
-  const envConfig = dotenv.parse(fs.readFileSync(path.join(__dirname,`.env.${mode}`)))
+  const envConfig = dotenv.parse(fs.readFileSync(path.join(__dirname, `.env.${mode}`)))
   const envs = Object.entries(envConfig).map(([key, value]) => [`process.env.${key}`, JSON.stringify(value)])
   return Object.fromEntries(envs)
 }
 
+console.log({ Mode })
 
 module.exports = {
   mode: Mode,
+  devtool: isDevServer ? "eval-source-map" : undefined,
   entry: path.join(__dirname, "src", "./index.tsx"),
   output: {
     path: path.join(__dirname, "build"),
@@ -121,5 +125,6 @@ module.exports = {
     }),
     isDevServer && new ReactRefreshWebpackPlugin(),
     !isDevServer && new CleanWebpackPlugin(),
+    enableAnalyze && new BundleAnalyzerPlugin()
   ].filter(Boolean),
 };
