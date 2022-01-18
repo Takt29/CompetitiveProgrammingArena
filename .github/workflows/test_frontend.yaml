@@ -1,0 +1,34 @@
+name: Test Functions
+on:
+  push:
+    paths:
+      - "functions/**"
+      - ".github/workflows/test_functions.yaml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "functions/**"
+      - ".github/workflows/test_functions.yml"
+
+defaults:
+  run:
+    working-directory: functions
+
+jobs:
+  test_functions:
+    name: Test Functions
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+      - name: install
+        run: npm install
+      - name: type check
+        run: npx tsc --noEmit
+      - name: eslint
+        run: npm run lint
