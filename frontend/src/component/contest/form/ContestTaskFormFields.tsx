@@ -57,7 +57,9 @@ export const ContestTaskFormFields = () => {
           score: "100",
           originalScore: (taskInfo.score ?? 0).toString(),
         });
-        taskUrlRef.current.value = "";
+        if (taskUrlRef.current) {
+          taskUrlRef.current.value = "";
+        }
       } else {
         throw new Error("Not found.");
       }

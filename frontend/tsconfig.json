@@ -1,13 +1,21 @@
 {
   "compilerOptions": {
     "sourceMap": true,
-    "target": "es5",
+    "target": "es6",
     "strict": true,
-    "module": "commonJs",
+    "module": "esnext",
+    "moduleResolution": "node",
     "jsx": "react-jsx",
     "lib": ["esnext", "dom"],
+    "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "noUnusedLocals": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true
   },
+  "include": [
+    "src"
+  ]
 }

@@ -6,7 +6,6 @@ import {
   Heading,
   Icon,
   Stack,
-  useInterval,
 } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
 import { ContestList } from "../component/contest/list/ContestList";

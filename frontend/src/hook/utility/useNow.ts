@@ -1,5 +1,5 @@
 import { useInterval } from "@chakra-ui/hooks";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const useNow = (intervalMillis: number) => {
   const [now, setNow] = useState<Date>(new Date());
