@@ -12,7 +12,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
-import { Pattern } from "../../../constant/Pettern";
+import { Pattern } from "../../../constant/Pattern";
 import { StandingsSystemType } from "../../../constant/StandingsSystem";
 import { StandingsSystemName } from "../../../constant/StandingsSystemName";
 

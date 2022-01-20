@@ -1,6 +1,6 @@
 import { Tr, Td, Button, useClipboard } from "@chakra-ui/react";
 import { FaClipboard, FaClipboardCheck } from "react-icons/fa";
-import { RegistrationCodeExpiredAt } from "../../../consumer/registrationCode/RegistraionCodeExpiredAt";
+import { RegistrationCodeExpiredAt } from "../../../consumer/registrationCode/RegistrationCodeExpiredAt";
 import { RegistrationCodeCreatedAt } from "../../../consumer/registrationCode/RegistrationCodeCreatedAt";
 import { RegistrationCodeText } from "../../../consumer/registrationCode/RegistrationCodeText";
 import { RegistrationCodeUsedBy } from "../../../consumer/registrationCode/RegistrationCodeUsedBy";

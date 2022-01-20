@@ -1,7 +1,7 @@
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { useFormContext } from "react-hook-form";
-import { Pattern } from "../../../constant/Pettern";
+import { Pattern } from "../../../constant/Pattern";
 
 export type RegistrationCodeFormFields = {
   expiredAt: string;

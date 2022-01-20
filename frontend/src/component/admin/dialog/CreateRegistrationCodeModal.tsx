@@ -13,7 +13,7 @@ import { Timestamp } from "@firebase/firestore";
 import dayjs from "dayjs";
 import { FormProvider, useForm } from "react-hook-form";
 import { useAsyncFn } from "react-use";
-import { createRegistraitionCode } from "../../../api/registrationCode";
+import { createRegistrationCode } from "../../../api/registrationCode";
 import { formatDateTime } from "../../../helper/dateTime";
 import { RegistrationCodeFormFields } from "../form/RegistrationCodeFormFields";
 
@@ -32,7 +32,7 @@ export const CreateRegistrationCodeModal = (props: Props) => {
 
   const [{ loading }, onSubmit] = useAsyncFn(
     async (data: CreateRegistrationCodeFormData) => {
-      await createRegistraitionCode({
+      await createRegistrationCode({
         expiredAt: Timestamp.fromDate(new Date(data.expiredAt)),
       });
       onClose();

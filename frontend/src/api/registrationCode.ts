@@ -11,7 +11,7 @@ type CreateRegistrationCodeParams = {
   expiredAt: Timestamp;
 };
 
-export const createRegistraitionCode = async (
+export const createRegistrationCode = async (
   params: CreateRegistrationCodeParams
 ) => {
   if (!auth.currentUser) {

@@ -9,7 +9,7 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import { RegistrationCodeTab } from "../component/admin/tab/RegistraionCodeTab";
+import { RegistrationCodeTab } from "../component/admin/tab/RegistrationCodeTab";
 import { useClaims } from "../hook/firebase/auth";
 
 export const AdminPage = () => {
