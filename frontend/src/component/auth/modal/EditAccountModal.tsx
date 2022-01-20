@@ -62,7 +62,7 @@ export const EditAccountModal = (props: Props) => {
         console.log(e);
       }
     },
-    [toast, user]
+    [toast, user, onClose]
   );
 
   return (

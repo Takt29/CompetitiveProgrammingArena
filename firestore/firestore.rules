@@ -2,6 +2,15 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    // *** tool ***
+    function incomingData() {
+      return request.resource.data;
+    }
+
+    function existingData() {
+      return resource.data;
+    }
+
     // *** auth ***
     function isAuthenticated() {
       return request.auth != null && request.auth.token.verified == true;
@@ -16,15 +25,17 @@ service cloud.firestore {
     // *** audit ***
     function isValidCreatedAt() {
       // TODO: create以外
-      return request.method != 'create' || request.resource.data.createdAt == request.time;
+      return
+        (request.method != 'create' || incomingData().createdAt == request.time) &&
+        (request.method != 'update' || incomingData().createdAt == existingData().createdAt);
     }
     function isValidUpdatedAt() {
-      // TODO: create, update以外
-      return !(request.method == 'create' || request.method == 'update') || request.resource.data.updatedAt == request.time;
+      return incomingData().updatedAt == request.time;
     }
     function isValidCreatedBy() {
-      // TODO: create以外
-      return request.method != 'create' || request.resource.data.createdBy == request.auth.uid;
+      return
+        (request.method != 'create' || incomingData().createdBy == request.auth.uid) &&
+        (request.method != 'update' || incomingData().createdBy == existingData().createdBy);
     }
     function isValidAudit() {
       return isValidCreatedAt() && isValidUpdatedAt() && isValidCreatedBy();
