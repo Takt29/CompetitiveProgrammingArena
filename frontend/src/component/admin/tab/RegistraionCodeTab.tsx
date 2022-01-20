@@ -1,55 +1,35 @@
-import { Box, Stack, Button, Icon } from "@chakra-ui/react";
-import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/table";
+import { Box, Stack, Button, Icon, useBoolean } from "@chakra-ui/react";
+import { limit, orderBy } from "@firebase/firestore";
 import { FaPlus } from "react-icons/fa";
-import { Link as ReactRouterLink } from "react-router-dom";
-import { RegistrationCodeExpiredAt } from "../../../consumer/registrationCode/RegistraionCodeExpiredAt";
-import { RegistrationCodeCreatedAt } from "../../../consumer/registrationCode/RegistrationCodeCreatedAt";
-import { RegistrationCodeText } from "../../../consumer/registrationCode/RegistrationCodeText";
-import { RegistrationCodeUsedBy } from "../../../consumer/registrationCode/RegistrationCodeUsedBy";
-import { RegistrationCodeProvider } from "../../../hook/context/RegistrationCodeContext";
 import { useFetchRegistrationCodes } from "../../../hook/firebase/registrationCode";
+import { RegistrationCodeList } from "../../registrationCode/list/RegistrationCodeList";
+import { CreateRegistrationCodeModal } from "../dialog/CreateRegistrationCodeModal";
 
 export const RegistrationCodeTab = () => {
-  const [registrationCodes] = useFetchRegistrationCodes();
+  const [registrationCodes] = useFetchRegistrationCodes([
+    orderBy("createdAt", "desc"),
+    limit(20),
+  ]);
+
+  const [isModalOpen, toggleModal] = useBoolean();
 
   return (
     <Stack spacing={4}>
       <Box textAlign={"right"}>
-        <Button variant={"ghost"} leftIcon={<Icon as={FaPlus} />}>
+        <Button
+          variant={"ghost"}
+          leftIcon={<Icon as={FaPlus} />}
+          onClick={toggleModal.on}
+        >
           Create Registration Code
         </Button>
+        <CreateRegistrationCodeModal
+          isOpen={isModalOpen}
+          onClose={toggleModal.off}
+        />
       </Box>
       <Box overflowX={"auto"}>
-        <Table>
-          <Thead>
-            <Tr>
-              <Th>Created At</Th>
-              <Th>Registration Code</Th>
-              <Th>Expired At</Th>
-              <Th>Used By</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {(registrationCodes ?? []).map((code) => (
-              <RegistrationCodeProvider key={code.id} value={code}>
-                <Tr>
-                  <Td>
-                    <RegistrationCodeCreatedAt />
-                  </Td>
-                  <Td>
-                    <RegistrationCodeText />
-                  </Td>
-                  <Td>
-                    <RegistrationCodeExpiredAt />
-                  </Td>
-                  <Td>
-                    <RegistrationCodeUsedBy />
-                  </Td>
-                </Tr>
-              </RegistrationCodeProvider>
-            ))}
-          </Tbody>
-        </Table>
+        <RegistrationCodeList registrationCodes={registrationCodes ?? []} />
       </Box>
     </Stack>
   );

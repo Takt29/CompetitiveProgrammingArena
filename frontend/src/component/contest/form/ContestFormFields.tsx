@@ -12,6 +12,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
+import { Pattern } from "../../../constant/Pettern";
 import { StandingsSystemType } from "../../../constant/StandingsSystem";
 import { StandingsSystemName } from "../../../constant/StandingsSystemName";
 
@@ -25,9 +26,6 @@ export type ContestFormFieldsData = {
     penaltyMins: number;
   };
 };
-
-const DateTimePattern =
-  /^[12][0-9]{3}\/(1[0-2]|0?[1-9])\/(3[01]|[12][0-9]|0?[1-9]) (2[0-3]|[01]?[0-9]):[0-5]?[0-9]$/;
 
 export const ContestFormFields = () => {
   const {
@@ -50,7 +48,7 @@ export const ContestFormFields = () => {
         <Input
           {...register("startAt", {
             required: true,
-            pattern: DateTimePattern,
+            pattern: Pattern.DATE_TIME,
           })}
         />
         <FormHelperText>YYYY/MM/DD hh:mm</FormHelperText>
@@ -60,7 +58,7 @@ export const ContestFormFields = () => {
         <Input
           {...register("endAt", {
             required: true,
-            pattern: DateTimePattern,
+            pattern: Pattern.DATE_TIME,
           })}
         />
         <FormHelperText>YYYY/MM/DD hh:mm</FormHelperText>
