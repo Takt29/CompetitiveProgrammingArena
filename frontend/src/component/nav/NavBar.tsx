@@ -22,9 +22,11 @@ import { useAuth, useLogout } from "../../hook/firebase/auth";
 import { UserProvider } from "../../hook/context/UserContext";
 import { useFetchCurrentUser } from "../../hook/firebase/user";
 import { UserName } from "../../consumer/user/UserName";
+import { EditAccountModal } from "../auth/modal/EditAccountModal";
 
 export const NavBar = () => {
   const [isOpen, setIsOpen] = useBoolean();
+  const [isAccountSettingOpen, setAccountSettingOpen] = useBoolean();
   const [authUser] = useAuth();
   const [user] = useFetchCurrentUser();
   const logout = useLogout();
@@ -64,7 +66,12 @@ export const NavBar = () => {
                   </UserProvider>
                 </Center>
                 <MenuDivider />
-                <MenuItem icon={<Icon as={FaCog} />}>Account Settings</MenuItem>
+                <MenuItem
+                  icon={<Icon as={FaCog} />}
+                  onClick={setAccountSettingOpen.on}
+                >
+                  Account Settings
+                </MenuItem>
                 <MenuItem icon={<Icon as={FaSignOutAlt} />} onClick={logout}>
                   Logout
                 </MenuItem>
@@ -74,6 +81,10 @@ export const NavBar = () => {
         </Flex>
       </Box>
       <DrawerNav isOpen={isOpen} onClose={setIsOpen.off} />
+      <EditAccountModal
+        isOpen={isAccountSettingOpen}
+        onClose={setAccountSettingOpen.off}
+      />
     </>
   );
 };

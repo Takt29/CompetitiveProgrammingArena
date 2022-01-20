@@ -9,6 +9,7 @@ import {
 import { useCallback } from "react";
 import { FaCogs, FaTrophy, FaUsers } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useClaims } from "../../hook/firebase/auth";
 import { ColorModeSwitch } from "./ColorModeSwitch";
 import { DrawerNavItem } from "./DrawerNavItem";
 
@@ -19,6 +20,8 @@ type Props = {
 
 export const DrawerNav = (props: Props) => {
   const { onClose, isOpen } = props;
+
+  const [claims] = useClaims();
 
   const navigate = useNavigate();
 
@@ -59,12 +62,14 @@ export const DrawerNav = (props: Props) => {
               icon={FaUsers}
               onClick={onClickNavItem}
             />
-            <DrawerNavItem
-              to={"/admin"}
-              title={"Admin"}
-              icon={FaCogs}
-              onClick={onClickNavItem}
-            />
+            {claims?.admin && (
+              <DrawerNavItem
+                to={"/admin"}
+                title={"Admin"}
+                icon={FaCogs}
+                onClick={onClickNavItem}
+              />
+            )}
           </Flex>
 
           <Flex

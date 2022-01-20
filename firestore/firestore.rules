@@ -16,15 +16,15 @@ service cloud.firestore {
     // *** audit ***
     function isValidCreatedAt() {
       // TODO: create以外
-      return request.method == 'create' && request.resource.data.createdAt == request.time;
+      return request.method != 'create' || request.resource.data.createdAt == request.time;
     }
     function isValidUpdatedAt() {
       // TODO: create, update以外
-      return (request.method == 'create' || request.method == 'update') && request.resource.data.updatedAt == request.time;
+      return !(request.method == 'create' || request.method == 'update') || request.resource.data.updatedAt == request.time;
     }
     function isValidCreatedBy() {
       // TODO: create以外
-      return request.method == 'create' && request.resource.data.createdBy == request.auth.uid;
+      return request.method != 'create' || request.resource.data.createdBy == request.auth.uid;
     }
     function isValidAudit() {
       return isValidCreatedAt() && isValidUpdatedAt() && isValidCreatedBy();

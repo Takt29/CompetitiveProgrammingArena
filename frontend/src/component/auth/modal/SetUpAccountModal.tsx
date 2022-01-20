@@ -20,17 +20,17 @@ import {
 import { createUser } from "../../../api/user";
 
 type Props = Omit<ModalProps, "children">;
-type SetUpUserFormData = UserFormFieldsData;
+type SetUpAccountFormData = UserFormFieldsData;
 
-export const SetUpUserModal = (props: Props) => {
+export const SetUpAccountModal = (props: Props) => {
   const [user] = useAuth();
   const toast = useToast();
   const logout = useLogout();
 
-  const formMethods = useForm<SetUpUserFormData>();
+  const formMethods = useForm<SetUpAccountFormData>();
 
   const [{ loading }, onSubmit] = useAsyncFn(
-    async (data: SetUpUserFormData) => {
+    async (data: SetUpAccountFormData) => {
       if (!user) return;
 
       try {
