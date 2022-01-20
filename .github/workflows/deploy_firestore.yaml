@@ -1,0 +1,26 @@
+name: Deploy Firestore
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "firestore/**"
+      - ".github/workflows/deploy_firestore.yaml"
+
+
+jobs:
+  deploy_firestore:
+    name: Deploy Firestore
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - name: Install Dependencies (root)
+        run: npm install
+      - name: Deploy
+        run: npm run deploy:firestore -- --token=${{ secrets.FIREBASE_TOKEN }} --project=${{ secrets.FIREBASE_PROJECT_ID }}
