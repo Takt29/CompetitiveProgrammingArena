@@ -36,9 +36,12 @@ export const EditAccountModal = (props: Props) => {
   } = formMethods;
 
   useEffect(() => {
-    if (!isDirty) {
+    if (!isDirty && user) {
       reset({
-        ...user,
+        name: user.name,
+        externalAccountId: {
+          ...user.externalAccountId,
+        },
       });
     }
   }, [user, reset, isDirty]);
