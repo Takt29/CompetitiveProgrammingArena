@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { RegistrationCode } from "../../type/registrationcode";
+import { RegistrationCode } from "../../type/registrationCode";
 
 const RegistrationCodeContext = createContext<RegistrationCode | null>(null);
 

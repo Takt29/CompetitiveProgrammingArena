@@ -1,6 +1,5 @@
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-import { Timestamp } from "@firebase/firestore";
 import { useFormContext } from "react-hook-form";
 import { Pattern } from "../../../constant/Pettern";
 

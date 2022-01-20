@@ -1,10 +1,5 @@
-import { Table, Thead, Tr, Th, Tbody, Td } from "@chakra-ui/react";
-import { RegistrationCodeExpiredAt } from "../../../consumer/registrationCode/RegistraionCodeExpiredAt";
-import { RegistrationCodeCreatedAt } from "../../../consumer/registrationCode/RegistrationCodeCreatedAt";
-import { RegistrationCodeText } from "../../../consumer/registrationCode/RegistrationCodeText";
-import { RegistrationCodeUsedBy } from "../../../consumer/registrationCode/RegistrationCodeUsedBy";
-import { RegistrationCodeProvider } from "../../../hook/context/RegistrationCodeContext";
-import { RegistrationCode } from "../../../type/registrationcode";
+import { Table, Thead, Tr, Th, Tbody } from "@chakra-ui/react";
+import { RegistrationCode } from "../../../type/registrationCode";
 import { RegistrationCodeListItem } from "./RegistrationCodeListItem";
 
 type Props = {

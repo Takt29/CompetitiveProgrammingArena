@@ -8,7 +8,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
 } from "@chakra-ui/react";
 import { RegistrationCodeTab } from "../component/admin/tab/RegistraionCodeTab";
 import { useClaims } from "../hook/firebase/auth";
