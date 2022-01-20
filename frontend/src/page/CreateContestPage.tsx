@@ -22,6 +22,7 @@ import {
 } from "../component/contest/form/ContestTaskFormFields";
 import { StandingsSystem } from "../constant/StandingsSystem";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 type CreateContestFormData = ContestFormFieldsData & ContestTaskFormFieldsData;
 
@@ -31,9 +32,9 @@ export const CreateContestPage = () => {
 
   const formMethods = useForm<CreateContestFormData>({
     defaultValues: {
-      startAt: formatDateTime(new Date(), "YYYY/MM/DD HH:mm"),
+      startAt: formatDateTime(dayjs().add(20, "minutes"), "YYYY/MM/DD HH:mm"),
       endAt: formatDateTime(
-        new Date(new Date().getTime() + 1000 * 60 * 60 * 2),
+        dayjs().add(20 + 60 * 2, "minutes"),
         "YYYY/MM/DD HH:mm"
       ),
       rule: {
