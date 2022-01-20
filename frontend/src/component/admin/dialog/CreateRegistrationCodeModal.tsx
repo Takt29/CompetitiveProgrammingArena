@@ -22,6 +22,8 @@ type Props = Omit<ModalProps, "children">;
 type CreateRegistrationCodeFormData = RegistrationCodeFormFields;
 
 export const CreateRegistrationCodeModal = (props: Props) => {
+  const { onClose } = props;
+
   const formMethods = useForm<CreateRegistrationCodeFormData>({
     defaultValues: {
       expiredAt: formatDateTime(dayjs().add(7, "days"), "YYYY/MM/DD HH:mm"),
@@ -33,9 +35,9 @@ export const CreateRegistrationCodeModal = (props: Props) => {
       await createRegistraitionCode({
         expiredAt: Timestamp.fromDate(new Date(data.expiredAt)),
       });
-      props.onClose();
+      onClose();
     },
-    [props.onClose]
+    [onClose]
   );
 
   return (
