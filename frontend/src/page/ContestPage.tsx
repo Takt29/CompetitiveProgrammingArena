@@ -21,7 +21,8 @@ import { ContestName } from "../consumer/contest/ContestName";
 import { ContestStartAt } from "../consumer/contest/ContestStartAt";
 import { ContestProvider } from "../hook/context/ContestContext";
 import { useAuth } from "../hook/firebase/auth";
-import { useFetchContest, useFetchContestant } from "../hook/firebase/contest";
+import { useFetchContest } from "../hook/firebase/contest";
+import { useFetchContestant } from "../hook/firebase/contestant";
 import { useNow } from "../hook/utility/useNow";
 
 export const ContestPage = () => {

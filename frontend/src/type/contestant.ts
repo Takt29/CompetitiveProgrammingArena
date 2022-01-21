@@ -5,6 +5,6 @@ export type FireStoreContestant = {
 } & AuditFields;
 
 export type Contestant = FireStoreContestant & {
-  userId: string;
   contestId: string;
+  userId: string;
 };

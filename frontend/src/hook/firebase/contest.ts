@@ -56,36 +56,3 @@ export const useFetchContests = (queries?: QueryConstraint[]) => {
 
   return [contests, loading, error] as const;
 };
-
-export const useFetchContestant = (
-  contestId: string | undefined,
-  userId: string | undefined
-) => {
-  const contestantDoc =
-    contestId && userId
-      ? (doc(
-          db,
-          "contests",
-          contestId,
-          "contestant",
-          userId
-        ) as DocumentReference<FireStoreContest>)
-      : null;
-
-  const [contestSnapshot, loading, error] = useDocument(contestantDoc);
-
-  const contestant: Contest | undefined = useMemo(() => {
-    if (!contestantDoc) return undefined;
-
-    const data = contestSnapshot?.data();
-    return (
-      contestSnapshot &&
-      data && {
-        id: contestantDoc.id,
-        ...data,
-      }
-    );
-  }, [contestantDoc, contestSnapshot]);
-
-  return [contestant, loading, error] as const;
-};

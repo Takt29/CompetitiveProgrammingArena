@@ -10,9 +10,11 @@ import {
   Td,
   Text,
   Tr,
+  useToast,
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { useAsyncFn } from "react-use";
+import { createContestant } from "../../../api/contestant";
 import { ContestDescription } from "../../../consumer/contest/ContestDescription";
 import { ContestEndAt } from "../../../consumer/contest/ContestEndAt";
 import { ContestOwner } from "../../../consumer/contest/ContestOwner";
@@ -20,18 +22,39 @@ import { ContestRulePenalty } from "../../../consumer/contest/ContestRulePenalty
 import { ContestRuleSystem } from "../../../consumer/contest/ContestRuleSystem";
 import { ContestStartAt } from "../../../consumer/contest/ContestStartAt";
 import { useContest } from "../../../hook/context/ContestContext";
+import { useAuth } from "../../../hook/firebase/auth";
+import { useFetchContestant } from "../../../hook/firebase/contestant";
 import { useNow } from "../../../hook/utility/useNow";
 
 export const ContestInfoTab = () => {
-  const [{ loading }, register] = useAsyncFn(async () => {
-    // TODO
-  }, []);
+  const [auth] = useAuth();
   const contest = useContest();
+  const toast = useToast();
+  const [contestant] = useFetchContestant(contest.id, auth?.uid);
+
+  const [{ loading }, register] = useAsyncFn(async () => {
+    if (!auth) return;
+    try {
+      await createContestant({
+        contestId: contest.id,
+        userId: auth.uid,
+      });
+      toast({
+        title: "Registration Completed",
+        status: "success",
+      });
+    } catch (e) {
+      toast({
+        title: "Failed to register",
+        status: "error",
+      });
+    }
+  }, [auth, contest.id, toast]);
 
   const now = useNow(1000);
   const registerable = useMemo(
-    () => now.getTime() < contest.endAt.toMillis(),
-    [contest.endAt, now]
+    () => now.getTime() < contest.endAt.toMillis() && !contestant,
+    [contest.endAt, contestant, now]
   );
 
   return (

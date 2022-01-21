@@ -31,17 +31,9 @@ export const createContest = async (
   }
   const uid = auth.currentUser.uid;
 
-  console.log(uid, contest, tasks);
-
-  console.log("ok1");
-
   const batch = writeBatch(db);
 
-  console.log("ok2");
-
   const contestRef = doc(collection(db, "contests"));
-
-  console.log("ok3");
 
   batch.set(contestRef, {
     ...contest,
@@ -52,7 +44,6 @@ export const createContest = async (
   });
 
   (tasks ?? []).forEach((task, index) => {
-    console.log(task, index);
     const taskRef = doc(collection(db, "tasks"));
     batch.set(taskRef, {
       ...task,
