@@ -6,3 +6,5 @@
 /.firebaserc
 /firebase-data
 *.log
+serviceAccountKey.json
+*-firebase-adminsdk-*.json
