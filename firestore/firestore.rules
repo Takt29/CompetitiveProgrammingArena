@@ -74,5 +74,9 @@ service cloud.firestore {
       allow create, update: if isAdminUser() && isValidAudit();
       allow delete: if isAdminUser();
     }
+    match /externalContests/{externalContestId} {
+      allow read: if isAdminUser();
+      allow create, update, delete: if false;
+    }
   }
 }
