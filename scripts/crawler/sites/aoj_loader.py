@@ -1,5 +1,6 @@
 import sys
 import traceback
+import json
 from typing import Optional
 from datetime import datetime, timezone
 from .submissions_loader import Submission, SubmissionLoader, SubmissionStatus
@@ -13,8 +14,8 @@ class AOJSubmissionLoader(SubmissionLoader):
             (SubmissionStatus.TimeLimitExceeded, 2),
             (SubmissionStatus.MemoryLimitExceeded, 3),
             (SubmissionStatus.Accepted, 4),
-            (SubmissionStatus.WaitingForJudging, 5)
-            (SubmissionStatus.OutputLimitExceeded, 6)
+            (SubmissionStatus.WaitingForJudging, 5),
+            (SubmissionStatus.OutputLimitExceeded, 6),
             (SubmissionStatus.RuntimeError, 7),
             (SubmissionStatus.PresentationError, 8),
             (SubmissionStatus.WaitingForJudging, 9),
@@ -37,8 +38,8 @@ class AOJSubmissionLoader(SubmissionLoader):
         result: list[Submission] = []
 
         try:
-            json = self._request(f'{url}')
-            submissions = json.loads(json)
+            submissions_json = self._request(f'{url}')
+            submissions = json.loads(submissions_json)
             submissions.sort(key=lambda x: x['judgeId'])
 
             # 古い順
@@ -65,13 +66,13 @@ class AOJSubmissionLoader(SubmissionLoader):
                         timestamp, tz=timezone.utc)
                 )
 
-                if data['status'] == SubmissionStatus.WaitingForJudging:
+                if data.status == SubmissionStatus.WaitingForJudging:
                     break
 
-                if self.latest_id and data['id'] <= self.latest_id:
+                if self.latest_id and data.id <= self.latest_id:
                     continue
 
-                if since is not None and data['submitted_at'] < since:
+                if since is not None and data.submitted_at < since:
                     continue
 
                 result.append(data)
@@ -81,7 +82,7 @@ class AOJSubmissionLoader(SubmissionLoader):
             result = []
 
         for item in result:
-            if self.latest_id is None or self.latest_id < item['id']:
-                self.latest_id = item['id']
+            if self.latest_id is None or self.latest_id < item.id:
+                self.latest_id = item.id
 
         return result

@@ -1,7 +1,8 @@
+import sys
 from abc import ABC, abstractmethod
 from datetime import datetime
 from enum import Enum, unique
-from typing import Optional, TypedDict
+from typing import Optional
 from urllib.request import urlopen
 from dataclasses import dataclass
 
@@ -45,6 +46,7 @@ class SubmissionLoader(ABC):
         self.latest_id = None
 
     def _request(self, url: str):
+        print('request:', url, file=sys.stderr, flush=True)
         return urlopen(url, timeout=10).read().decode('utf-8')
 
     @abstractmethod

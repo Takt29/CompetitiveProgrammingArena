@@ -62,7 +62,7 @@ class AtCoderSubmissionLoader(SubmissionLoader):
                     [timestamp, task_id, user_id, submission_id,
                         score, status] = submission
 
-                    data: Submission(
+                    data = Submission(
                         id=int(submission_id),
                         external_user_id=user_id,
                         external_contest_id=self.external_contest_id,
@@ -75,19 +75,19 @@ class AtCoderSubmissionLoader(SubmissionLoader):
                             timestamp, '%Y-%m-%d %H:%M:%S%z')
                     )
 
-                    if data['status'] == SubmissionStatus.WaitingForJudging:
+                    if data.status == SubmissionStatus.WaitingForJudging:
                         result = []
                         continue
 
-                    if self.latest_id and data['id'] <= self.latest_id:
+                    if self.latest_id and data.id <= self.latest_id:
                         break_flag = True
                         break
 
-                    if since is not None and data['submitted_at'] < since:
+                    if since is not None and data.submitted_at < since:
                         break_flag = True
                         break
 
-                    if len(result) > 0 and result[-1]['id'] <= data['id']:
+                    if len(result) > 0 and result[-1].id <= data.id:
                         continue
 
                     result.append(data)
@@ -102,7 +102,7 @@ class AtCoderSubmissionLoader(SubmissionLoader):
             result = []
 
         for item in result:
-            if self.latest_id is None or self.latest_id < item['id']:
-                self.latest_id = item['id']
+            if self.latest_id is None or self.latest_id < item.id:
+                self.latest_id = item.id
 
         return result

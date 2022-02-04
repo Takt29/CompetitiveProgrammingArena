@@ -4,12 +4,16 @@ from datetime import datetime, timezone
 import sys
 import io
 import traceback
+import time
 from os.path import join, dirname
 from dotenv import load_dotenv
 from firestore import firestore
 from firestore.contests_loader import ContestsLoader
 from firestore.tasks_loader import TasksLoader
 from firestore.user_loader import UsersLoader
+from sites.aoj_loader import AOJSubmissionLoader
+from sites.codeforces_loader import CodeforcesSubmissionLoader
+from sites.submissions_loader import SubmissionLoader
 from sites.atcoder_loader import AtCoderSubmissionLoader
 from utils import scheduler
 
@@ -29,6 +33,10 @@ def update_submissions():
     print('update_submissions', flush=True)
 
 
+def task_id_to_contest_id(task_id: str):
+    return ':'.join(task_id.split(":")[0:2])
+
+
 class Main():
     def __init__(self):
         self.contests_loader = ContestsLoader()
@@ -45,9 +53,48 @@ class Main():
             self.tasks_loader.sync()
             self.users_loader.sync()
 
-            print(self.contests_loader.get_data())
-            print(self.tasks_loader.get_data())
-            print(self.users_loader.get_data())
+            tasks = self.tasks_loader.get_data()
+
+            external_contest_ids = list(set([
+                task_id_to_contest_id(task['externalTaskId']) for task in tasks
+            ]))
+
+            print(external_contest_ids, flush=True)
+
+            submission_loaders: dict[str, SubmissionLoader] = dict()
+
+            since = datetime(2022, 2, 2, tzinfo=timezone.utc)
+
+            for external_contest_id in external_contest_ids:
+                site = external_contest_id.split(":")[0]
+
+                if external_contest_id not in submission_loaders:
+                    if site == 'atcoder':
+                        submission_loaders[external_contest_id] = AtCoderSubmissionLoader(
+                            external_contest_id)
+                    elif site == 'codeforces':
+                        submission_loaders[external_contest_id] = CodeforcesSubmissionLoader(
+                            external_contest_id)
+                    elif site == 'aoj':
+                        submission_loaders[external_contest_id] = AOJSubmissionLoader(
+                            external_contest_id)
+                    else:
+                        print("Unknown Site: ",
+                              external_contest_id, file=sys.stderr)
+                        continue
+
+                print(external_contest_id, flush=True)
+
+                submissions = submission_loaders[external_contest_id].get(
+                    since=since)
+
+                print(submissions, flush=True)
+
+                time.sleep(4)
+
+            # print(self.contests_loader.get_data())
+            # print(self.tasks_loader.get_data())
+            # print(self.users_loader.get_data())
 
             update_submissions()
         except Exception as e:

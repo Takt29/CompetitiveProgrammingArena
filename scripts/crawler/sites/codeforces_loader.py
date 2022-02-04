@@ -1,5 +1,6 @@
 import sys
 import traceback
+import json
 from typing import Optional
 from datetime import datetime, timezone
 from .submissions_loader import Submission, SubmissionLoader, SubmissionStatus
@@ -15,7 +16,9 @@ class CodeforcesSubmissionLoader(SubmissionLoader):
             (SubmissionStatus.Accepted, 'OK'),
             (SubmissionStatus.RuntimeError, 'RUNTIME_ERROR'),
             (SubmissionStatus.PresentationError, 'PRESENTATION_ERROR'),
-            (SubmissionStatus.WaitingForJudging, 'TESTING')
+            (SubmissionStatus.WaitingForJudging, 'TESTING'),
+            (SubmissionStatus.TimeLimitExceeded, 'IDLENESS_LIMIT_EXCEEDED'),
+            (SubmissionStatus.WrongAnswer, 'PARTIAL'),
         ]
 
         for pattern in patterns:
@@ -32,8 +35,8 @@ class CodeforcesSubmissionLoader(SubmissionLoader):
         result: list[Submission] = []
 
         try:
-            json = self._request(f'{url}?count=1000')
-            submissions = json.loads(json)['result']
+            submissions_json = self._request(f'{url}?count=1000')
+            submissions = json.loads(submissions_json)['result']
 
             # 古い順
             for submission in reversed(submissions):
@@ -59,13 +62,13 @@ class CodeforcesSubmissionLoader(SubmissionLoader):
                         timestamp, tz=timezone.utc)
                 )
 
-                if data['status'] == SubmissionStatus.WaitingForJudging:
+                if data.status == SubmissionStatus.WaitingForJudging:
                     break
 
-                if self.latest_id and data['id'] <= self.latest_id:
+                if self.latest_id and data.id <= self.latest_id:
                     continue
 
-                if since is not None and data['submitted_at'] < since:
+                if since is not None and data.submitted_at < since:
                     continue
 
                 result.append(data)
@@ -75,7 +78,7 @@ class CodeforcesSubmissionLoader(SubmissionLoader):
             result = []
 
         for item in result:
-            if self.latest_id is None or self.latest_id < item['id']:
-                self.latest_id = item['id']
+            if self.latest_id is None or self.latest_id < item.id:
+                self.latest_id = item.id
 
         return result
