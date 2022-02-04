@@ -2,17 +2,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from enum import Enum, unique
 from typing import Optional, TypedDict
-
-SubmissionType = TypedDict('SubmissionType', {
-    'id': int,
-    'external_user_id': str,
-    'external_contest_id': str,
-    'score': int,
-    'status': str,
-    'external_task_id': str,
-    'external_submission_id': str,
-    'submitted_at': datetime,
-})
+from urllib.request import urlopen
 
 
 @unique
@@ -26,6 +16,20 @@ class SubmissionStatus(Enum):
     RuntimeError = 'RE'
     PresentationError = 'PE'
     InternalError = 'IE'
+    WaitingForJudging = 'WJ'
+    Unknown = 'Unknown'
+
+
+SubmissionType = TypedDict('SubmissionType', {
+    'id': int,
+    'external_user_id': str,
+    'external_contest_id': str,
+    'score': int,
+    'status': SubmissionStatus,
+    'external_task_id': str,
+    'external_submission_id': str,
+    'submitted_at': datetime,
+})
 
 
 class SubmissionLoader(ABC):
@@ -39,8 +43,11 @@ class SubmissionLoader(ABC):
     def reset(self):
         self.latest_id = None
 
+    def _request(self, url: str):
+        return urlopen(url, timeout=10).read().decode('utf-8')
+
     @abstractmethod
-    def _normalize_status(self, external_status: str) -> str:
+    def _normalize_status(self, external_status: str) -> SubmissionStatus:
         pass
 
     @abstractmethod

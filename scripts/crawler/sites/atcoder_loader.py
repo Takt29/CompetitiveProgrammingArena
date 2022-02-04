@@ -10,7 +10,7 @@ from .submissions_loader import SubmissionLoader, SubmissionStatus, SubmissionTy
 
 
 class AtCoderSubmissionLoader(SubmissionLoader):
-    def _normalize_status(self, external_status: str) -> str:
+    def _normalize_status(self, external_status: str) -> SubmissionStatus:
         patterns: list[tuple[SubmissionStatus, str]] = [
             (SubmissionStatus.CompileError, 'CE'),
             (SubmissionStatus.WrongAnswer, 'WA'),
@@ -21,13 +21,20 @@ class AtCoderSubmissionLoader(SubmissionLoader):
             (SubmissionStatus.RuntimeError, 'RE'),
             (SubmissionStatus.PresentationError, 'PE'),
             (SubmissionStatus.InternalError, 'IE'),
+            (SubmissionStatus.WaitingForJudging, 'WJ')
+            (SubmissionStatus.WaitingForJudging, 'WR')
         ]
 
         for pattern in patterns:
             if pattern[1] == external_status:
-                return pattern[0].value
+                return pattern[0]
 
-        return external_status
+        if re.match(r'[0-9]', external_status):
+            return SubmissionStatus.WaitingForJudging
+
+        print('Unknown Status(AtCoder):', external_status, file=sys.stderr)
+
+        return SubmissionStatus.Unknown
 
     def get(self, since: Optional[datetime] = None) -> list[SubmissionType]:
         contest_id = self.external_contest_id.split(':')[1]
@@ -40,10 +47,7 @@ class AtCoderSubmissionLoader(SubmissionLoader):
 
             # 新しい順
             for page in count(1):
-                html = urlopen(
-                    url=f'{url}?page={page}',
-                    timeout=10
-                ).read().decode('utf-8')
+                html = self._request(f'{url}?page={page}')
 
                 pattern = r'<tr>[^<]*<td[^>]*><time[^>]*>([0-9/: +-]+)</time></td>\s*<td><a\s*href=\"[^\"]*\/tasks/([^\"]*)\">[^<]*</a></td>\s*<td><a\s*href=\"/users/([^\"]*)\">[^<]*</a>\s*<[^>]*><[^>]*></span></a></td>\s*<td>\s*<a[^>]*>[^<]*</a>\s*</td>\s*<td[^>]*data-id=\"([0-9]+)\">([^<]*)</td>\s*<td[^>]*>[^<]*</td>\s*<td[^>]*><span[^>]*>([^<]*)</span>'
 
@@ -69,19 +73,17 @@ class AtCoderSubmissionLoader(SubmissionLoader):
                         'submitted_at': datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S%z')
                     })
 
-                    print(data['status'])
-
-                    if data['status'] == 'WJ' or re.match(r'[0-9]', data['status']):
+                    if data['status'] == SubmissionStatus.WaitingForJudging:
                         result = []
                         continue
 
                     if self.latest_id and data['id'] <= self.latest_id:
                         break_flag = True
-                        continue
+                        break
 
                     if since is not None and data['submitted_at'] < since:
                         break_flag = True
-                        continue
+                        break
 
                     if len(result) > 0 and result[-1]['id'] <= data['id']:
                         continue
