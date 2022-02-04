@@ -2,7 +2,7 @@ import sys
 import traceback
 from typing import Optional
 from datetime import datetime, timezone
-from .submissions_loader import SubmissionLoader, SubmissionStatus, SubmissionType
+from .submissions_loader import Submission, SubmissionLoader, SubmissionStatus
 
 
 class AOJSubmissionLoader(SubmissionLoader):
@@ -31,10 +31,10 @@ class AOJSubmissionLoader(SubmissionLoader):
 
         return SubmissionStatus.Unknown
 
-    def get(self, since: Optional[datetime] = None) -> list[SubmissionType]:
+    def get(self, since: Optional[datetime] = None) -> list[Submission]:
         url = 'https://judgeapi.u-aizu.ac.jp/submission_records/recent'
 
-        result: list[SubmissionType] = []
+        result: list[Submission] = []
 
         try:
             json = self._request(f'{url}')
@@ -53,16 +53,17 @@ class AOJSubmissionLoader(SubmissionLoader):
                 score = 1 if self._normalize_status(
                     status) == SubmissionStatus.Accepted else 0
 
-                data: SubmissionType = ({
-                    'id': submission_id,
-                    'external_user_id': user_id,
-                    'external_contest_id': contest_id,
-                    'score': score,
-                    'status': self._normalize_status(status),
-                    'external_task_id': f'aoj:{contest_id}:{task_id}',
-                    'external_submission_id': f'aoj:{contest_id}:{submission_id}',
-                    'submitted_at': datetime.fromtimestamp(timestamp, tz=timezone.utc)
-                })
+                data = Submission(
+                    id=submission_id,
+                    external_user_id=user_id,
+                    external_contest_id=contest_id,
+                    score=score,
+                    status=self._normalize_status(status),
+                    external_task_id=f'aoj:{contest_id}:{task_id}',
+                    external_submission_id=f'aoj:{contest_id}:{submission_id}',
+                    submitted_at=datetime.fromtimestamp(
+                        timestamp, tz=timezone.utc)
+                )
 
                 if data['status'] == SubmissionStatus.WaitingForJudging:
                     break

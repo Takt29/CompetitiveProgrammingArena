@@ -3,6 +3,7 @@ from datetime import datetime
 from enum import Enum, unique
 from typing import Optional, TypedDict
 from urllib.request import urlopen
+from dataclasses import dataclass
 
 
 @unique
@@ -20,16 +21,16 @@ class SubmissionStatus(Enum):
     Unknown = 'Unknown'
 
 
-SubmissionType = TypedDict('SubmissionType', {
-    'id': int,
-    'external_user_id': str,
-    'external_contest_id': str,
-    'score': int,
-    'status': SubmissionStatus,
-    'external_task_id': str,
-    'external_submission_id': str,
-    'submitted_at': datetime,
-})
+@dataclass
+class Submission:
+    id: int
+    external_user_id: str
+    external_contest_id: str
+    score: int
+    status: SubmissionStatus
+    external_task_id: str
+    external_submission_id: str
+    submitted_at: datetime
 
 
 class SubmissionLoader(ABC):
@@ -51,5 +52,5 @@ class SubmissionLoader(ABC):
         pass
 
     @abstractmethod
-    def get(self, since: Optional[datetime]) -> list[SubmissionType]:
+    def get(self, since: Optional[datetime]) -> list[Submission]:
         pass

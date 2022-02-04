@@ -6,7 +6,7 @@ from typing import Optional
 from itertools import count
 from urllib.request import urlopen
 from datetime import datetime
-from .submissions_loader import SubmissionLoader, SubmissionStatus, SubmissionType
+from .submissions_loader import Submission, SubmissionLoader, SubmissionStatus
 
 
 class AtCoderSubmissionLoader(SubmissionLoader):
@@ -21,7 +21,7 @@ class AtCoderSubmissionLoader(SubmissionLoader):
             (SubmissionStatus.RuntimeError, 'RE'),
             (SubmissionStatus.PresentationError, 'PE'),
             (SubmissionStatus.InternalError, 'IE'),
-            (SubmissionStatus.WaitingForJudging, 'WJ')
+            (SubmissionStatus.WaitingForJudging, 'WJ'),
             (SubmissionStatus.WaitingForJudging, 'WR')
         ]
 
@@ -36,11 +36,11 @@ class AtCoderSubmissionLoader(SubmissionLoader):
 
         return SubmissionStatus.Unknown
 
-    def get(self, since: Optional[datetime] = None) -> list[SubmissionType]:
+    def get(self, since: Optional[datetime] = None) -> list[Submission]:
         contest_id = self.external_contest_id.split(':')[1]
         url = f'https://atcoder.jp/contests/{contest_id}/submissions'
 
-        result: list[SubmissionType] = []
+        result: list[Submission] = []
 
         try:
             page = 1
@@ -62,16 +62,18 @@ class AtCoderSubmissionLoader(SubmissionLoader):
                     [timestamp, task_id, user_id, submission_id,
                         score, status] = submission
 
-                    data: SubmissionType = ({
-                        'id': int(submission_id),
-                        'external_user_id': user_id,
-                        'external_contest_id': self.external_contest_id,
-                        'score': round(float(score)) if re.match(r'^\d+(\.\d+)?$', score) else 0,
-                        'status': self._normalize_status(status),
-                        'external_task_id': f'atcoder:{contest_id}:{task_id}',
-                        'external_submission_id': f'atcoder:{contest_id}:{submission_id}',
-                        'submitted_at': datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S%z')
-                    })
+                    data: Submission(
+                        id=int(submission_id),
+                        external_user_id=user_id,
+                        external_contest_id=self.external_contest_id,
+                        score=round(float(score)) if re.match(
+                            r'^\d+(\.\d+)?$', score) else 0,
+                        status=self._normalize_status(status),
+                        external_task_id=f'atcoder:{contest_id}:{task_id}',
+                        external_submission_id=f'atcoder:{contest_id}:{submission_id}',
+                        submitted_at=datetime.strptime(
+                            timestamp, '%Y-%m-%d %H:%M:%S%z')
+                    )
 
                     if data['status'] == SubmissionStatus.WaitingForJudging:
                         result = []
