@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from firestore import firestore
 from firestore.contests_loader import ContestsLoader
 from firestore.tasks_loader import TasksLoader
+from firestore.user_loader import UsersLoader
 from sites.atcoder_loader import AtCoderSubmissionLoader
 from utils import scheduler
 
@@ -32,6 +33,7 @@ class Main():
     def __init__(self):
         self.contests_loader = ContestsLoader()
         self.tasks_loader = TasksLoader()
+        self.users_loader = UsersLoader()
         pass
 
     def run(self):
@@ -41,9 +43,11 @@ class Main():
                 item['id'] for item in self.contests_loader.get_data()
             ])
             self.tasks_loader.sync()
+            self.users_loader.sync()
 
             print(self.contests_loader.get_data())
             print(self.tasks_loader.get_data())
+            print(self.users_loader.get_data())
 
             update_submissions()
         except Exception as e:
