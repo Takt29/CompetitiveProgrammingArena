@@ -14,17 +14,24 @@ class TasksLoader(FireStoreLoader):
         )
 
         docs = query.stream()
-        self.data.extend([
+        datalist = [
             {'id': doc.id, **doc.to_dict()} for doc in docs
-        ])
+        ]
+
+        for item in datalist:
+            self._add_data(item, update_latest_timestamp=False)
 
     def remove_contest_id(self, contest_id):
         self.contest_ids = list(filter(
-            lambda x: x == contest_id
+            lambda x: x == contest_id,
+            self.contest_ids
         ))
-        self.data = list(filter(
-            lambda x: x['contestId'] != contest_id
+        delete_data = list(filter(
+            lambda x: x['contestId'] == contest_id,
+            self.get_data()
         ))
+        for item in delete_data:
+            self._del_data(item['id'])
 
     def set_contest_ids(self, contest_ids):
         for current_contest_id in self.contest_ids:
@@ -53,10 +60,9 @@ class TasksLoader(FireStoreLoader):
             )
 
         docs = query.stream()
-        data = [
+        datalist = [
             {'id': doc.id, **doc.to_dict()} for doc in docs
         ]
 
-        self.data.extend(data)
-
-        self._update_latest_timestamp(self.data)
+        for item in datalist:
+            self._add_data(item)

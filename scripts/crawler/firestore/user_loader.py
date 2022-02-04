@@ -17,8 +17,7 @@ class UsersLoader(FireStoreLoader):
             {'id': doc.id, **doc.to_dict()} for doc in docs
         ]
 
-        self.data.extend(datalist)
-
-        self._update_latest_timestamp(self.data)
+        for item in datalist:
+            self._add_data(item)
 
         # TODO: unique filter

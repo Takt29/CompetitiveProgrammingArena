@@ -16,19 +16,20 @@ class ContestsLoader(FireStoreLoader):
             )
 
         docs = query.stream()
-        data = [
+        datalist = [
             {'id': doc.id, **doc.to_dict()} for doc in docs
         ]
 
-        self.data.extend(data)
-
-        self._update_latest_timestamp(self.data)
+        for item in datalist:
+            self._add_data(item)
 
         now_microseconds = self.to_microseconds(datetime.now())
 
         # TODO: unique filter
 
-        self.data = list(filter(
-            lambda x: self.to_microseconds(x['endAt']) > now_microseconds,
-            self.data
+        delete_data = list(filter(
+            lambda x: self.to_microseconds(x['endAt']) <= now_microseconds,
+            self.get_data()
         ))
+        for item in delete_data:
+            self._del_data(item['id'])
