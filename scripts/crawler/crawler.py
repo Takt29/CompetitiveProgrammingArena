@@ -42,6 +42,32 @@ def task_id_to_contest_id(task_id: str) -> str:
         return f'{site}:'
 
 
+def generate_sites_info(contests, tasks):
+    contest_dict = {
+        contest['id']: contest for contest in contests
+    }
+
+    result = dict()
+
+    for task in tasks:
+        external_contest_id = task_id_to_contest_id(task['externalTaskId'])
+        contest = contest_dict[task['contestId']]
+
+        if external_contest_id not in result:
+            result[external_contest_id] = {
+                'external_contest_id': external_contest_id,
+                'since': contest['startAt'],
+                'contest_ids': [],
+            }
+
+        if result[external_contest_id]['since'] > contest['startAt']:
+            result[external_contest_id]['since'] = contest['startAt']
+
+        result[external_contest_id]['contest_ids'].append(contest['id'])
+
+    return list(result.values())
+
+
 class Main():
     contests_loader: ContestsLoader
     tasks_loader: TasksLoader
@@ -55,26 +81,42 @@ class Main():
         self.submission_loaders = dict()
         pass
 
-    def run(self):
-        try:
-            self.contests_loader.sync()
-            self.tasks_loader.set_contest_ids([
-                item['id'] for item in self.contests_loader.get_data()
-            ])
+    def __get_tasks(self, contest_ids=None, update=True):
+        if contest_ids is not None:
+            self.tasks_loader.set_contest_ids(contest_ids)
+
+        if update:
             self.tasks_loader.sync()
+
+        return self.tasks_loader.get_data()
+
+    def __get_contests(self, update=True):
+        if update:
+            self.contests_loader.sync()
+
+        return self.contests_loader.get_data()
+
+    def __get_users(self, update=True):
+        if update:
             self.users_loader.sync()
 
-            tasks = self.tasks_loader.get_data()
+        return self.users_loader.get_data()
 
-            external_contest_ids = list(set([
-                task_id_to_contest_id(task['externalTaskId']) for task in tasks
-            ]))
+    def run(self):
+        try:
+            contests = self.__get_contests()
 
-            print(external_contest_ids, flush=True)
+            tasks = self.__get_tasks(contest_ids=[
+                contest['id'] for contest in contests
+            ])
+            users = self.__get_users()
 
-            since = datetime(2022, 2, 2, tzinfo=timezone.utc)
+            sites_info = generate_sites_info(contests, tasks)
 
-            for external_contest_id in external_contest_ids:
+            print(sites_info, flush=True)
+
+            for item in sites_info:
+                external_contest_id = item['external_contest_id']
                 site = external_contest_id.split(":")[0]
 
                 if external_contest_id not in self.submission_loaders:
@@ -95,19 +137,13 @@ class Main():
                 print(external_contest_id, flush=True)
 
                 submissions = self.submission_loaders[external_contest_id].get(
-                    since=since)
+                    since=item['since'])
 
                 print(len(submissions), flush=True)
                 if len(submissions) > 0:
                     print(submissions[0], flush=True)
 
                 time.sleep(4)
-
-            # print(self.contests_loader.get_data())
-            # print(self.tasks_loader.get_data())
-            # print(self.users_loader.get_data())
-
-            update_submissions()
         except Exception as e:
             print(traceback.format_exc(), file=sys.stderr, flush=True)
 

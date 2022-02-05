@@ -1,5 +1,4 @@
 import sys
-import traceback
 import json
 from typing import Optional
 from datetime import datetime, timezone
