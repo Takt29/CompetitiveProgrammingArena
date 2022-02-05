@@ -110,7 +110,7 @@ def add_submissions(submissions: list[Submission], contest_ids: list[any], users
             data = {
                 'contestId': contest_id[0],
                 'taskId': contest_id[1],
-                'status': submission.status,
+                'status': submission.status.value,
                 'score': submission.score,
                 'language': submission.language,
                 'submittedAt': submission.submitted_at,

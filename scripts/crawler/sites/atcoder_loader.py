@@ -1,6 +1,7 @@
 import re
 import sys
 import time
+import html
 from typing import Optional
 from itertools import count
 from datetime import datetime
@@ -42,11 +43,11 @@ class AtCoderSubmissionLoader(SubmissionLoader):
 
         # 新しい順
         for page in count(1):
-            html = self._request(f'{url}?page={page}')
+            submissions_html = self._request(f'{url}?page={page}')
 
             pattern = r'<tr>[^<]*<td[^>]*><time[^>]*>([0-9/: +-]+)</time></td>\s*<td><a\s*href=\"[^\"]*\/tasks/([^\"]*)\">[^<]*</a></td>\s*<td><a\s*href=\"/users/([^\"]*)\">[^<]*</a>\s*<[^>]*><[^>]*></span></a></td>\s*<td>\s*<a[^>]*>([^<]*)</a>\s*</td>\s*<td[^>]*data-id=\"([0-9]+)\">([^<]*)</td>\s*<td[^>]*>[^<]*</td>\s*<td[^>]*><span[^>]*>([^<]*)</span>'
 
-            submissions = re.findall(pattern, html)
+            submissions = re.findall(pattern, submissions_html)
 
             if len(submissions) == 0:
                 break
@@ -64,7 +65,8 @@ class AtCoderSubmissionLoader(SubmissionLoader):
                     score=round(float(score)) if re.match(
                         r'^\d+(\.\d+)?$', score) else 0,
                     status=self._normalize_status(status),
-                    language=re.sub(r"\s*\(.*\)\s*", "", language),
+                    language=re.sub(r"\s*\(.*\)\s*", "",
+                                    html.unescape(language)),
                     external_task_id=f'atcoder:{contest_id}:{task_id}',
                     external_submission_id=f'atcoder:{contest_id}:{submission_id}',
                     submitted_at=datetime.strptime(
