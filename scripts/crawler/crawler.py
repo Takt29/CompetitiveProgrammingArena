@@ -47,28 +47,32 @@ def generate_sites_info(contests, tasks):
     result = dict()
 
     for task in tasks:
-        external_contest_id = task_id_to_contest_id(task['externalTaskId'])
+        external_task_id = task['externalTaskId']
+        external_contest_id = task_id_to_contest_id(external_task_id)
         contest = contest_dict[task['contestId']]
 
         if external_contest_id not in result:
             result[external_contest_id] = {
                 'external_contest_id': external_contest_id,
                 'since': contest['startAt'],
-                'contest_ids': [],
+                'tasks': dict(),
             }
 
         if result[external_contest_id]['since'] > contest['startAt']:
             result[external_contest_id]['since'] = contest['startAt']
 
-        result[external_contest_id]['contest_ids'].append((
-            task['contestId'],
-            task['id'],
-        ))
+        if external_task_id not in result[external_contest_id]['tasks']:
+            result[external_contest_id]['tasks'][external_task_id] = []
+
+        result[external_contest_id]['tasks'][external_task_id].append({
+            'contest_id': task['contestId'],
+            'task_id': task['id'],
+        })
 
     return list(result.values())
 
 
-def add_submissions(submissions: list[Submission], contest_ids: list[any], users: list[any]):
+def add_submissions(submissions: list[Submission], contest_tasks: dict[str, any], users: list[any]):
     atcoder_id_dict = {
         user['externalAccountId']['atcoder']: user['id'] for user in list(filter(
             lambda user: 'atcoder' in user['externalAccountId'] and user['externalAccountId']['atcoder'],
@@ -106,20 +110,21 @@ def add_submissions(submissions: list[Submission], contest_ids: list[any], users
         if submittedBy is None:
             continue
 
-        for contest_id in contest_ids:
-            data = {
-                'contestId': contest_id[0],
-                'taskId': contest_id[1],
-                'status': submission.status.value,
-                'score': submission.score,
-                'language': submission.language,
-                'submittedAt': submission.submitted_at,
-                'submittedBy': submittedBy,
-                'externalSubmissionId': submission.external_submission_id,
-            }
+        if submission.external_task_id in contest_tasks:
+            for contest_task in contest_tasks[submission.external_task_id]:
+                data = {
+                    'contestId': contest_task['contest_id'],
+                    'taskId': contest_task['task_id'],
+                    'status': submission.status.value,
+                    'score': submission.score,
+                    'language': submission.language,
+                    'submittedAt': submission.submitted_at,
+                    'submittedBy': submittedBy,
+                    'externalSubmissionId': submission.external_submission_id,
+                }
 
-            doc_ref = db.collection('submissions').document()
-            doc_ref.set(data)
+                doc_ref = db.collection('submissions').document()
+                doc_ref.set(data)
 
 
 class Main():
@@ -195,7 +200,7 @@ class Main():
 
                 print(external_contest_id, len(submissions), flush=True)
 
-                add_submissions(submissions, item['contest_ids'], users)
+                add_submissions(submissions, item['tasks'], users)
 
                 time.sleep(3)
         except Exception as e:
