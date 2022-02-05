@@ -44,7 +44,7 @@ class AtCoderSubmissionLoader(SubmissionLoader):
         for page in count(1):
             html = self._request(f'{url}?page={page}')
 
-            pattern = r'<tr>[^<]*<td[^>]*><time[^>]*>([0-9/: +-]+)</time></td>\s*<td><a\s*href=\"[^\"]*\/tasks/([^\"]*)\">[^<]*</a></td>\s*<td><a\s*href=\"/users/([^\"]*)\">[^<]*</a>\s*<[^>]*><[^>]*></span></a></td>\s*<td>\s*<a[^>]*>[^<]*</a>\s*</td>\s*<td[^>]*data-id=\"([0-9]+)\">([^<]*)</td>\s*<td[^>]*>[^<]*</td>\s*<td[^>]*><span[^>]*>([^<]*)</span>'
+            pattern = r'<tr>[^<]*<td[^>]*><time[^>]*>([0-9/: +-]+)</time></td>\s*<td><a\s*href=\"[^\"]*\/tasks/([^\"]*)\">[^<]*</a></td>\s*<td><a\s*href=\"/users/([^\"]*)\">[^<]*</a>\s*<[^>]*><[^>]*></span></a></td>\s*<td>\s*<a[^>]*>([^<]*)</a>\s*</td>\s*<td[^>]*data-id=\"([0-9]+)\">([^<]*)</td>\s*<td[^>]*>[^<]*</td>\s*<td[^>]*><span[^>]*>([^<]*)</span>'
 
             submissions = re.findall(pattern, html)
 
@@ -54,7 +54,7 @@ class AtCoderSubmissionLoader(SubmissionLoader):
             break_flag = False
 
             for submission in submissions:
-                [timestamp, task_id, user_id, submission_id,
+                [timestamp, task_id, user_id, language, submission_id,
                     score, status] = submission
 
                 data = Submission(
@@ -64,6 +64,7 @@ class AtCoderSubmissionLoader(SubmissionLoader):
                     score=round(float(score)) if re.match(
                         r'^\d+(\.\d+)?$', score) else 0,
                     status=self._normalize_status(status),
+                    language=re.sub(r"\s*\(.*\)\s*", "", language),
                     external_task_id=f'atcoder:{contest_id}:{task_id}',
                     external_submission_id=f'atcoder:{contest_id}:{submission_id}',
                     submitted_at=datetime.strptime(

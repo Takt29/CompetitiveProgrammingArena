@@ -48,6 +48,7 @@ class CodeforcesSubmissionLoader(SubmissionLoader):
             status = submission['verdict'] if 'verdict' in submission else ''
             score = 1 if self._normalize_status(
                 status) == SubmissionStatus.Accepted else 0
+            language = submission['programmingLanguage']
 
             data = Submission(
                 id=submission_id,
@@ -55,6 +56,7 @@ class CodeforcesSubmissionLoader(SubmissionLoader):
                 external_contest_id=contest_id,
                 score=score,
                 status=self._normalize_status(status),
+                language=language,
                 external_task_id=f'codeforces:{contest_id}:{task_id}',
                 external_submission_id=f'codeforces:{contest_id}:{submission_id}',
                 submitted_at=datetime.fromtimestamp(

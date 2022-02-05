@@ -98,6 +98,8 @@ class Main():
                     since=since)
 
                 print(len(submissions), flush=True)
+                if len(submissions) > 0:
+                    print(submissions[0], flush=True)
 
                 time.sleep(4)
 

@@ -30,6 +30,7 @@ class Submission:
     external_contest_id: str
     score: int
     status: SubmissionStatus
+    language: str
     external_task_id: str
     external_submission_id: str
     submitted_at: datetime

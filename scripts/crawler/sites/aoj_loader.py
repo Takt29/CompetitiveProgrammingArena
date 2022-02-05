@@ -50,6 +50,7 @@ class AOJSubmissionLoader(SubmissionLoader):
             task_id = submission['problemId']
             timestamp = int(submission['submissionDate']) / 1000.0
             status = str(submission['status'])
+            language = str(submission['language'])
             score = 1 if self._normalize_status(
                 status) == SubmissionStatus.Accepted else 0
 
@@ -59,6 +60,7 @@ class AOJSubmissionLoader(SubmissionLoader):
                 external_contest_id=contest_id,
                 score=score,
                 status=self._normalize_status(status),
+                language=language,
                 external_task_id=f'aoj:{contest_id}:{task_id}',
                 external_submission_id=f'aoj:{contest_id}:{submission_id}',
                 submitted_at=datetime.fromtimestamp(
