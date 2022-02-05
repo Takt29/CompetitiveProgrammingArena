@@ -5,6 +5,7 @@ from enum import Enum, unique
 from typing import Optional
 from urllib.request import urlopen
 from dataclasses import dataclass
+import traceback
 
 
 @unique
@@ -54,5 +55,19 @@ class SubmissionLoader(ABC):
         pass
 
     @abstractmethod
-    def get(self, since: Optional[datetime]) -> list[Submission]:
+    def _get(self, since: Optional[datetime]) -> list[Submission]:
         pass
+
+    def get(self, since: Optional[datetime]) -> list[Submission]:
+        try:
+            submissions = self._get(since)
+
+            for submission in submissions:
+                if self.latest_id is None or self.latest_id < submission.id:
+                    self.latest_id = submission.id
+
+        except Exception as e:
+            print(traceback.format_exc(), file=sys.stderr, flush=True)
+            return []
+
+        return submissions

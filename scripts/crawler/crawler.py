@@ -33,15 +33,26 @@ def update_submissions():
     print('update_submissions', flush=True)
 
 
-def task_id_to_contest_id(task_id: str):
-    return ':'.join(task_id.split(":")[0:2])
+def task_id_to_contest_id(task_id: str) -> str:
+    [site, contest_id] = task_id.split(":")[0:2]
+
+    if site == 'atcoder':
+        return f'{site}:{contest_id}'
+    else:
+        return f'{site}:'
 
 
 class Main():
+    contests_loader: ContestsLoader
+    tasks_loader: TasksLoader
+    users_loader: UsersLoader
+    submission_loaders: dict[str, SubmissionLoader]
+
     def __init__(self):
         self.contests_loader = ContestsLoader()
         self.tasks_loader = TasksLoader()
         self.users_loader = UsersLoader()
+        self.submission_loaders = dict()
         pass
 
     def run(self):
@@ -61,22 +72,20 @@ class Main():
 
             print(external_contest_ids, flush=True)
 
-            submission_loaders: dict[str, SubmissionLoader] = dict()
-
             since = datetime(2022, 2, 2, tzinfo=timezone.utc)
 
             for external_contest_id in external_contest_ids:
                 site = external_contest_id.split(":")[0]
 
-                if external_contest_id not in submission_loaders:
+                if external_contest_id not in self.submission_loaders:
                     if site == 'atcoder':
-                        submission_loaders[external_contest_id] = AtCoderSubmissionLoader(
+                        self.submission_loaders[external_contest_id] = AtCoderSubmissionLoader(
                             external_contest_id)
                     elif site == 'codeforces':
-                        submission_loaders[external_contest_id] = CodeforcesSubmissionLoader(
+                        self.submission_loaders[external_contest_id] = CodeforcesSubmissionLoader(
                             external_contest_id)
                     elif site == 'aoj':
-                        submission_loaders[external_contest_id] = AOJSubmissionLoader(
+                        self.submission_loaders[external_contest_id] = AOJSubmissionLoader(
                             external_contest_id)
                     else:
                         print("Unknown Site: ",
@@ -85,10 +94,10 @@ class Main():
 
                 print(external_contest_id, flush=True)
 
-                submissions = submission_loaders[external_contest_id].get(
+                submissions = self.submission_loaders[external_contest_id].get(
                     since=since)
 
-                print(submissions, flush=True)
+                print(len(submissions), flush=True)
 
                 time.sleep(4)
 
