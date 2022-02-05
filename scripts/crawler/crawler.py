@@ -203,7 +203,7 @@ class Main():
 
 
 if __name__ == '__main__':
-    firestore.init()
+    firestore.init(emulator=True)
 
     main = Main()
 
