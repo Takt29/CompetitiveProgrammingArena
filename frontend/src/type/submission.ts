@@ -4,8 +4,7 @@ import { Contest } from "./contest";
 import { Task } from "./task";
 import { User } from "./user";
 
-export type Submission = {
-  id: string;
+export type FireStoreSubmission = {
   contestId: Contest["id"];
   taskId: Task["id"];
   status: string; // TODO: enum
@@ -15,3 +14,7 @@ export type Submission = {
   submittedBy: User["id"];
   externalSubmissionId: string; // [site]:[contest]:[id]
 } & AuditFields;
+
+export type Submission = FireStoreSubmission & {
+  id: string;
+};
