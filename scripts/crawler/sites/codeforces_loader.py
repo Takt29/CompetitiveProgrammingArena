@@ -19,6 +19,7 @@ class CodeforcesSubmissionLoader(SubmissionLoader):
             (SubmissionStatus.WaitingForJudging, 'TESTING'),
             (SubmissionStatus.TimeLimitExceeded, 'IDLENESS_LIMIT_EXCEEDED'),
             (SubmissionStatus.WrongAnswer, 'PARTIAL'),
+            (SubmissionStatus.InternalError, 'CRASHED'),
         ]
 
         for pattern in patterns:

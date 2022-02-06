@@ -5,28 +5,26 @@ import { Task } from "./task";
 import { User } from "./user";
 
 export type StandingsScore = {
-  // 合計スコア
-  // 合計ペナルティ
   score: number;
   penalty: number;
+  submittedAt: Timestamp | null;
 };
 
 export type TaskScore = {
-  // 最大スコア
-  // 最大スコアの提出日時
-  // 最大スコアの提出までの提出数
-  // 全体の提出数
+  externalScore: number;
   score: number;
   penalty: number;
-  submittedAt: Timestamp;
-  allPenalty: number;
-  taskId: Task["id"];
+  submittedAt: Timestamp | null;
+  numOfSubmissions: number;
 };
 
-export type StandingsItem = {
-  id: string;
-  userId: User["id"];
+export type FireStoreStandingsItem = {
   contestId: Contest["id"];
-  taskScores: TaskScore[];
+  taskScores: { [taskId: Task["id"]]: TaskScore };
   score: StandingsScore;
+  sortKey: number[];
 } & AuditFields;
+
+export type StandingsItem = FireStoreStandingsItem & {
+  userId: User["id"];
+};

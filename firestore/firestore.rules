@@ -57,6 +57,11 @@ service cloud.firestore {
         allow update: if isAdminUser() && isValidAudit();
         allow delete: if isAdminUser();
       }
+
+      match /standings/{userId} {
+        allow read: if isAuthenticated();
+        allow create, update, delete: if false;
+      }
     }
     match /tasks/{taskId} {
       allow read: if isAuthenticated();

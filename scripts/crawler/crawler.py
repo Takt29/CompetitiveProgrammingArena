@@ -123,6 +123,8 @@ def add_submissions(submissions: list[Submission], contest_tasks: dict[str, any]
                     'externalSubmissionId': submission.external_submission_id,
                 }
 
+                print(data, flush=True)
+
                 doc_ref = db.collection('submissions').document()
                 doc_ref.set(data)
 
@@ -190,8 +192,6 @@ class Main():
             users = self.__get_users()
 
             sites_info = generate_sites_info(contests, tasks)
-
-            print(sites_info, flush=True)
 
             for item in sites_info:
                 external_contest_id = item['external_contest_id']
