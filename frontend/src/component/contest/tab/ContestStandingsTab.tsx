@@ -10,7 +10,10 @@ export const ContestStandingsTab = () => {
   const [standings] = useFetchStandings(contestId, [
     orderBy("sortKey", "desc"),
   ]);
-  const [tasks] = useFetchTasks([where("contestId", "==", contestId)]);
+  const [tasks] = useFetchTasks([
+    where("contestId", "==", contestId),
+    orderBy("index", "asc"),
+  ]);
   return (
     <Box>
       <Standings standingsItems={standings ?? []} tasks={tasks ?? []} />
