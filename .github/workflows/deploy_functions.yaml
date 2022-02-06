@@ -1,0 +1,29 @@
+name: Deploy Functions
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "functions/**"
+      - ".github/workflows/deploy_functions.yaml"
+
+
+jobs:
+  deploy_functions:
+    name: Deploy Functions
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - name: Install Dependencies (root)
+        run: npm install
+      - name: Install Dependencies (functions)
+        run: npm install
+        working-directory: functions
+      - name: Deploy
+        run: npm run deploy:functions -- --token=${{ secrets.FIREBASE_TOKEN }} --project=${{ secrets.FIREBASE_PROJECT_ID }}
