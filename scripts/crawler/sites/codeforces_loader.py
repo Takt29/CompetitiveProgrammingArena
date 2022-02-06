@@ -53,7 +53,7 @@ class CodeforcesSubmissionLoader(SubmissionLoader):
             data = Submission(
                 id=submission_id,
                 external_user_id=user_id,
-                external_contest_id=contest_id,
+                external_contest_id=f'codeforces:{contest_id}',
                 score=score,
                 status=self._normalize_status(status),
                 language=language,
