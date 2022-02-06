@@ -35,7 +35,7 @@ export const Standings = (props: Props) => {
         </Thead>
         <Tbody>
           {standingsItems.map((item, index) => (
-            <StandingsItemProvider key={item.id} value={item}>
+            <StandingsItemProvider key={item.userId} value={item}>
               <Tr>
                 <Td>{index + 1}</Td>
                 <Td>

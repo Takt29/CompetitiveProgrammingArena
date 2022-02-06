@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useStandingsItem } from "../../hook/context/StandingsItemContext";
+import { TaskScore } from "../../type/standings";
 import { Task } from "../../type/task";
 
 type Props = {
@@ -9,8 +10,8 @@ type Props = {
 export const StandingsItemTaskScore = (props: Props) => {
   const { taskId } = props;
   const { taskScores } = useStandingsItem();
-  const taskScore = useMemo(
-    () => taskScores.find((taskScore) => taskScore.taskId === taskId),
+  const taskScore: TaskScore | undefined = useMemo(
+    () => taskScores[taskId],
     [taskId, taskScores]
   );
 
@@ -19,7 +20,7 @@ export const StandingsItemTaskScore = (props: Props) => {
   }
 
   if (taskScore.score <= 0) {
-    return <span>{`(${taskScore.allPenalty})`}</span>;
+    return <span>{`(${taskScore.numOfSubmissions})`}</span>;
   }
 
   return <span>{`${taskScore.score}(${taskScore.penalty})`}</span>;
