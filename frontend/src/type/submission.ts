@@ -9,6 +9,7 @@ export type FireStoreSubmission = {
   taskId: Task["id"];
   status: string; // TODO: enum
   score: number;
+  language: string;
   submittedAt: Timestamp;
   submittedBy: User["id"];
   externalSubmissionId: string; // [site]:[contest]:[id]
