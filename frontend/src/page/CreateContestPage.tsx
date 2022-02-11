@@ -82,7 +82,7 @@ export const CreateContestPage = () => {
   );
 
   return (
-    <Container maxWidth={"container.lg"} marginTop={4} marginBottom={4}>
+    <Container maxWidth={"container.xl"} marginTop={4} marginBottom={4}>
       <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(onSubmit)}>
           <Stack spacing={4}>

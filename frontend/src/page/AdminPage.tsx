@@ -18,7 +18,7 @@ export const AdminPage = () => {
   if (!claims?.admin) return null;
 
   return (
-    <Container maxWidth={"container.lg"} marginTop={4} marginBottom={4}>
+    <Container maxWidth={"container.xl"} marginTop={4} marginBottom={4}>
       <Stack spacing={4}>
         <Heading as="h2" size="lg">
           Admin Page

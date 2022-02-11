@@ -45,7 +45,7 @@ export const ContestsPage = () => {
   ]);
 
   return (
-    <Container maxWidth={"container.lg"} marginTop={4} marginBottom={4}>
+    <Container maxWidth={"container.xl"} marginTop={4} marginBottom={4}>
       <Stack spacing={8}>
         <Box textAlign={"right"}>
           <Button

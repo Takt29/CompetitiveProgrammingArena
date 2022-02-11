@@ -46,7 +46,7 @@ export const ContestPage = () => {
 
   return (
     <ContestProvider value={contest}>
-      <Container maxWidth={"container.lg"} marginTop={4} marginBottom={4}>
+      <Container maxWidth={"container.xl"} marginTop={4} marginBottom={4}>
         <Box marginBottom={4}>
           <Stack
             direction={["column", "row"]}

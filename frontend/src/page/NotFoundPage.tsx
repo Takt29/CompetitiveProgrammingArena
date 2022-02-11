@@ -10,7 +10,7 @@ export const NotFoundPage = () => {
   const linkColor = useColorModeValue("teal.600", "green.200");
 
   return (
-    <Container maxWidth={"container.lg"} marginTop={4} marginBottom={4}>
+    <Container maxWidth={"container.xl"} marginTop={4} marginBottom={4}>
       <Heading as={"h2"} size={"xl"}>
         Not Found
       </Heading>
