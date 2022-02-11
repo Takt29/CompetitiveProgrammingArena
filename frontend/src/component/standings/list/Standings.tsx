@@ -3,12 +3,12 @@ import { StandingsItemScore } from "../../../consumer/standings/StandingsItemSco
 import { StandingsItemTaskSubmittedAt } from "../../../consumer/standings/StandingsItemTaskSubmittedAt";
 import { StandingsItemTaskScore } from "../../../consumer/standings/StandingsItemTaskScore";
 import { StandingsItemUserName } from "../../../consumer/standings/StandingsItemUserName";
-import { TaskName } from "../../../consumer/task/TaskName";
 import { StandingsItemProvider } from "../../../hook/context/StandingsItemContext";
 import { TaskProvider } from "../../../hook/context/TaskContext";
 import { StandingsItem } from "../../../type/standings";
 import { Task } from "../../../type/task";
 import { StandingsItemTimePenalty } from "../../../consumer/standings/StandingsItemTimePenalty";
+import { TaskNumber } from "../../../consumer/task/TaskNumber";
 
 type Props = {
   tasks: Task[];
@@ -25,14 +25,14 @@ export const Standings = (props: Props) => {
           <Tr>
             <Th>Rank</Th>
             <Th>User</Th>
+            <Th>Score</Th>
             {tasks.map((task) => (
               <TaskProvider key={task.id} value={task}>
                 <Th>
-                  <TaskName />
+                  <TaskNumber />
                 </Th>
               </TaskProvider>
             ))}
-            <Th>Score</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -43,6 +43,11 @@ export const Standings = (props: Props) => {
                 <Td>
                   <StandingsItemUserName />
                 </Td>
+                <Td>
+                  <StandingsItemScore />
+                  <br />
+                  <StandingsItemTimePenalty />
+                </Td>
                 {tasks.map(({ id: taskId }) => (
                   <Td key={taskId}>
                     <StandingsItemTaskScore taskId={taskId} />
@@ -50,11 +55,6 @@ export const Standings = (props: Props) => {
                     <StandingsItemTaskSubmittedAt taskId={taskId} />
                   </Td>
                 ))}
-                <Td>
-                  <StandingsItemScore />
-                  <br />
-                  <StandingsItemTimePenalty />
-                </Td>
               </Tr>
             </StandingsItemProvider>
           ))}
