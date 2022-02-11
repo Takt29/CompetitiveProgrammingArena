@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   FormControl,
   FormLabel,
@@ -87,44 +88,46 @@ export const ContestTaskFormFields = () => {
 
   return (
     <>
-      <Table size={"sm"} overflowX={"auto"}>
-        <Thead>
-          <Tr>
-            <Th>No</Th>
-            <Th>Name</Th>
-            <Th>ID</Th>
-            <Th>Score</Th>
-            <Th>Original Score</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {fields.map((task, index) => (
-            <Tr key={task.id}>
-              <Td>{index + 1}</Td>
-              <Td>{task.name}</Td>
-              <Td>{task.externalTaskId}</Td>
-              <Td>
-                <Input
-                  type="number"
-                  value={task.score}
-                  size="xs"
-                  onChange={(e) => onUpdate(index, "score", e.target.value)}
-                />
-              </Td>
-              <Td>
-                <Input
-                  type="number"
-                  value={task.originalScore}
-                  size="xs"
-                  onChange={(e) =>
-                    onUpdate(index, "originalScore", e.target.value)
-                  }
-                />
-              </Td>
+      <Box overflowX={"auto"}>
+        <Table size={"sm"}>
+          <Thead>
+            <Tr>
+              <Th>No</Th>
+              <Th>Name</Th>
+              <Th>ID</Th>
+              <Th>Score</Th>
+              <Th>Original Score</Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
+          </Thead>
+          <Tbody>
+            {fields.map((task, index) => (
+              <Tr key={task.id}>
+                <Td>{index + 1}</Td>
+                <Td>{task.name}</Td>
+                <Td>{task.externalTaskId}</Td>
+                <Td>
+                  <Input
+                    type="number"
+                    value={task.score}
+                    size="xs"
+                    onChange={(e) => onUpdate(index, "score", e.target.value)}
+                  />
+                </Td>
+                <Td>
+                  <Input
+                    type="number"
+                    value={task.originalScore}
+                    size="xs"
+                    onChange={(e) =>
+                      onUpdate(index, "originalScore", e.target.value)
+                    }
+                  />
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </Box>
       <FormControl>
         <FormLabel htmlFor="task-url">Task URL</FormLabel>
         <InputGroup size={"md"}>
