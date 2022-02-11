@@ -1,5 +1,6 @@
 import { Box, Table, Thead, Tr, Th, Tbody, Td } from "@chakra-ui/react";
 import { StandingsItemScore } from "../../../consumer/standings/StandingsItemScore";
+import { StandingsItemTaskSubmittedAt } from "../../../consumer/standings/StandingsItemTaskSubmittedAt";
 import { StandingsItemTaskScore } from "../../../consumer/standings/StandingsItemTaskScore";
 import { StandingsItemUserName } from "../../../consumer/standings/StandingsItemUserName";
 import { TaskName } from "../../../consumer/task/TaskName";
@@ -7,6 +8,7 @@ import { StandingsItemProvider } from "../../../hook/context/StandingsItemContex
 import { TaskProvider } from "../../../hook/context/TaskContext";
 import { StandingsItem } from "../../../type/standings";
 import { Task } from "../../../type/task";
+import { StandingsItemTimePenalty } from "../../../consumer/standings/StandingsItemTimePenalty";
 
 type Props = {
   tasks: Task[];
@@ -44,10 +46,14 @@ export const Standings = (props: Props) => {
                 {tasks.map(({ id: taskId }) => (
                   <Td key={taskId}>
                     <StandingsItemTaskScore taskId={taskId} />
+                    <br />
+                    <StandingsItemTaskSubmittedAt taskId={taskId} />
                   </Td>
                 ))}
                 <Td>
                   <StandingsItemScore />
+                  <br />
+                  <StandingsItemTimePenalty />
                 </Td>
               </Tr>
             </StandingsItemProvider>
