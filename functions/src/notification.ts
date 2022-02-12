@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import axios from "axios";
 import * as dayjs from "dayjs";
 
 import {
@@ -70,12 +71,9 @@ export const notifyContestCreation = functions
         .padStart(2, "0")}\n` +
       `${contestUrl}\n`;
 
-    console.log("ok");
-
     if (notificationSettings?.discordWebhookUrl) {
-      console.log(notificationSettings.discordWebhookUrl, message);
-      // await axios.post(notificationSettings.discordWebhookUrl, {
-      //   content: message,
-      // });
+      await axios.post(notificationSettings.discordWebhookUrl, {
+        content: message,
+      });
     }
   });
