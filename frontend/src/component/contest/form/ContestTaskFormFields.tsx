@@ -53,7 +53,7 @@ export const ContestTaskFormFields = () => {
         append({
           name: taskInfo.title ?? "",
           externalTaskId,
-          score: "100",
+          score: (taskInfo.score ?? 100).toString(),
           originalScore: (taskInfo.score ?? 0).toString(),
         });
         if (taskUrlRef.current) {
