@@ -60,8 +60,8 @@ export const notifyContestCreation = functions
 
     const message =
       "" +
-      `新しいコンテストが作成されました。\n` +
-      `\n` +
+      "新しいコンテストが作成されました。\n" +
+      "\n" +
       `${contest.name}\n` +
       `作成者: ${user?.name}\n` +
       `開始時刻: ${startAt}\n` +
