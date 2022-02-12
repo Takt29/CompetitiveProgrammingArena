@@ -3,14 +3,13 @@ import * as admin from "firebase-admin";
 import { firestore } from "firebase-admin";
 import {
   Contest,
+  DocumentSnapshot,
   StandingsItem,
   StandingsScore,
   Submission,
   Task,
   TaskScore,
 } from "./types";
-
-type DocumentSnapshot<T> = firestore.DocumentSnapshot<T>;
 
 export const updateStandingsItem = functions
   .region("asia-northeast1")

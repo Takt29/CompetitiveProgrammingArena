@@ -10,6 +10,7 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { RegistrationCodeTab } from "../component/admin/tab/RegistrationCodeTab";
+import { SettingsTab } from "../component/admin/tab/SettingsTab";
 import { useClaims } from "../hook/firebase/auth";
 
 export const AdminPage = () => {
@@ -26,10 +27,14 @@ export const AdminPage = () => {
         <Tabs isLazy>
           <Box overflowX={"auto"}>
             <TabList>
+              <Tab _focus={{ outline: "none" }}>Settings</Tab>
               <Tab _focus={{ outline: "none" }}>Registration Code</Tab>
             </TabList>
           </Box>
           <TabPanels>
+            <TabPanel>
+              <SettingsTab />
+            </TabPanel>
             <TabPanel>
               <RegistrationCodeTab />
             </TabPanel>

@@ -1,5 +1,6 @@
 import { firestore } from "firebase-admin";
 
+export type DocumentSnapshot<T> = firestore.DocumentSnapshot<T>;
 export type Timestamp = firestore.Timestamp;
 export type TimestampOrServerTimestamp =
   | firestore.Timestamp
@@ -70,4 +71,28 @@ export type StandingsItem = {
   taskScores: { [taskId: string]: TaskScore };
   score: StandingsScore;
   sortKey: number[];
+} & AuditFields;
+
+/* User */
+
+export type User = {
+  name: string;
+  externalAccountId: {
+    atcoder?: string;
+    codeforces?: string;
+    aoj?: string;
+  };
+} & AuditFields;
+
+/* Settings */
+
+export type SettingsNamespace = "general" | "notification";
+
+export type GeneralSettings = {
+  domain: string;
+} & AuditFields;
+
+export type NotificationSettings = {
+  slackToken: string;
+  discordWebhookUrl: string;
 } & AuditFields;

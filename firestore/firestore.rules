@@ -26,16 +26,16 @@ service cloud.firestore {
     function isValidCreatedAt() {
       // TODO: create以外
       return
-        (request.method != 'create' || incomingData().createdAt == request.time) &&
-        (request.method != 'update' || incomingData().createdAt == existingData().createdAt);
+      (request.method != 'create' || incomingData().createdAt == request.time) &&
+      (request.method != 'update' || incomingData().createdAt == existingData().createdAt);
     }
     function isValidUpdatedAt() {
       return incomingData().updatedAt == request.time;
     }
     function isValidCreatedBy() {
       return
-        (request.method != 'create' || incomingData().createdBy == request.auth.uid) &&
-        (request.method != 'update' || incomingData().createdBy == existingData().createdBy);
+      (request.method != 'create' || incomingData().createdBy == request.auth.uid) &&
+      (request.method != 'update' || incomingData().createdBy == existingData().createdBy);
     }
     function isValidAudit() {
       return isValidCreatedAt() && isValidUpdatedAt() && isValidCreatedBy();
@@ -86,6 +86,11 @@ service cloud.firestore {
     match /externalContests/{externalContestId} {
       allow read: if isAdminUser();
       allow create, update, delete: if false;
+    }
+    match /settings/{namespaceId} {
+      allow read: if isAdminUser();
+      allow create, update: if isAdminUser() && isValidAudit();
+      allow delete: if isAdminUser();
     }
   }
 }
