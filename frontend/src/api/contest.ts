@@ -2,6 +2,7 @@ import {
   collection,
   doc,
   serverTimestamp,
+  updateDoc,
   writeBatch,
 } from "firebase/firestore";
 import { auth, db } from "../helper/firebase";
@@ -58,6 +59,25 @@ export const createContest = async (
   });
 
   await batch.commit();
+
+  return { contestId: contestRef.id };
+};
+
+export const updateContest = async (
+  contestId: Contest["id"],
+  contest: CreateContestParams
+) => {
+  if (!auth.currentUser) {
+    throw new Error("Not authenticated.");
+  }
+
+  const contestRef = doc(db, "contests", contestId);
+
+  await updateDoc(contestRef, {
+    ...contest,
+    // TODO: 別生成する
+    updatedAt: serverTimestamp(),
+  });
 
   return { contestId: contestRef.id };
 };

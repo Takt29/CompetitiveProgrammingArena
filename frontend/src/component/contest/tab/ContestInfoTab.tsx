@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { useAsyncFn } from "react-use";
+import { Link as ReactRouterLink } from "react-router-dom";
 import { createContestant } from "../../../api/contestant";
 import { ContestDescription } from "../../../consumer/contest/ContestDescription";
 import { ContestEndAt } from "../../../consumer/contest/ContestEndAt";
@@ -31,6 +32,11 @@ export const ContestInfoTab = () => {
   const contest = useContest();
   const toast = useToast();
   const [contestant] = useFetchContestant(contest.id, auth?.uid);
+
+  const isOwner = useMemo(
+    () => contest.createdBy && contest.createdBy === auth?.uid,
+    [auth?.uid, contest.createdBy]
+  );
 
   const [{ loading }, register] = useAsyncFn(async () => {
     if (!auth) return;
@@ -60,6 +66,17 @@ export const ContestInfoTab = () => {
   return (
     <Box>
       <Stack spacing={8}>
+        {isOwner && (
+          <Box textAlign={"right"}>
+            <Button
+              variant={"link"}
+              as={ReactRouterLink}
+              to={`/contests/${contest.id}/edit`}
+            >
+              Edit Contest
+            </Button>
+          </Box>
+        )}
         <Box>
           <Text>
             <ContestDescription />

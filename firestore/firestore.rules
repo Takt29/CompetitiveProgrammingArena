@@ -21,6 +21,9 @@ service cloud.firestore {
     function isAdminUser() {
       return isAuthenticated() && request.auth.token.admin == true;
     }
+    function isOwnDocument() {
+      return isAuthenticated() && existingData().createdBy == request.auth.uid;
+    }
 
     // *** audit ***
     function isValidCreatedAt() {
@@ -48,7 +51,7 @@ service cloud.firestore {
     match /contests/{contestId} {
       allow read: if isAuthenticated();
       allow create: if isAuthenticated() && isValidAudit();
-      allow update: if isAdminUser() && isValidAudit();
+      allow update: if (isAdminUser() || isOwnDocument()) && isValidAudit();
       allow delete: if isAdminUser();
 
       match /contestants/{userId} {
