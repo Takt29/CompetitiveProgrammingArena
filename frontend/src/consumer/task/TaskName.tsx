@@ -5,23 +5,28 @@ import { useTask } from "../../hook/context/TaskContext";
 
 type Props = {
   link?: boolean;
+  withIndex?: boolean;
 };
 
 export const TaskName = (props: Props) => {
-  const { link } = props;
-  const { name, externalTaskId } = useTask();
+  const { link, withIndex } = props;
+  const { name, externalTaskId, index } = useTask();
 
   const href = useMemo(() => {
     return externalTaskId2Url(externalTaskId) ?? "#";
   }, [externalTaskId]);
 
+  const title = useMemo(() => {
+    return withIndex ? `${index} - ${name}` : name;
+  }, [index, name, withIndex]);
+
   if (link) {
     return (
       <Link href={href} isExternal>
-        {name}
+        {title}
       </Link>
     );
   }
 
-  return <span>{name}</span>;
+  return <span>{title}</span>;
 };

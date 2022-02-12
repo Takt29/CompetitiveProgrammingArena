@@ -36,7 +36,7 @@ export const SubmissionList = (props: Props) => {
                   <SubmissionSubmittedAt />
                 </Td>
                 <Td>
-                  <SubmissionTaskName link />
+                  <SubmissionTaskName link withIndex />
                 </Td>
                 <Td>
                   <SubmissionSubmittedBy />

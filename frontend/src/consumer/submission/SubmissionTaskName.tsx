@@ -5,10 +5,11 @@ import { TaskName } from "../task/TaskName";
 
 type Props = {
   link?: boolean;
+  withIndex?: boolean;
 };
 
 export const SubmissionTaskName = (props: Props) => {
-  const { link } = props;
+  const { link, withIndex } = props;
 
   const { taskId } = useSubmission();
   const [task] = useFetchTask(taskId);
@@ -17,7 +18,7 @@ export const SubmissionTaskName = (props: Props) => {
 
   return (
     <TaskProvider value={task}>
-      <TaskName link={link} />
+      <TaskName link={link} withIndex={withIndex} />
     </TaskProvider>
   );
 };
