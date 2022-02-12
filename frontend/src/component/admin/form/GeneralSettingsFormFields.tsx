@@ -29,7 +29,10 @@ export const GeneralSettingsFormFields = () => {
       <FormControl isInvalid={!!errors.domain}>
         <FormLabel htmlFor="domain">Site Domain</FormLabel>
         <InputGroup>
-          <Input {...register("domain", { pattern: /https?:\/\// })} />
+          <Input
+            paddingRight={24}
+            {...register("domain", { pattern: /https?:\/\// })}
+          />
           <InputRightElement width={24}>
             <Button size={"sm"} onClick={autofillDomain}>
               Autofill
