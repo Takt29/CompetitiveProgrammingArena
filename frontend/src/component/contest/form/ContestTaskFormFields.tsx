@@ -14,10 +14,9 @@ import {
   Tr,
   useToast,
 } from "@chakra-ui/react";
-import { useCallback, useRef } from "react";
+import { useRef } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { useAsyncFn } from "react-use";
-import { v4 as uuid } from "uuid";
 import { fetchTaskInformation } from "../../../api/externalTask";
 import { url2ExternalTaskId } from "../../../helper/url";
 
@@ -34,8 +33,8 @@ export type ContestTaskFormFieldsData = {
 };
 
 export const ContestTaskFormFields = () => {
-  const { control } = useFormContext<ContestTaskFormFieldsData>();
-  const { fields, append, update } = useFieldArray({
+  const { control, register } = useFormContext<ContestTaskFormFieldsData>();
+  const { fields, append } = useFieldArray({
     control,
     name: "tasks",
   });
@@ -52,7 +51,6 @@ export const ContestTaskFormFields = () => {
 
       if (taskInfo) {
         append({
-          id: uuid(),
           name: taskInfo.title ?? "",
           externalTaskId,
           score: "100",
@@ -71,20 +69,6 @@ export const ContestTaskFormFields = () => {
       });
     }
   }, [append, toast]);
-
-  const onUpdate = useCallback(
-    <T extends keyof FormTaskData>(
-      index: number,
-      key: T,
-      value: FormTaskData[T]
-    ) => {
-      update(index, {
-        ...fields[index],
-        [key]: value,
-      });
-    },
-    [fields, update]
-  );
 
   return (
     <>
@@ -108,19 +92,17 @@ export const ContestTaskFormFields = () => {
                 <Td>
                   <Input
                     type="number"
-                    value={task.score}
                     size="xs"
-                    onChange={(e) => onUpdate(index, "score", e.target.value)}
+                    defaultValue={task.score}
+                    {...register(`tasks.${index}.score`)}
                   />
                 </Td>
                 <Td>
                   <Input
                     type="number"
-                    value={task.originalScore}
                     size="xs"
-                    onChange={(e) =>
-                      onUpdate(index, "originalScore", e.target.value)
-                    }
+                    defaultValue={task.originalScore}
+                    {...register(`tasks.${index}.originalScore`)}
                   />
                 </Td>
               </Tr>
