@@ -6,7 +6,7 @@ export const RegistrationCodeCreatedAt = () => {
   const { createdAt } = useRegistrationCode();
 
   const formattedCreatedAt = useMemo(
-    () => createdAt && formatDateTime(createdAt, "YYYY-MM-DD HH:mm:ss"),
+    () => createdAt && formatDateTime(createdAt, "YYYY/MM/DD HH:mm:ss"),
     [createdAt]
   );
 

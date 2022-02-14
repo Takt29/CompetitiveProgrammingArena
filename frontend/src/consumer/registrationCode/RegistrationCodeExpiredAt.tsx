@@ -6,7 +6,7 @@ export const RegistrationCodeExpiredAt = () => {
   const { expiredAt } = useRegistrationCode();
 
   const formattedExpiredAt = useMemo(
-    () => formatDateTime(expiredAt, "YYYY-MM-DD HH:mm:ss"),
+    () => formatDateTime(expiredAt, "YYYY/MM/DD HH:mm:ss"),
     [expiredAt]
   );
 

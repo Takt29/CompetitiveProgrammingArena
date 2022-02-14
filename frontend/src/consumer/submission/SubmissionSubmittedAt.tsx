@@ -6,7 +6,7 @@ export const SubmissionSubmittedAt = () => {
   const { submittedAt } = useSubmission();
 
   const formattedSubmittedAt = useMemo(
-    () => formatDateTime(submittedAt, "YYYY-MM-DD HH:mm:ss"),
+    () => formatDateTime(submittedAt, "YYYY/MM/DD HH:mm:ss"),
     [submittedAt]
   );
 

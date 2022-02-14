@@ -6,7 +6,7 @@ export const ContestEndAt = () => {
   const { endAt } = useContest();
 
   const formattedEndAt = useMemo(
-    () => formatDateTime(endAt, "YYYY-MM-DD HH:mm:ss"),
+    () => formatDateTime(endAt, "YYYY/MM/DD HH:mm:ss"),
     [endAt]
   );
 

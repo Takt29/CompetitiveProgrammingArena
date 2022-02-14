@@ -59,9 +59,7 @@ export const ContestPage = () => {
               <ContestName />
             </Heading>
             <Text fontSize="sm" as="div">
-              <ContestStartAt />
-              {"~"}
-              <ContestEndAt />
+              <ContestStartAt /> ~ <ContestEndAt />
             </Text>
           </Stack>
         </Box>

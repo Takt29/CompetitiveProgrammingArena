@@ -6,7 +6,7 @@ export const ContestStartAt = () => {
   const { startAt } = useContest();
 
   const formattedStartAt = useMemo(
-    () => formatDateTime(startAt, "YYYY-MM-DD HH:mm:ss"),
+    () => formatDateTime(startAt, "YYYY/MM/DD HH:mm:ss"),
     [startAt]
   );
 

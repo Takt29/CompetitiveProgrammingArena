@@ -1,10 +1,4 @@
-import {
-  Box,
-  Progress,
-  Text,
-  useColorMode,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Box, Progress, Text, useColorModeValue } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { formatContestDuration, getDuration } from "../../../helper/dateTime";
 import { useNow } from "../../../hook/utility/useNow";
