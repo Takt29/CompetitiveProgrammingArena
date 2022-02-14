@@ -25,15 +25,22 @@ export const ElapsedTimeBar = (props: Props) => {
     [duration, elapsedTime]
   );
 
-  const durationText = useMemo(() => {
-    return formatContestDuration(contest.startAt, contest.endAt, true);
-  }, [contest.endAt, contest.startAt]);
-
-  const elapsedTimeText = useMemo(() => {
-    if (isFinished) return durationText;
-
-    return formatContestDuration(contest.startAt, now, true);
-  }, [contest.startAt, durationText, isFinished, now]);
+  const timeText = useMemo(() => {
+    if (elapsedTime < 0) {
+      const time = formatContestDuration(now, contest.startAt, true);
+      return `Begins in ${time}`;
+    } else if (elapsedTime < duration) {
+      const elapsedTimeText = formatContestDuration(contest.startAt, now, true);
+      const durationTimeText = formatContestDuration(
+        contest.startAt,
+        contest.endAt,
+        true
+      );
+      return `${elapsedTimeText} / ${durationTimeText}`;
+    } else {
+      return "Finished";
+    }
+  }, [contest.endAt, contest.startAt, duration, elapsedTime, now]);
 
   const timeColor = useColorModeValue("gray.600", "gray.300");
 
@@ -48,7 +55,7 @@ export const ElapsedTimeBar = (props: Props) => {
       />
       <Box textAlign={"center"}>
         <Text fontSize="sm" color={timeColor}>
-          {elapsedTimeText} / {durationText}
+          {timeText}
         </Text>
       </Box>
     </Box>
