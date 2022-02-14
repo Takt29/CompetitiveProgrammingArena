@@ -2,6 +2,7 @@ import {
   Box,
   Container,
   Heading,
+  Progress,
   Stack,
   Tab,
   TabList,
@@ -12,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
+import { ElapsedTimeBar } from "../component/contest/progress/ElapsedTimeBar";
 import { ContestInfoTab } from "../component/contest/tab/ContestInfoTab";
 import { ContestStandingsTab } from "../component/contest/tab/ContestStandingsTab";
 import { ContestSubmissionsTab } from "../component/contest/tab/ContestSubmissionsTab";
@@ -62,6 +64,10 @@ export const ContestPage = () => {
               <ContestEndAt />
             </Text>
           </Stack>
+        </Box>
+
+        <Box marginBottom={4}>
+          <ElapsedTimeBar contest={contest} />
         </Box>
 
         <Tabs isLazy>

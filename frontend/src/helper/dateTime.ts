@@ -33,3 +33,20 @@ export const formatDuration = (
   const duration = dayjs.duration(toDayJs(end).diff(toDayJs(begin)));
   return duration.format(formatStr);
 };
+
+export const formatContestDuration = (
+  begin: InputDate,
+  end: InputDate,
+  showSeconds = false
+) => {
+  const days = getDuration(begin, end, "days");
+  const hoursAndMins = formatDuration(
+    begin,
+    end,
+    showSeconds ? "HH:mm:ss" : "HH:mm"
+  );
+
+  if (days >= 1) return `${days}d ${hoursAndMins}`;
+
+  return hoursAndMins;
+};
