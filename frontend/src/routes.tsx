@@ -6,6 +6,7 @@ import { CreateContestPage } from "./page/CreateContestPage";
 import { EditContestPage } from "./page/EditContestPage";
 import { NotFoundPage } from "./page/NotFoundPage";
 import { PrivatePage } from "./page/PrivatePage";
+import { TeamsPage } from "./page/TeamsPage";
 
 export const routes: RouteObject[] = [
   {
@@ -27,6 +28,10 @@ export const routes: RouteObject[] = [
       {
         path: "contests/:contestId/edit",
         element: <EditContestPage />,
+      },
+      {
+        path: "teams",
+        element: <TeamsPage />,
       },
       {
         path: "admin",
