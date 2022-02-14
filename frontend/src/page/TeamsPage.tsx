@@ -1,21 +1,46 @@
-import { Container, Heading, Stack } from "@chakra-ui/react";
+import { Box, Button, Heading, Icon, Stack } from "@chakra-ui/react";
+import { FaPlus } from "react-icons/fa";
+import { Link as ReactRouterLink } from "react-router-dom";
 import { PageContainer } from "../component/common/PageContainer";
+import { TeamList } from "../component/team/list/TeamList";
+import { dummyTeams } from "../dummy/team";
 
 export const TeamsPage = () => {
   return (
     <PageContainer>
-      <Stack spacing={4}>
-        <Heading as={"h2"} size="lg">
-          Teams
-        </Heading>
+      <Stack spacing={8}>
+        <Box>
+          <Heading as={"h2"} size="lg">
+            Teams
+          </Heading>
 
-        <Heading as={"h3"} size="md">
-          My Teams
-        </Heading>
+          <Box textAlign={"right"}>
+            <Button
+              variant={"ghost"}
+              leftIcon={<Icon as={FaPlus} />}
+              as={ReactRouterLink}
+              to={"/teams/new"}
+            >
+              Create Team
+            </Button>
+          </Box>
+        </Box>
 
-        <Heading as={"h3"} size="md">
-          Other Teams
-        </Heading>
+        <Stack spacing={2}>
+          <Heading as={"h3"} size="md">
+            My Teams
+          </Heading>
+
+          <TeamList teams={dummyTeams} />
+        </Stack>
+
+        <Stack spacing={2}>
+          <Heading as={"h3"} size="md">
+            Other Teams
+          </Heading>
+
+          <TeamList teams={dummyTeams} />
+        </Stack>
       </Stack>
     </PageContainer>
   );

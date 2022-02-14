@@ -1,5 +1,5 @@
-import { AuditFields } from "../type/auditField";
-import { User } from "../type/user";
+import { AuditFields } from "./auditField";
+import { User } from "./user";
 
 export type FireStoreTeam = {
   name: string;
