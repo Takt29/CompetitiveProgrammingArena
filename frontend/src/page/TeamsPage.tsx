@@ -1,8 +1,9 @@
 import { Container, Heading, Stack } from "@chakra-ui/react";
+import { PageContainer } from "../component/common/PageContainer";
 
 export const TeamsPage = () => {
   return (
-    <Container maxWidth={"container.xl"} marginTop={4} marginBottom={4}>
+    <PageContainer>
       <Stack spacing={4}>
         <Heading as={"h2"} size="lg">
           Teams
@@ -16,6 +17,6 @@ export const TeamsPage = () => {
           Other Teams
         </Heading>
       </Stack>
-    </Container>
+    </PageContainer>
   );
 };

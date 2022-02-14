@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  Heading,
-  Icon,
-  Stack,
-} from "@chakra-ui/react";
+import { Box, Button, Divider, Heading, Icon, Stack } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
 import { ContestList } from "../component/contest/list/ContestList";
 import { useFetchContests } from "../hook/firebase/contest";
@@ -14,6 +6,7 @@ import { Link as ReactRouterLink } from "react-router-dom";
 import { limit, orderBy, where } from "firebase/firestore";
 import { useMemo } from "react";
 import { useNow } from "../hook/utility/useNow";
+import { PageContainer } from "../component/common/PageContainer";
 
 export const ContestsPage = () => {
   const now = useNow(5 * 60 * 1000);
@@ -45,7 +38,7 @@ export const ContestsPage = () => {
   ]);
 
   return (
-    <Container maxWidth={"container.xl"} marginTop={4} marginBottom={4}>
+    <PageContainer>
       <Stack spacing={8}>
         <Box textAlign={"right"}>
           <Button
@@ -79,6 +72,6 @@ export const ContestsPage = () => {
           <ContestList contests={recentContests ?? []} />
         </Box>
       </Stack>
-    </Container>
+    </PageContainer>
   );
 };

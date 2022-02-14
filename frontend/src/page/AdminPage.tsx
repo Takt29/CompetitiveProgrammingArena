@@ -1,6 +1,5 @@
 import {
   Box,
-  Container,
   Heading,
   Stack,
   Tab,
@@ -11,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { RegistrationCodeTab } from "../component/admin/tab/RegistrationCodeTab";
 import { SettingsTab } from "../component/admin/tab/SettingsTab";
+import { PageContainer } from "../component/common/PageContainer";
 import { useClaims } from "../hook/firebase/auth";
 
 export const AdminPage = () => {
@@ -19,7 +19,7 @@ export const AdminPage = () => {
   if (!claims?.admin) return null;
 
   return (
-    <Container maxWidth={"container.xl"} marginTop={4} marginBottom={4}>
+    <PageContainer>
       <Stack spacing={4}>
         <Heading as="h2" size="lg">
           Admin Page
@@ -41,6 +41,6 @@ export const AdminPage = () => {
           </TabPanels>
         </Tabs>
       </Stack>
-    </Container>
+    </PageContainer>
   );
 };

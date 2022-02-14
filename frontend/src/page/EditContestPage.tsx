@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Container,
   Divider,
   Heading,
   Stack,
@@ -19,6 +18,7 @@ import { formatDateTime } from "../helper/dateTime";
 import { useNavigate, useParams } from "react-router-dom";
 import { useFetchContest } from "../hook/firebase/contest";
 import { useEffect } from "react";
+import { PageContainer } from "../component/common/PageContainer";
 
 type EditContestFormData = ContestFormFieldsData;
 
@@ -74,7 +74,7 @@ export const EditContestPage = () => {
   );
 
   return (
-    <Container maxWidth={"container.xl"} marginTop={4} marginBottom={4}>
+    <PageContainer>
       <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(onSubmit)}>
           <Stack spacing={4}>
@@ -108,6 +108,6 @@ export const EditContestPage = () => {
           </Stack>
         </form>
       </FormProvider>
-    </Container>
+    </PageContainer>
   );
 };

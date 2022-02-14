@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Container,
   Divider,
   Heading,
   Stack,
@@ -23,6 +22,7 @@ import {
 import { StandingsSystem } from "../constant/StandingsSystem";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import { PageContainer } from "../component/common/PageContainer";
 
 type CreateContestFormData = ContestFormFieldsData & ContestTaskFormFieldsData;
 
@@ -82,7 +82,7 @@ export const CreateContestPage = () => {
   );
 
   return (
-    <Container maxWidth={"container.xl"} marginTop={4} marginBottom={4}>
+    <PageContainer>
       <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(onSubmit)}>
           <Stack spacing={4}>
@@ -131,6 +131,6 @@ export const CreateContestPage = () => {
           </Stack>
         </form>
       </FormProvider>
-    </Container>
+    </PageContainer>
   );
 };

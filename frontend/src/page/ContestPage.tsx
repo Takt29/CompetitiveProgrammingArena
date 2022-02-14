@@ -1,6 +1,5 @@
 import {
   Box,
-  Container,
   Heading,
   Stack,
   Tab,
@@ -12,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
+import { PageContainer } from "../component/common/PageContainer";
 import { ElapsedTimeBar } from "../component/contest/progress/ElapsedTimeBar";
 import { ContestInfoTab } from "../component/contest/tab/ContestInfoTab";
 import { ContestStandingsTab } from "../component/contest/tab/ContestStandingsTab";
@@ -47,7 +47,7 @@ export const ContestPage = () => {
 
   return (
     <ContestProvider value={contest}>
-      <Container maxWidth={"container.xl"} marginTop={4} marginBottom={4}>
+      <PageContainer>
         <Box marginBottom={4}>
           <Stack
             direction={["column", "row"]}
@@ -97,7 +97,7 @@ export const ContestPage = () => {
             </TabPanel>
           </TabPanels>
         </Tabs>
-      </Container>
+      </PageContainer>
     </ContestProvider>
   );
 };
