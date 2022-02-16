@@ -7,6 +7,7 @@ import traceback
 import time
 from os.path import join, dirname
 from dotenv import load_dotenv
+from firebase_admin.firestore import SERVER_TIMESTAMP
 from firestore import firestore
 from firestore.contests_loader import ContestsLoader
 from firestore.tasks_loader import TasksLoader
@@ -121,6 +122,10 @@ def add_submissions(submissions: list[Submission], contest_tasks: dict[str, any]
                     'submittedAt': submission.submitted_at,
                     'submittedBy': submittedBy,
                     'externalSubmissionId': submission.external_submission_id,
+                    # Audit
+                    'createdAt': SERVER_TIMESTAMP,
+                    'updatedAt': SERVER_TIMESTAMP,
+                    'createdBy': 'crawler',
                 }
 
                 print(data, flush=True)
@@ -208,7 +213,7 @@ class Main():
 
 
 if __name__ == '__main__':
-    firestore.init(emulator=False)
+    firestore.init(emulator=True)
 
     main = Main()
 
