@@ -10,7 +10,7 @@ export const TeamList = (props: Props) => {
   const { teams } = props;
   return (
     <Box overflowX={"auto"}>
-      <Table variant={"simple"} minWidth={"md"}>
+      <Table variant={"simple"} minWidth="xs">
         <Tbody>
           {teams.map((team) => (
             <TeamListItem key={team.id} team={team} />

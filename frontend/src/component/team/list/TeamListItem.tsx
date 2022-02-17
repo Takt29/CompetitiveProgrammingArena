@@ -20,7 +20,7 @@ export const TeamListItem = (props: Props) => {
           </Link>
         </Td>
         <Td>
-          <TeamMemberIcons />
+          <TeamMemberIcons size="sm" />
         </Td>
       </Tr>
     </TeamProvider>
