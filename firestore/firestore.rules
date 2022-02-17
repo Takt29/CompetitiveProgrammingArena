@@ -77,6 +77,18 @@ service cloud.firestore {
       allow create, update: if isUserAuthenticated(userId) && isValidAudit();
       allow delete: if isAdminUser();
     }
+    match /teams/{teamId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidAudit();
+      allow update: if (isAdminUser() || isOwnDocument()) && isValidAudit();
+      allow delete: if isAdminUser();
+    }
+    match /teamMembers/{teamMemberId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidAudit();
+      allow update: if isAdminUser() && isValidAudit();
+      allow delete: if isAdminUser();
+    }
     match /submissions/{submissionId} {
       allow read: if isAuthenticated();
       allow create, update, delete: if false;

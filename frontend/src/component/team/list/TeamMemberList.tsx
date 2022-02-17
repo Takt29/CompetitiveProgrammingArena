@@ -1,10 +1,13 @@
 import { Box, Table, Tbody } from "@chakra-ui/react";
-import { DummyUsers } from "../../../dummy/user";
-import { User } from "../../../type/user";
+import { TeamMember } from "../../../type/team";
 import { TeamMemberListItem } from "./TeamMemberListItem";
 
-export const TeamMemberList = () => {
-  const members: User[] = DummyUsers;
+type Props = {
+  members: TeamMember[];
+};
+
+export const TeamMemberList = (props: Props) => {
+  const { members } = props;
 
   return (
     <Box overflowX={"auto"}>

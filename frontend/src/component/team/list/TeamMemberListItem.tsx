@@ -2,17 +2,21 @@ import { Td, Tr } from "@chakra-ui/react";
 import { UserIcon } from "../../../consumer/user/UserIcon";
 import { UserName } from "../../../consumer/user/UserName";
 import { UserProvider } from "../../../hook/context/UserContext";
-import { User } from "../../../type/user";
+import { useFetchUser } from "../../../hook/firebase/user";
+import { TeamMember } from "../../../type/team";
 
 type Props = {
-  member: User;
+  member: TeamMember;
 };
 
 export const TeamMemberListItem = (props: Props) => {
   const { member } = props;
+  const [user] = useFetchUser(member.userId);
+
+  if (!user) return null;
 
   return (
-    <UserProvider value={member}>
+    <UserProvider value={user}>
       <Tr>
         <Td>
           <UserIcon size={"sm"} />

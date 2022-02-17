@@ -1,14 +1,18 @@
 import { Stack, Heading } from "@chakra-ui/react";
-// import { useParams } from "react-router";
+import { where } from "firebase/firestore";
+import { useParams } from "react-router";
 import { PageContainer } from "../component/common/PageContainer";
 import { TeamMemberList } from "../component/team/list/TeamMemberList";
 import { TeamName } from "../consumer/team/TeamName";
-import { dummyTeams } from "../dummy/team";
 import { TeamProvider } from "../hook/context/TeamContext";
+import { useFetchTeam, useFetchTeamMembers } from "../hook/firebase/team";
 
 export const TeamPage = () => {
-  // const { teamId } = useParams();
-  const team = dummyTeams[0];
+  const { teamId } = useParams();
+  const [team] = useFetchTeam(teamId);
+  const [members] = useFetchTeamMembers([where("teamId", "==", teamId)]);
+
+  if (!team) return null;
 
   return (
     <TeamProvider value={team}>
@@ -21,7 +25,7 @@ export const TeamPage = () => {
             <Heading as={"h3"} size="md">
               Members
             </Heading>
-            <TeamMemberList />
+            <TeamMemberList members={members ?? []} />
           </Stack>
         </Stack>
       </PageContainer>

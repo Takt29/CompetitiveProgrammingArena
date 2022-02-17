@@ -3,6 +3,7 @@ import { AdminPage } from "./page/AdminPage";
 import { ContestPage } from "./page/ContestPage";
 import { ContestsPage } from "./page/ContestsPage";
 import { CreateContestPage } from "./page/CreateContestPage";
+import { CreateTeamPage } from "./page/CreateTeamPage";
 import { EditContestPage } from "./page/EditContestPage";
 import { NotFoundPage } from "./page/NotFoundPage";
 import { PrivatePage } from "./page/PrivatePage";
@@ -33,6 +34,10 @@ export const routes: RouteObject[] = [
       {
         path: "teams",
         element: <TeamsPage />,
+      },
+      {
+        path: "teams/new",
+        element: <CreateTeamPage />,
       },
       {
         path: "teams/:teamId",

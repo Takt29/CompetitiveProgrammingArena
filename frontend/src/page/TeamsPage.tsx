@@ -3,9 +3,11 @@ import { FaPlus } from "react-icons/fa";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { PageContainer } from "../component/common/PageContainer";
 import { TeamList } from "../component/team/list/TeamList";
-import { dummyTeams } from "../dummy/team";
+import { useFetchTeams } from "../hook/firebase/team";
 
 export const TeamsPage = () => {
+  const [teams] = useFetchTeams();
+
   return (
     <PageContainer>
       <Stack spacing={8}>
@@ -31,7 +33,7 @@ export const TeamsPage = () => {
             My Teams
           </Heading>
 
-          <TeamList teams={dummyTeams} />
+          <TeamList teams={teams ?? []} />
         </Stack>
 
         <Stack spacing={2}>
@@ -39,7 +41,7 @@ export const TeamsPage = () => {
             Other Teams
           </Heading>
 
-          <TeamList teams={dummyTeams} />
+          <TeamList teams={teams ?? []} />
         </Stack>
       </Stack>
     </PageContainer>
