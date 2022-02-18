@@ -4,7 +4,6 @@ import {
   doc,
   documentId,
   DocumentReference,
-  FieldPath,
   query,
   QueryConstraint,
   where,
