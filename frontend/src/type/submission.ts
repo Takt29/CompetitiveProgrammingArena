@@ -7,7 +7,18 @@ import { User } from "./user";
 export type FireStoreSubmission = {
   contestId: Contest["id"];
   taskId: Task["id"];
-  status: string; // TODO: enum
+  status:
+    | "CE"
+    | "WA"
+    | "TLE"
+    | "MLE"
+    | "AC"
+    | "OLE"
+    | "RE"
+    | "PE"
+    | "IE"
+    | "WJ"
+    | "Unknown";
   score: number;
   language: string;
   submittedAt: Timestamp;
