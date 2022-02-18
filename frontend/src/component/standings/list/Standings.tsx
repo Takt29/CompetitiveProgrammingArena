@@ -49,7 +49,7 @@ export const Standings = (props: Props) => {
                   <StandingsItemTimePenalty />
                 </Td>
                 {tasks.map(({ id: taskId }) => (
-                  <Td key={taskId}>
+                  <Td key={taskId} whiteSpace="nowrap">
                     <StandingsItemTaskScore taskId={taskId} />
                     <br />
                     <StandingsItemTaskSubmittedAt taskId={taskId} />
