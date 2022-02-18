@@ -3,6 +3,7 @@ import { User } from "./user";
 
 export type FireStoreTeam = {
   name: string;
+  description: string;
 } & AuditFields;
 
 export type Team = {
