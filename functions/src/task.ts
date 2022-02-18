@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import axios from "axios";
+import { unescape } from "html-escaper";
 
 export const fetchAtCoderTask = functions
   .region("asia-northeast1")
@@ -54,7 +55,7 @@ export const fetchAtCoderTask = functions
 
       const taskInfo = {
         score: scoreMatchRes ? parseInt(scoreMatchRes[1], 10) : undefined,
-        title: titleMatchRes ? titleMatchRes[1] : undefined,
+        title: titleMatchRes ? unescape(titleMatchRes[1]) : undefined,
       };
 
       if (!taskInfo.title) {
