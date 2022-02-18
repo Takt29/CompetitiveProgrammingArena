@@ -2,13 +2,16 @@ import {
   collection,
   CollectionReference,
   doc,
+  documentId,
   DocumentReference,
+  FieldPath,
   query,
   QueryConstraint,
+  where,
 } from "firebase/firestore";
 import { useMemo } from "react";
 import { useCollection, useDocument } from "react-firebase-hooks/firestore";
-import { db } from "../../helper/firebase";
+import { auth, db } from "../../helper/firebase";
 import {
   Team,
   FireStoreTeam,
@@ -83,4 +86,24 @@ export const useFetchTeamMembers = (queries?: QueryConstraint[]) => {
   }, [teamMembersSnapshot?.docs]);
 
   return [teamMembers, loading, error] as const;
+};
+
+export const useFetchMyTeams = (queries?: QueryConstraint[]) => {
+  const [members, membersLoading, membersError] = useFetchTeamMembers([
+    where("userId", "==", auth.currentUser?.uid),
+  ]);
+
+  const [teams, teamLoading, teamError] = useFetchTeams([
+    where(documentId(), "in", [
+      ...(members ?? []).map(({ teamId }) => teamId),
+      "dummy",
+    ]),
+    ...(queries ?? []),
+  ]);
+
+  return [
+    teams,
+    membersLoading || teamLoading,
+    membersError ?? teamError,
+  ] as const;
 };
