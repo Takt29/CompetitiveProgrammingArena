@@ -2,9 +2,8 @@ import { Timestamp } from "firebase/firestore";
 
 export type UserRef = string;
 
-// TODO: dummyではなくなったらPartialを外す
-export type AuditFields = Partial<{
+export type AuditFields = {
   createdAt: Timestamp;
   updatedAt: Timestamp;
   createdBy: UserRef;
-}>;
+};
