@@ -18,7 +18,7 @@ from sites.codeforces_loader import CodeforcesSubmissionLoader
 from sites.submissions_loader import SubmissionLoader
 from sites.atcoder_loader import AtCoderSubmissionLoader
 from utils import scheduler
-
+from utils.options import Options
 
 # set default encoding
 # ---------------------------------
@@ -214,7 +214,9 @@ class Main():
 
 
 if __name__ == '__main__':
-    firestore.init(emulator=True)
+    options = Options().parse()
+
+    firestore.init(emulator=options.emulator)
 
     main = Main()
 
