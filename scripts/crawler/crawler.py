@@ -122,6 +122,9 @@ def add_submissions(submissions: list[Submission], contest_tasks: dict[str, any]
                     'submittedAt': submission.submitted_at,
                     'submittedBy': submittedBy,
                     'externalSubmissionId': submission.external_submission_id,
+                    'memory': submission.memory,
+                    'exec_time': submission.exec_time,
+                    'code_size': submission.code_size,
                     # Audit
                     'createdAt': SERVER_TIMESTAMP,
                     'updatedAt': SERVER_TIMESTAMP,

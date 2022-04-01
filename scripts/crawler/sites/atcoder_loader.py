@@ -58,8 +58,8 @@ class AtCoderSubmissionLoader(SubmissionLoader):
                 [timestamp, task_id, user_id, language, submission_id,
                     score, code_size, status] = submission[0:8]
 
-                exec_time = submission[8] if len(submission) >= 9 else 0
-                memory = submission[9] if len(submission) >= 10 else 0
+                exec_time = submission[8] if len(submission) >= 9 else ''
+                memory = submission[9] if len(submission) >= 10 else ''
 
                 data = Submission(
                     id=int(submission_id),
@@ -74,9 +74,9 @@ class AtCoderSubmissionLoader(SubmissionLoader):
                     external_submission_id=f'atcoder:{contest_id}:{submission_id}',
                     submitted_at=datetime.strptime(
                         timestamp, '%Y-%m-%d %H:%M:%S%z'),
-                    code_size=code_size,
-                    exec_time=exec_time,
-                    memory=memory,
+                    code_size=int('0' + code_size),
+                    exec_time=int('0' + exec_time),
+                    memory=int('0' + memory),
                 )
 
                 if data.status == SubmissionStatus.WaitingForJudging:
