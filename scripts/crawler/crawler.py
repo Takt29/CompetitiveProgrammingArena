@@ -19,7 +19,6 @@ from sites.submissions_loader import SubmissionLoader
 from sites.atcoder_loader import AtCoderSubmissionLoader
 from utils import scheduler
 
-f
 
 # set default encoding
 # ---------------------------------
