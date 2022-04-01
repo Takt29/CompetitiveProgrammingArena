@@ -1,5 +1,4 @@
 import sys
-import traceback
 import json
 from typing import Optional
 from datetime import datetime, timezone
@@ -50,6 +49,9 @@ class CodeforcesSubmissionLoader(SubmissionLoader):
             score = 1 if self._normalize_status(
                 status) == SubmissionStatus.Accepted else 0
             language = submission['programmingLanguage']
+            memory = submission['memoryConsumedBytes']
+            exec_time = submission['timeConsumedMillis']
+            code_size = 0
 
             data = Submission(
                 id=submission_id,
@@ -61,7 +63,10 @@ class CodeforcesSubmissionLoader(SubmissionLoader):
                 external_task_id=f'codeforces:{contest_id}:{task_id}',
                 external_submission_id=f'codeforces:{contest_id}:{submission_id}',
                 submitted_at=datetime.fromtimestamp(
-                    timestamp, tz=timezone.utc)
+                    timestamp, tz=timezone.utc),
+                memory=memory,
+                exec_time=exec_time,
+                code_size=code_size
             )
 
             if data.status == SubmissionStatus.WaitingForJudging:

@@ -45,7 +45,7 @@ class AtCoderSubmissionLoader(SubmissionLoader):
         for page in count(1):
             submissions_html = self._request(f'{url}?page={page}')
 
-            pattern = r'<tr>[^<]*<td[^>]*><time[^>]*>([0-9/: +-]+)</time></td>\s*<td><a\s*href=\"[^\"]*\/tasks/([^\"]*)\">[^<]*</a></td>\s*<td><a\s*href=\"/users/([^\"]*)\">[^<]*</a>\s*<[^>]*><[^>]*></span></a></td>\s*<td>\s*<a[^>]*>([^<]*)</a>\s*</td>\s*<td[^>]*data-id=\"([0-9]+)\">([^<]*)</td>\s*<td[^>]*>[^<]*</td>\s*<td[^>]*><span[^>]*>([^<]*)</span>'
+            pattern = r'<tr>[^<]*<td[^>]*><time[^>]*>([0-9/: +-]+)</time></td>\s*<td><a\s*href=\"[^\"]*\/tasks/([^\"]*)\">[^<]*</a></td>\s*<td><a\s*href=\"/users/([^\"]*)\">[^<]*</a>\s*<[^>]*><[^>]*></span></a></td>\s*<td>\s*<a[^>]*>([^<]*)</a>\s*</td>\s*<td[^>]*data-id=\"([0-9]+)\">([^<]*)</td>\s*<td[^>]*>([0-9]*)\s*Byte</td>\s*<td[^>]*><span[^>]*>([^<]*)</span>\s*</td>(?:<td[^>]*>\s*([0-9]*)\s*ms</td><td[^>]*>\s*([0-9]*)\s*KB</td>)?'
 
             submissions = re.findall(pattern, submissions_html)
 
@@ -56,7 +56,10 @@ class AtCoderSubmissionLoader(SubmissionLoader):
 
             for submission in submissions:
                 [timestamp, task_id, user_id, language, submission_id,
-                    score, status] = submission
+                    score, code_size, status] = submission[0:8]
+
+                exec_time = submission[8] if len(submission) >= 9 else 0
+                memory = submission[9] if len(submission) >= 10 else 0
 
                 data = Submission(
                     id=int(submission_id),
@@ -70,7 +73,10 @@ class AtCoderSubmissionLoader(SubmissionLoader):
                     external_task_id=f'atcoder:{contest_id}:{task_id}',
                     external_submission_id=f'atcoder:{contest_id}:{submission_id}',
                     submitted_at=datetime.strptime(
-                        timestamp, '%Y-%m-%d %H:%M:%S%z')
+                        timestamp, '%Y-%m-%d %H:%M:%S%z'),
+                    code_size=code_size,
+                    exec_time=exec_time,
+                    memory=memory,
                 )
 
                 if data.status == SubmissionStatus.WaitingForJudging:

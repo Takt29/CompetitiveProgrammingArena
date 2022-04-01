@@ -52,6 +52,12 @@ class AOJSubmissionLoader(SubmissionLoader):
             language = str(submission['language'])
             score = 1 if self._normalize_status(
                 status) == SubmissionStatus.Accepted else 0
+            memory = submission['memory'] * 1000 \
+                if type(submission['memory']) is int else 0
+            exec_time = submission['cpuTime'] * 10 \
+                if type(submission['cpuTime']) is int else 0
+            code_size = submission['codeSize'] \
+                if type(submission['codeSize']) is int else 0
 
             data = Submission(
                 id=submission_id,
@@ -63,7 +69,10 @@ class AOJSubmissionLoader(SubmissionLoader):
                 external_task_id=f'aoj:{contest_id}:{task_id}',
                 external_submission_id=f'aoj:{contest_id}:{submission_id}',
                 submitted_at=datetime.fromtimestamp(
-                    timestamp, tz=timezone.utc)
+                    timestamp, tz=timezone.utc),
+                memory=memory,
+                exec_time=exec_time,
+                code_size=code_size
             )
 
             if data.status == SubmissionStatus.WaitingForJudging:

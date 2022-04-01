@@ -37,6 +37,9 @@ class Submission:
     external_task_id: str
     external_submission_id: str
     submitted_at: datetime
+    memory: int  # bytes
+    exec_time: int  # millisecond
+    code_size: int  # bytes
 
 
 class SubmissionLoader(ABC):
