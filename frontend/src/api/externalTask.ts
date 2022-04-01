@@ -94,7 +94,26 @@ export const fetchTaskInformation = async (
         externalTaskId,
         ...result,
       };
-      break;
+    }
+  }
+
+  return undefined;
+};
+
+const fetchAtCoderContestTasks = httpsCallable<
+  { externalContestId: string },
+  { externalTaskIds: string[] }
+>(functions, "task-fetchAtCoderContestTasks");
+
+export const fetchExternalContestTasks = async (
+  externalContestId: string
+): Promise<string[] | undefined> => {
+  const [site] = externalContestId.split(":");
+
+  switch (site) {
+    case "atcoder": {
+      const result = await fetchAtCoderContestTasks({ externalContestId });
+      return result.data.externalTaskIds;
     }
   }
 

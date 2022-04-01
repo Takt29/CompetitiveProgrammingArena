@@ -17,8 +17,12 @@ import {
 import { useRef } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { useAsyncFn } from "react-use";
-import { fetchTaskInformation } from "../../../api/externalTask";
-import { url2ExternalTaskId } from "../../../helper/url";
+import {
+  fetchExternalContestTasks,
+  fetchTaskInformation,
+} from "../../../api/externalTask";
+import { sleep } from "../../../helper/sleep";
+import { url2ExternalContestId, url2ExternalTaskId } from "../../../helper/url";
 
 type FormTaskData = {
   id: string;
@@ -46,16 +50,41 @@ export const ContestTaskFormFields = () => {
     try {
       const url = taskUrlRef.current?.value;
       const externalTaskId = url && url2ExternalTaskId(url);
-      const taskInfo =
-        externalTaskId && (await fetchTaskInformation(externalTaskId));
+      const externalContestId = url && url2ExternalContestId(url);
 
-      if (taskInfo) {
-        append({
-          name: taskInfo.title ?? "",
-          externalTaskId,
-          score: (taskInfo.score ?? 100).toString(),
-          originalScore: (taskInfo.score ?? 0).toString(),
-        });
+      const externalTaskIds: string[] = [];
+
+      if (externalContestId) {
+        externalTaskIds.push(
+          ...((await fetchExternalContestTasks(externalContestId)) ?? [])
+        );
+        await sleep(1000);
+      } else if (externalTaskId) {
+        externalTaskIds.push(externalTaskId);
+      }
+
+      let appended = false;
+
+      for (let i = 0; i < externalTaskIds.length; i++) {
+        if (i > 0) await sleep(2000);
+
+        const externalTaskId = externalTaskIds[i];
+
+        const taskInfo = await fetchTaskInformation(externalTaskId);
+
+        if (taskInfo) {
+          append({
+            name: taskInfo.title ?? "",
+            externalTaskId,
+            score: (taskInfo.score ?? 100).toString(),
+            originalScore: (taskInfo.score ?? 0).toString(),
+          });
+
+          appended = true;
+        }
+      }
+
+      if (appended) {
         if (taskUrlRef.current) {
           taskUrlRef.current.value = "";
         }
@@ -63,6 +92,7 @@ export const ContestTaskFormFields = () => {
         throw new Error("Not found.");
       }
     } catch (e) {
+      console.log(e);
       toast({
         title: "Failed to add task.",
         status: "error",

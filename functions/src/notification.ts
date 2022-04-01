@@ -16,7 +16,7 @@ export const getDuration = (
   begin: Timestamp,
   end: Timestamp,
   unit: dayjs.UnitType
-) => {
+): number => {
   return dayjs(end.toDate()).diff(dayjs(begin.toDate()), unit);
 };
 

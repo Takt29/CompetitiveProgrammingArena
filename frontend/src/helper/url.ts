@@ -65,3 +65,16 @@ export const externalTaskId2Url = (externalTaskId: string) => {
 
   return undefined;
 };
+
+const ATCODER_CONTEST_URL_REGEX =
+  /https?:\/\/(?:beta.)?atcoder.jp\/contests\/([^?/#]+)(?:\/tasks|\/standings|\/editorial)?\/?(?:[?#].*)?\s*$/;
+
+export const url2ExternalContestId = (url: string) => {
+  // AtCoder
+  const atcoderResult = url.match(ATCODER_CONTEST_URL_REGEX);
+  if (atcoderResult) {
+    return `atcoder:${atcoderResult[1]}`;
+  }
+
+  return undefined;
+};
