@@ -10,6 +10,7 @@ class CodeforcesSubmissionLoader(SubmissionLoader):
         patterns: list[tuple[SubmissionStatus, str]] = [
             (SubmissionStatus.CompileError, 'COMPILATION_ERROR'),
             (SubmissionStatus.WrongAnswer, 'WRONG_ANSWER'),
+            (SubmissionStatus.WrongAnswer, 'CHALLENGED'),
             (SubmissionStatus.TimeLimitExceeded, 'TIME_LIMIT_EXCEEDED'),
             (SubmissionStatus.MemoryLimitExceeded, 'MEMORY_LIMIT_EXCEEDED'),
             (SubmissionStatus.Accepted, 'OK'),
