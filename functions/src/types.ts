@@ -15,12 +15,26 @@ export type AuditFields = {
 export type Submission = {
   contestId: string;
   taskId: string;
-  status: string; // TODO: enum
+  status:
+    | "CE"
+    | "WA"
+    | "TLE"
+    | "MLE"
+    | "AC"
+    | "OLE"
+    | "RE"
+    | "PE"
+    | "IE"
+    | "WJ"
+    | "Unknown";
   score: number;
   language: string;
   submittedAt: Timestamp;
   submittedBy: string;
   externalSubmissionId: string; // [site]:[contest]:[id]
+  memory: number; // bytes
+  exec_time: number; //milliseconds
+  code_size: number; // bytes
 } & AuditFields;
 
 export type StandingsSystemType =

@@ -24,6 +24,9 @@ export type FireStoreSubmission = {
   submittedAt: Timestamp;
   submittedBy: User["id"];
   externalSubmissionId: string; // [site]:[contest]:[id]
+  memory: number; // bytes
+  exec_time: number; //milliseconds
+  code_size: number; // bytes
 } & AuditFields;
 
 export type Submission = FireStoreSubmission & {
