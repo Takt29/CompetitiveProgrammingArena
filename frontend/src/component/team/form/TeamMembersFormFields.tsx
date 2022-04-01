@@ -12,7 +12,7 @@ import {
   Td,
   Tr,
 } from "@chakra-ui/react";
-import { limit } from "firebase/firestore";
+import { limit, where } from "firebase/firestore";
 import { useRef } from "react";
 import { useFormContext, useFieldArray } from "react-hook-form";
 import { useAsyncFn } from "react-use";
@@ -39,7 +39,10 @@ export const TeamMembersFormFields = () => {
     const name = searchRef.current?.value;
     if (!name) return;
 
-    const [user] = await searchUser(name, [limit(1)]);
+    const [user] = await searchUser(name, [
+      where("name", "not-in", ["", ...fields.map(({ userName }) => userName)]),
+      limit(1),
+    ]);
 
     if (!user) return;
 
@@ -49,7 +52,7 @@ export const TeamMembersFormFields = () => {
     });
 
     searchRef.current.value = "";
-  }, [append]);
+  }, [append, fields]);
 
   return (
     <>
