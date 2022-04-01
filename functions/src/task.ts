@@ -120,7 +120,7 @@ export const fetchAtCoderContestTasks = functions
       );
 
       const taskIdsMatchRes = result.data.matchAll(
-        /<tr>\s*<td[^>]*>\s*<a\s*href=\"[^"]+\/([^"]+)">/gm
+        /<tr>\s*<td[^>]*>\s*<a\s*href="[^"]+\/([^"]+)">/gm
       );
 
       return {
