@@ -6,14 +6,15 @@ import { User } from "./user";
 
 export type StandingsScore = {
   score: number;
+  submissionPenalty: number;
+  timePenalty: number;
   penalty: number;
-  submittedAt: Timestamp | null;
 };
 
 export type TaskScore = {
   externalScore: number;
   score: number;
-  penalty: number;
+  submissionPenalty: number;
   submittedAt: Timestamp | null;
   numOfSubmissions: number;
 };

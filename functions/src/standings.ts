@@ -60,8 +60,9 @@ export const updateStandingsItem = functions
         taskScores: {},
         score: {
           score: 0,
+          submissionPenalty: 0,
+          timePenalty: 0,
           penalty: 0,
-          submittedAt: null,
         },
         sortKey: [],
         createdAt: firestore.FieldValue.serverTimestamp(),
@@ -70,11 +71,13 @@ export const updateStandingsItem = functions
       };
 
       /* TaskScoreの更新 */
+      // TODO: codeforcesのスコア計算
+      // TODO: lockoutのスコア計算
 
       const taskScore: TaskScore = standingsItem.taskScores[taskId] ?? {
         externalScore: 0,
         score: 0,
-        penalty: 0,
+        submissionPenalty: 0,
         submittedAt: 0,
         numOfSubmissions: 0,
       };
@@ -88,7 +91,7 @@ export const updateStandingsItem = functions
         } else {
           taskScore.score = submission.score ? task.score : 0;
         }
-        taskScore.penalty = taskScore.numOfSubmissions; // FIXME: WAとACの順が入れ替わる場合を考慮
+        taskScore.submissionPenalty = taskScore.numOfSubmissions; // FIXME: WAとACの順が入れ替わる場合を考慮
         taskScore.submittedAt = submission.submittedAt;
         if (submission.status !== "IE" && submission.status !== "CE") {
           taskScore.numOfSubmissions += 1;
@@ -99,7 +102,7 @@ export const updateStandingsItem = functions
             taskScore.submittedAt &&
             taskScore.submittedAt.toMillis() > submission.submittedAt.toMillis()
           ) {
-            taskScore.penalty += 1;
+            taskScore.submissionPenalty += 1;
           }
           taskScore.numOfSubmissions += 1;
         }
@@ -110,24 +113,73 @@ export const updateStandingsItem = functions
       /* Scoreの更新 */
       const score: StandingsScore = {
         score: 0,
+        submissionPenalty: 0,
+        timePenalty: 0,
         penalty: 0,
-        submittedAt: null,
       };
 
       for (const taskId in standingsItem.taskScores) {
         const taskScore = standingsItem.taskScores[taskId];
 
-        if (taskScore.externalScore > 0) {
-          score.score += taskScore.score;
-          score.penalty += taskScore.penalty;
-          if (
-            taskScore.submittedAt !== null &&
-            (score.submittedAt == null ||
-              score.submittedAt.toMillis() < taskScore.submittedAt?.toMillis())
-          ) {
-            score.submittedAt = taskScore.submittedAt;
+        if (taskScore.externalScore > 0 && taskScore.submittedAt) {
+          score.submissionPenalty += taskScore.submissionPenalty;
+          const taskTimePenalty = Math.floor(
+            (taskScore.submittedAt?.toMillis() - contest.startAt.toMillis()) /
+              1000
+          );
+
+          switch (contest.rule.system) {
+            case "atcoder":
+              score.score += taskScore.score;
+              score.timePenalty = Math.max(score.timePenalty, taskTimePenalty);
+              break;
+            case "icpc":
+              score.score += taskScore.score;
+              score.timePenalty += Math.floor(taskTimePenalty / 60);
+              break;
+            case "icpc_domestic":
+              score.score += taskScore.score;
+              score.timePenalty += taskTimePenalty;
+              break;
+            case "codeforces":
+            case "joi":
+            case "pck":
+              score.score += taskScore.score;
+              score.timePenalty = Math.max(score.timePenalty, taskTimePenalty);
+              break;
+            case "lockout":
+              score.score += taskScore.score;
+              score.timePenalty = Math.max(score.timePenalty, taskTimePenalty);
+              break;
+            default:
+              console.error(`Unknown Contest rule (${contest.rule.system})`);
           }
         }
+      }
+
+      const { system, penaltyMins } = contest.rule;
+
+      switch (contest.rule.system) {
+        case "atcoder":
+          score.penalty =
+            score.timePenalty + score.submissionPenalty * penaltyMins * 60;
+          break;
+        case "icpc":
+          score.penalty =
+            score.timePenalty + score.submissionPenalty * penaltyMins;
+          break;
+        case "icpc_domestic":
+          score.penalty =
+            score.timePenalty + score.submissionPenalty * penaltyMins * 60;
+          break;
+        case "codeforces":
+        case "joi":
+        case "pck":
+        case "lockout":
+          score.penalty = score.timePenalty;
+          break;
+        default:
+          console.error(`Unknown Contest rule (${contest.rule.system})`);
       }
 
       standingsItem.score = score;
@@ -135,22 +187,20 @@ export const updateStandingsItem = functions
       /* sort keyの更新 */
       let sortKey: number[] = [];
 
-      const { system, penaltyMins } = contest.rule;
-
       // TODO: penaltyをちゃんと計算する
 
       switch (system) {
         case "atcoder":
-          sortKey = [score.score, -score.penalty * penaltyMins];
+          sortKey = [score.score, -score.penalty];
           break;
         case "codeforces":
           sortKey = [score.score, 0];
           break;
         case "icpc":
-          sortKey = [score.score, -score.penalty * penaltyMins];
+          sortKey = [score.score, -score.penalty];
           break;
         case "icpc_domestic":
-          sortKey = [score.score, -score.penalty * penaltyMins * 60];
+          sortKey = [score.score, -score.penalty];
           break;
         case "joi":
           sortKey = [score.score, 0];
@@ -159,15 +209,13 @@ export const updateStandingsItem = functions
           sortKey = [score.score, 0];
           break;
         case "pck":
-          sortKey = [score.score, -score.penalty];
+          sortKey = [score.score, -score.submissionPenalty];
           break;
         default:
           console.error(`Unknown Contest rule (${contest.rule.system})`);
       }
 
       standingsItem.sortKey = sortKey;
-
-      console.log(standingsItem);
 
       await tx.set(standingsItemRef, standingsItem);
     });

@@ -23,5 +23,5 @@ export const StandingsItemTaskScore = (props: Props) => {
     return <span>{`(${taskScore.numOfSubmissions})`}</span>;
   }
 
-  return <span>{`${taskScore.score}(${taskScore.penalty})`}</span>;
+  return <span>{`${taskScore.score}(${taskScore.submissionPenalty})`}</span>;
 };
