@@ -1,14 +1,17 @@
 from .loader import FireStoreLoader
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 
 class ContestsLoader(FireStoreLoader):
     def sync(self):
         isFirst = self.latest_timestamp is None
 
+        end_at_threshold = datetime.now(
+            tz=timezone.utc) - timedelta(minutes=10)
+
         if isFirst:
             query = self.db.collection('contests').where(
-                'endAt', '>', datetime.now(tz=timezone.utc)
+                'endAt', '>', end_at_threshold
             )
         else:
             query = self.db.collection('contests').where(
@@ -23,12 +26,11 @@ class ContestsLoader(FireStoreLoader):
         for item in datalist:
             self._add_data(item)
 
-        now_microseconds = self.to_microseconds(datetime.now())
-
         # TODO: unique filter
 
         delete_data = list(filter(
-            lambda x: self.to_microseconds(x['endAt']) <= now_microseconds,
+            lambda x: not (self.to_microseconds(
+                x['endAt']) > self.to_microseconds(end_at_threshold)),
             self.get_data()
         ))
         for item in delete_data:
