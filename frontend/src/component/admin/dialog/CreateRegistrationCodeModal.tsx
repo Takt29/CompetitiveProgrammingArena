@@ -52,7 +52,7 @@ export const CreateRegistrationCodeModal = (props: Props) => {
               <Stack spacing={4}>
                 <RegistrationCodeFormFields />
                 <Box textAlign={"right"}>
-                  <Button type="submit" loading={loading} disabled={loading}>
+                  <Button type="submit" isLoading={loading} disabled={loading}>
                     Create
                   </Button>
                 </Box>
