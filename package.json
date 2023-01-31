@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/Takt29/CompetitiveProgrammingArena#readme",
   "devDependencies": {
-    "firebase-admin": "^10.3.0",
-    "firebase-tools": "^11.0.1"
+    "firebase-admin": "^11.5.0",
+    "firebase-tools": "^11.21.0"
   }
 }
