@@ -73,12 +73,17 @@ export const ContestTaskFormFields = () => {
         const taskInfo = await fetchTaskInformation(externalTaskId);
 
         if (taskInfo) {
-          append({
-            name: taskInfo.title ?? "",
-            externalTaskId,
-            score: (taskInfo.score ?? 100).toString(),
-            originalScore: (taskInfo.score ?? 0).toString(),
-          });
+          append(
+            {
+              name: taskInfo.title ?? "",
+              externalTaskId,
+              score: (taskInfo.score ?? 100).toString(),
+              originalScore: (taskInfo.score ?? 0).toString(),
+            },
+            {
+              shouldFocus: false,
+            }
+          );
 
           appended = true;
         }
@@ -153,6 +158,7 @@ export const ContestTaskFormFields = () => {
                 e.preventDefault();
               }
             }}
+            disabled={loading}
           />
           <InputRightElement width={16}>
             <Button
