@@ -32,9 +32,9 @@ export const CreateContestPage = () => {
 
   const formMethods = useForm<CreateContestFormData>({
     defaultValues: {
-      startAt: formatDateTime(dayjs().add(20, "minutes"), "YYYY/MM/DD HH:mm"),
+      startAt: formatDateTime(dayjs().add(5, "minutes"), "YYYY/MM/DD HH:mm"),
       endAt: formatDateTime(
-        dayjs().add(20 + 60 * 2, "minutes"),
+        dayjs().add(5 + 60 * 2, "minutes"),
         "YYYY/MM/DD HH:mm"
       ),
       rule: {
