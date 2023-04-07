@@ -79,6 +79,7 @@ export const ContestFormFields = () => {
             <Box
               key={text}
               as="button"
+              type="button"
               textDecorationLine="underline"
               marginRight={2}
               onClick={() =>
@@ -113,6 +114,7 @@ export const ContestFormFields = () => {
             <Box
               key={text}
               as="button"
+              type="button"
               textDecorationLine="underline"
               marginRight={2}
               onClick={() =>
